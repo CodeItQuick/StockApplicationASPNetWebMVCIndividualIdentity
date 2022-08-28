@@ -25,7 +25,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Controllers
                 {
                     HasPreviousPage = stockInfoRequest.pageNumber >= 1,
                     HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
-                    stockInfoDatums = stockInfoDatums.Skip(stockInfoRequest.pageNumber * 20 ?? 0).Take(20).ToList(),
+                    StockInfoDatums = stockInfoDatums.Skip(stockInfoRequest.pageNumber * 20 ?? 0).Take(20).ToList(),
                     PageIndex = stockInfoRequest.pageNumber ?? 0
                 };
                 return View(model);
