@@ -20,7 +20,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data
             }
         }
 
-        public virtual DbSet<StockInfoDatum> StockInfoData { get; set; } = null!;
+        public virtual DbSet<StockInfoDatumDTO> StockInfoData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,103 +33,103 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<StockInfoDatum>(entity =>
+            modelBuilder.Entity<StockInfoDatumDTO>(entity =>
             {
                 entity.Property(e => e.BvS)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bv_s");
-
+                    .HasColumnName("BvS");
+            
                 entity.Property(e => e.BvS1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bv_s_1");
-
+                    .HasColumnName("BvS1");
+            
                 entity.Property(e => e.BvS2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bv_s_2");
-
+                    .HasColumnName("BvS2");
+            
                 entity.Property(e => e.BvS3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bv_s_3");
-
+                    .HasColumnName("BvS3");
+            
                 entity.Property(e => e.BvS4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("bv_s_4");
-
+                    .HasColumnName("BvS4");
+            
                 entity.Property(e => e.CashFlowToSales)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("cash_flow_to_sales");
-
+                    .HasColumnName("CashFlowToSales");
+            
                 entity.Property(e => e.Date).HasColumnName("date");
-
+            
                 entity.Property(e => e.DivYield)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("div_yield");
-
+                    .HasColumnName("DivYield");
+            
                 entity.Property(e => e.DivYield1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("div_yield_1");
-
+                    .HasColumnName("DivYield1");
+            
                 entity.Property(e => e.DivYield2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("div_yield_2");
-
+                    .HasColumnName("DivYield2");
+            
                 entity.Property(e => e.DivYield3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("div_yield_3");
-
+                    .HasColumnName("DivYield3");
+            
                 entity.Property(e => e.DivYield4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("div_yield_4");
-
+                    .HasColumnName("DivYield4");
+            
                 entity.Property(e => e.Eps)
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("eps");
-
+            
                 entity.Property(e => e.MarketCap)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("market_cap");
-
+                    .HasColumnName("MarketCap");
+            
                 entity.Property(e => e.OneDay)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("one_day");
-
+                    .HasColumnName("OneDay");
+            
                 entity.Property(e => e.PbRatio)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("pb_ratio");
-
+                    .HasColumnName("PbRatio");
+            
                 entity.Property(e => e.PeRatio)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("pe_ratio");
-
+                    .HasColumnName("PeRatio");
+            
                 entity.Property(e => e.Roe)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("roe");
-
-                entity.Property(e => e.Roe1)
+                    .HasColumnName("Roe");
+            
+                entity.Property(e => e.Roe_1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("roe_1");
-
-                entity.Property(e => e.Roe2)
+                    .HasColumnName("Roe_1");
+            
+                entity.Property(e => e.Roe_2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("roe_2");
-
-                entity.Property(e => e.Roe3)
+                    .HasColumnName("Roe_2");
+            
+                entity.Property(e => e.Roe_3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("roe_3");
-
-                entity.Property(e => e.Roe4)
+                    .HasColumnName("Roe_3");
+            
+                entity.Property(e => e.Roe_4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("roe_4");
-
+                    .HasColumnName("Roe_4");
+            
                 entity.Property(e => e.SixMonths)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("six_months");
-
+                    .HasColumnName("SixMonths");
+            
                 entity.Property(e => e.Symbol).HasColumnName("symbol");
-
+            
                 entity.Property(e => e.YoySuccess)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("yoy_success");
+                    .HasColumnName("YoySuccess");
             });
 
         }

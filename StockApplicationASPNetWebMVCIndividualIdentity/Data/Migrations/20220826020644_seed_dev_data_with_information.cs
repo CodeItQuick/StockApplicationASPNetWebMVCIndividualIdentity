@@ -23,17 +23,17 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
             {
                 using (var csv = new CsvReader(reader, config))
                 {
-                    var allRecords = csv.GetRecords<StockInfoDatum>().ToList();
-                    IEnumerable<StockInfoDatum> recordsFirstBatch = allRecords
+                    var allRecords = csv.GetRecords<StockInfoDatumDTO>().ToList();
+                    IEnumerable<StockInfoDatumDTO> recordsFirstBatch = allRecords
                          .Where((x, idx) => idx < 1000)
                          .ToList();
-                    IEnumerable<StockInfoDatum> recordsSecondBatch = allRecords
+                    IEnumerable<StockInfoDatumDTO> recordsSecondBatch = allRecords
                         .Where((x, idx) => idx >= 1000 && idx < 2000)
                         .ToList();
-                    IEnumerable<StockInfoDatum> recordsThirdBatch = allRecords
+                    IEnumerable<StockInfoDatumDTO> recordsThirdBatch = allRecords
                         .Where((x, idx) => idx >= 2000 && idx < 3000)
                         .ToList();
-                    IEnumerable<StockInfoDatum> recordsFourthBatch = allRecords
+                    IEnumerable<StockInfoDatumDTO> recordsFourthBatch = allRecords
                         .Where((x, idx) => idx >= 3000)
                         .ToList();
 
@@ -116,7 +116,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 values: convertedRecords);
         }
 
-        private static object[,] ConvertedRecords(int idx, IEnumerable<StockInfoDatum> recordsForBatch)
+        private static object[,] ConvertedRecords(int idx, IEnumerable<StockInfoDatumDTO> recordsForBatch)
         {
             var sizeOfArray = recordsForBatch.ToList().Count;
             Console.WriteLine(sizeOfArray);
@@ -135,10 +135,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 convertedRecords[idx, 9] = stockInfoData.SixMonths;
                 convertedRecords[idx, 10] = stockInfoData.CashFlowToSales;
                 convertedRecords[idx, 11] = stockInfoData.Roe;
-                convertedRecords[idx, 11] = stockInfoData.Roe1;
-                convertedRecords[idx, 11] = stockInfoData.Roe2;
-                convertedRecords[idx, 11] = stockInfoData.Roe3;
-                convertedRecords[idx, 11] = stockInfoData.Roe4;
+                convertedRecords[idx, 11] = stockInfoData.Roe_1;
+                convertedRecords[idx, 11] = stockInfoData.Roe_2;
+                convertedRecords[idx, 11] = stockInfoData.Roe_3;
+                convertedRecords[idx, 11] = stockInfoData.Roe_4;
                 convertedRecords[idx, 16] = stockInfoData.BvS;
                 convertedRecords[idx, 16] = stockInfoData.BvS1;
                 convertedRecords[idx, 16] = stockInfoData.BvS2;

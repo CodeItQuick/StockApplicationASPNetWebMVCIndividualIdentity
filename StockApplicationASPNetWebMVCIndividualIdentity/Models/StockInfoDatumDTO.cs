@@ -1,7 +1,12 @@
-﻿namespace StockApplicationASPNetWebMVCIndividualIdentity.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Models
 {
-    public partial class StockInfoDatum
+    [Table("StockInfoData")]
+    public class StockInfoDatumDTO
     {
+        [Key]
         public long Id { get; set; }
         public string? Symbol { get; set; }
         public decimal? YoySuccess { get; set; }
@@ -9,15 +14,15 @@
         public decimal? Eps { get; set; }
         public decimal? PbRatio { get; set; }
         public decimal? PeRatio { get; set; }
-        public float? MarketCap { get; set; }
+        public double? MarketCap { get; set; }
         public decimal? OneDay { get; set; }
         public decimal? SixMonths { get; set; }
         public decimal? CashFlowToSales { get; set; }
         public decimal? Roe { get; set; }
-        public decimal? Roe1 { get; set; }
-        public decimal? Roe2 { get; set; }
-        public decimal? Roe3 { get; set; }
-        public decimal? Roe4 { get; set; }
+        public decimal? Roe_1 { get; set; }
+        public decimal? Roe_2 { get; set; }
+        public decimal? Roe_3 { get; set; }
+        public decimal? Roe_4 { get; set; }
         public decimal? BvS { get; set; }
         public decimal? BvS1 { get; set; }
         public decimal? BvS2 { get; set; }
