@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockApplicationASPNetWebMVCIndividualIdentity.Models;
 using System.Diagnostics;
+using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Controllers
@@ -19,16 +21,18 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Controllers
         public IActionResult Index(
             StockInfoRequest stockInfoRequest)
         {
-                var stockInfoDatums = _stockContext.StockInfoData
-                    .ToList();
-                var model = new IndexResponseModel()
-                {
-                    HasPreviousPage = stockInfoRequest.pageNumber >= 1,
-                    HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
-                    StockInfoDatums = stockInfoDatums.Skip(stockInfoRequest.pageNumber * 20 ?? 0).Take(20).ToList(),
-                    PageIndex = stockInfoRequest.pageNumber ?? 0
-                };
-                return View(model);
+            // DB/Application
+            var stockInfoDatums = _stockContext.StockInfoData
+                .ToList();
+            // Display/Adapter
+            var model = new IndexResponseModel()
+            {
+                HasPreviousPage = stockInfoRequest.pageNumber >= 1,
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                StockInfoDatums = stockInfoDatums.Skip(stockInfoRequest.pageNumber * 20 ?? 0).Take(20).ToList(),
+                PageIndex = stockInfoRequest.pageNumber ?? 0
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

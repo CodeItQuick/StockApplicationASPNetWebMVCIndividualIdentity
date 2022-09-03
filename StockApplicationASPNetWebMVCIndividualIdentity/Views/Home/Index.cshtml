@@ -10,6 +10,15 @@
     <tr>
       <th scope="col">Symbol</th>
       <th scope="col">PE Ratio</th>
+      <th scope="col">YoY Success</th>
+      <th scope="col">Eps</th>
+      <th scope="col">Pb Ratio</th>
+      <th scope="col">Market Cap</th>
+      <th scope="col">One Day</th>
+      <th scope="col">Cash Flow To Sales</th>
+      <th scope="col">Roe</th>
+      <th scope="col">BvS</th>
+      <th scope="col">DivYield</th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +27,15 @@
       <tr>
         <th scope="row">@item.Symbol</th>
         <td>@item.PeRatio</td>
+        <td>@item.YoySuccess</td>
+        <td>@item.Eps</td>
+        <td>@item.PbRatio</td>
+        <td>@item.MarketCap</td>
+        <td>@item.OneDay</td>
+        <td>@item.CashFlowToSales</td>
+        <td>@item.Roe</td>
+        <td>@item.BvS</td>
+        <td>@item.DivYield</td>
       </tr>
     }
   </tbody>
@@ -28,17 +46,18 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
+Page: @(Model.PageIndex + 1) &nbsp;
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @prevDisabled">
-    Previous (Page: @(Model.PageIndex - 1))
+    Previous
 </a>
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @nextDisabled">
-    Next (Page: @(Model.PageIndex + 1))
+    Next
 </a>
