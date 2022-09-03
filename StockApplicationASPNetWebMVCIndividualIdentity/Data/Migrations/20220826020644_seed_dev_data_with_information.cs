@@ -7,7 +7,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 using Microsoft.EntityFrameworkCore.Migrations;
-using StockApplicationASPNetWebMVCIndividualIdentity.Models;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {

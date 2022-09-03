@@ -1,4 +1,4 @@
-﻿@model StockApplicationASPNetWebMVCIndividualIdentity.Controllers.IndexResponseModel
+﻿@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndexResponseModel
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -25,17 +25,8 @@
     @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
     {
       <tr>
-        <th scope="row">@item.Symbol</th>
-        <td>@item.PeRatio</td>
-        <td>@item.YoySuccess</td>
-        <td>@item.Eps</td>
-        <td>@item.PbRatio</td>
-        <td>@item.MarketCap</td>
-        <td>@item.OneDay</td>
-        <td>@item.CashFlowToSales</td>
-        <td>@item.Roe</td>
-        <td>@item.BvS</td>
-        <td>@item.DivYield</td>
+        <th scope="row">@item.Ticker()</th>
+        <td>@item.RetrieveAttributeFor(@item.Ticker(), "PeRatio")</td>
       </tr>
     }
   </tbody>

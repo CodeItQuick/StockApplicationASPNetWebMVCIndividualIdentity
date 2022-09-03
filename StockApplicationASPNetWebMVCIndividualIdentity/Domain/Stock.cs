@@ -32,5 +32,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
         {
             return ticker.Equals(_ticker);
         }
+
+        public decimal? RetrieveAttributeFor(string ticker, string attrib)
+        {
+            return _allStockAttributes
+                .First(r => r.Key.Equals(ticker) && 
+                            r.Value.AttributeName.Equals(attrib)).Value.AttributeValue;
+        }
     }
 }

@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Data;
-using StockApplicationASPNetWebMVCIndividualIdentity.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {

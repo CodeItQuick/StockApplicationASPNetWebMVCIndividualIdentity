@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 using System;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {

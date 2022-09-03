@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<stockContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<stockContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(
+        options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<stockContext>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

@@ -4,7 +4,6 @@
 
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using StockApplicationASPNetWebMVCIndividualIdentity.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {

@@ -20,7 +20,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application" />
+    <Folder Include="Adapters\Controllers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Adapters\Views\Home\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\Home\Privacy.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\Shared\Error.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\Shared\_Layout.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\Shared\_LoginPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Adapters\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Home\Index.cshtml" />
+    <AdditionalFiles Include="Views\Home\Privacy.cshtml" />
+    <AdditionalFiles Include="Views\Shared\Error.cshtml" />
+    <AdditionalFiles Include="Views\Shared\_Layout.cshtml" />
+    <AdditionalFiles Include="Views\Shared\_LoginPartial.cshtml" />
+    <AdditionalFiles Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <AdditionalFiles Include="Views\_ViewImports.cshtml" />
+    <AdditionalFiles Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
 
 </Project>

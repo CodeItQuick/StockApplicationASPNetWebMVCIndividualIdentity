@@ -1,33 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
-using StockApplicationASPNetWebMVCIndividualIdentity.Models;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Data
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
 {
-    public class stockContext : IdentityDbContext
+    internal partial class stockContext : IdentityDbContext
     {
         private string? _connectionString;
 
-        public stockContext(DbContextOptions<stockContext> options)
-            : base(options)
+        public stockContext()
         {
-            var sqlServerOptionsExtension = 
-                options.FindExtension<SqlServerOptionsExtension>();
-            if(sqlServerOptionsExtension != null)
-            {
-                _connectionString = sqlServerOptionsExtension.ConnectionString;
-            }
+            _connectionString = "data source=localhost,1433; User Id=sa; password=Sqlserver0!; Database=stock;Integrated Security=false;";
         }
 
-        public virtual DbSet<StockInfoDatumDTO> StockInfoData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured && _connectionString != null)
-            {
-                optionsBuilder.UseSqlServer(_connectionString);
-            }
+            optionsBuilder.UseSqlServer(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

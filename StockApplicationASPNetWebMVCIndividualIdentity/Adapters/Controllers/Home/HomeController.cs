@@ -1,35 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using StockApplicationASPNetWebMVCIndividualIdentity.Models;
-using System.Diagnostics;
-using AutoMapper;
-using AutoMapper.Internal.Mappers;
-using StockApplicationASPNetWebMVCIndividualIdentity.Data;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Controllers
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly stockContext _stockContext;
+        private readonly StockService _stockService;
 
-        public HomeController(ILogger<HomeController> logger, stockContext stockContext)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _stockContext = stockContext;
+            _stockService = new StockService();
         }
 
         public IActionResult Index(
             StockInfoRequest stockInfoRequest)
         {
             // DB/Application
-            var stockInfoDatums = _stockContext.StockInfoData
-                .ToList();
+            var stockInfoDatums = _stockService.DisplayAllStocks(stockInfoRequest.pageNumber ?? 0);
             // Display/Adapter
             var model = new IndexResponseModel()
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
                 HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
-                StockInfoDatums = stockInfoDatums.Skip(stockInfoRequest.pageNumber * 20 ?? 0).Take(20).ToList(),
+                StockInfoDatums = stockInfoDatums.ToList(),
                 PageIndex = stockInfoRequest.pageNumber ?? 0
             };
             return View(model);

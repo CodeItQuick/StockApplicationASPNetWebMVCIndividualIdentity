@@ -27,4 +27,9 @@ public class IndexStock
     {
         return _stocks.Count;
     }
+
+    public IEnumerable<Stock> RetrieveIndex(int pageNumber)
+    {
+        return _stocks.Skip(pageNumber * 20).Take(20).ToList();
+    }
 }

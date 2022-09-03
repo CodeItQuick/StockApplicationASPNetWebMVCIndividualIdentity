@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Models
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
 {
     [Table("StockInfoData")]
     public class StockInfoDatumDTO

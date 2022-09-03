@@ -64,4 +64,19 @@ public class AcceptanceTests
         Assert.Equal("AAPL", stockAAPL.Ticker());
         Assert.Equal("MSFT", stockMSFT.Ticker());
     }
+    [Fact]
+    public void GivenAnIndexCanListAllTheStocks()
+    {
+        var index = new IndexStock("W5000");
+        var stockWithAttributes = new Stock("AAPL", new List<StockAttributeDecimal>()
+        {
+            new("roe", new decimal(0.25))
+        });
+        var stocks = new List<Stock> { stockWithAttributes, new("MSFT") };
+        index.Populate(stocks);
+
+        IEnumerable<Stock> stockList = index.RetrieveIndex(1);
+
+        Assert.Equal(2, stockList.Count());
+    }
 }

@@ -1,4 +1,4 @@
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Models;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 public class StockInfoRequest
 {
