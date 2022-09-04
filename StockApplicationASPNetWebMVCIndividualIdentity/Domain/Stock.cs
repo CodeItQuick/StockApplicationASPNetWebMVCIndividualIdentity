@@ -4,39 +4,39 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
 {
     public class Stock
     {
-        private string _ticker;
+        private string _stockTicker;
         private readonly Dictionary<string, StockAttributeDecimal> _allStockAttributes = 
             new();
 
-        public Stock(string ticker)
+        public Stock(string stockTicker)
         {
-            _ticker = ticker;
+            _stockTicker = stockTicker;
         }
 
         public Stock(
-            string ticker, List<StockAttributeDecimal> listStocksAttributes)
+            string stockTicker, List<StockAttributeDecimal> listStocksAttributes)
         {
-            _ticker = ticker;
-            foreach (StockAttributeDecimal stocksAttributes in listStocksAttributes)
+            _stockTicker = stockTicker;
+            listStocksAttributes.ForEach(r =>
             {
-                _allStockAttributes.Add(ticker, stocksAttributes);
-            }
+                _allStockAttributes.Add(r.AttributeName, r);
+            });
         }
 
         public string Ticker()
         {
-            return _ticker;
+            return _stockTicker;
         }
 
         public bool IsMatch(string ticker)
         {
-            return ticker.Equals(_ticker);
+            return ticker.Equals(_stockTicker);
         }
 
-        public decimal? RetrieveAttributeFor(string ticker, string attrib)
+        public decimal? RetrieveAttributeFor(string attrib)
         {
             return _allStockAttributes
-                .First(r => r.Key.Equals(ticker) && 
+                .First(r => 
                             r.Value.AttributeName.Equals(attrib)).Value.AttributeValue;
         }
     }

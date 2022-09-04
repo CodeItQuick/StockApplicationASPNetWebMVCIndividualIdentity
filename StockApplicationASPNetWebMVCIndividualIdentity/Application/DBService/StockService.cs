@@ -28,15 +28,14 @@ public class StockService
 
         var mappedStocks = stockInfo.Select(stockData =>
         {
-            if (stockData is { PeRatio: { }, Symbol: { } })
+            if (stockData is not { PeRatio: { }, Symbol: { } })
             {
-                return new Stock(stockData.Symbol, new List<StockAttributeDecimal>()
-                {
-                    new("PeRatio", stockData?.PeRatio ?? 0)
-                });
+                return new Stock("undefined");
             }
+            var defaultAttributes = StockAttributeDecimals(stockData);
 
-            return new Stock("undefined");
+            return new Stock(stockData.Symbol, defaultAttributes);
+
         }); 
         stockList.Populate(mappedStocks);
 
@@ -44,8 +43,27 @@ public class StockService
             .Select(r => new StockAdapterDTO()
             {
                 Symbol = r.Ticker(),
-                PeRatio = r.RetrieveAttributeFor(r.Ticker(), "PeRatio")!.Value
+                PeRatio = r.RetrieveAttributeFor("PeRatio")!.Value,
+                PbRatio = r.RetrieveAttributeFor("PbRatio")!.Value,
+                CashFlowToSales = r.RetrieveAttributeFor("CashFlowToSales")!.Value,
+                Roe = r.RetrieveAttributeFor("Roe")!.Value,
+                BvS = r.RetrieveAttributeFor("BvS")!.Value,
+                DivYield = r.RetrieveAttributeFor("DivYield")!.Value,
             });
         return displayAllStocks;
+    }
+
+    private static List<StockAttributeDecimal> StockAttributeDecimals(StockInfoDatumDTO stockData)
+    {
+        var defaultAttributes = new List<StockAttributeDecimal>()
+        {
+            new("PeRatio", stockData?.PeRatio ?? 0),
+            new("PbRatio", stockData?.PbRatio ?? 0),
+            new("CashFlowToSales", stockData?.CashFlowToSales ?? 0),
+            new("Roe", stockData?.Roe ?? 0),
+            new("BvS", stockData?.BvS ?? 0),
+            new("DivYield", stockData?.DivYield ?? 0),
+        };
+        return defaultAttributes;
     }
 }

@@ -21,7 +21,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             StockInfoRequest stockInfoRequest)
         {
             // DB/Application
-            var stockInfoDatums = _stockService.DisplayAllStocks(stockInfoRequest.pageNumber ?? 0);
+            var stockInfoDatums = _stockService.DisplayAllStocks(
+                stockInfoRequest.pageNumber ?? 0);
             // Display/Adapter
             var model = new IndexResponseModel()
             {

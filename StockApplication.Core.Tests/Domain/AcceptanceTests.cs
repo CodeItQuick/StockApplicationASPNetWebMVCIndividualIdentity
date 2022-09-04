@@ -58,11 +58,11 @@ public class AcceptanceTests
         var stocks = new List<Stock> { stockWithAttributes, new("MSFT") };
         index.Populate(stocks);
         
-        Stock? stockAAPL = index.RetrieveBySymbol("AAPL");
-        Stock? stockMSFT = index.RetrieveBySymbol("MSFT");
+        Stock? stockAapl = index.RetrieveBySymbol("AAPL");
+        Stock? stockMsft = index.RetrieveBySymbol("MSFT");
         
-        Assert.Equal("AAPL", stockAAPL.Ticker());
-        Assert.Equal("MSFT", stockMSFT.Ticker());
+        Assert.Equal("AAPL", stockAapl.Ticker());
+        Assert.Equal("MSFT", stockMsft.Ticker());
     }
     [Fact]
     public void GivenAnIndexCanListAllTheStocks()
