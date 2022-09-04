@@ -6,6 +6,20 @@ public class AcceptanceTests
 {
     
     [Fact]
+    public void GivenAnEmptyShortlistCanDisplayList()
+    {
+        var stock = new Stock("AAPL");
+        var stockList = new List<Stock>
+        {
+            stock
+        };
+        var shortlistedStocks = new ShortList();
+
+        shortlistedStocks.Populate(stockList);
+            
+        Assert.Single(shortlistedStocks.RetrieveStocks(0));
+    }
+    [Fact]
     public void GivenAStockWeCanAddItToTheShortlistedStocks()
     {
         var stock = new Stock("AAPL");

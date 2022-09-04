@@ -19,10 +19,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
         public decimal? SixMonths { get; set; }
         public decimal? CashFlowToSales { get; set; }
         public decimal? Roe { get; set; }
-        public decimal? Roe_1 { get; set; }
-        public decimal? Roe_2 { get; set; }
-        public decimal? Roe_3 { get; set; }
-        public decimal? Roe_4 { get; set; }
+        public decimal? Roe1 { get; set; }
+        public decimal? Roe2 { get; set; }
+        public decimal? Roe3 { get; set; }
+        public decimal? Roe4 { get; set; }
         public decimal? BvS { get; set; }
         public decimal? BvS1 { get; set; }
         public decimal? BvS2 { get; set; }

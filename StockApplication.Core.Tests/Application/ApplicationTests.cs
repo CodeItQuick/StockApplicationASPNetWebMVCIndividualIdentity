@@ -11,13 +11,17 @@ public class ApplicationTests
     [Fact]
     public void GivenAnIndexCanHandleEmptyListOfStocks()
     {
+        // construct mock repository
         var repository = new Mock<IStockDataRepository>();
         repository.Setup(r => 
             r.Get(null, null, ""))
             .Returns(new List<StockInfoDatumDTO>());
         var service = new StockService(repository.Object);
+        
+        // display the stocks from the service
         var allStocks = service.DisplayAllStocks(1);
         
+        // check the return value + that we got all the repository calls
         Assert.Equal(new List<StockAdapterDTO>(), allStocks);
         repository.Verify(r => 
             r.Get(null, null, ""));
@@ -44,6 +48,24 @@ public class ApplicationTests
         var allStocks = service.DisplayAllStocks(0).ToList();
         
         Assert.Single(allStocks);
+        repository.Verify(r => 
+            r.Get(null, null, ""));
+        repository.VerifyNoOtherCalls();
+        
+    }
+    [Fact]
+    public void GivenShortListedStocksCanHandleEmptyListOfStocks()
+    {
+        var repository = new Mock<IShortListRepository>();
+        repository.Setup(r => 
+                r.Get(null, null, ""))
+            .Returns(new List<StockInfoDatumDTO>());
+        var service = new StockService(repository.Object);
+        
+        var allStocks = service
+            .ShortlistedStocks(1);
+        
+        Assert.Equal(new List<StockAdapterDTO>(), allStocks);
         repository.Verify(r => 
             r.Get(null, null, ""));
         repository.VerifyNoOtherCalls();

@@ -34,6 +34,41 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return View(model);
         }
 
+        public IActionResult Shortlist(
+            StockInfoRequest stockInfoRequest)
+        {
+            // DB/Application
+            var stockInfoDatums = _stockService.ShortlistedStocks(
+                stockInfoRequest.pageNumber ?? 0);
+            // Display/Adapter
+            var model = new IndexResponseModel()
+            {
+                HasPreviousPage = stockInfoRequest.pageNumber >= 1,
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                StockInfoDatums = stockInfoDatums.ToList(),
+                PageIndex = stockInfoRequest.pageNumber ?? 0
+            };
+            return View(model);
+        }
+        [Route("/Shortlist/Add/{id}")]
+        [HttpPut]
+        public IActionResult AddShortlist(
+            StockInfoRequest stockInfoRequest,
+            string id)
+        {
+            // DB/Application
+            var stockInfoDatums = _stockService
+                .AddToShortlist(id, stockInfoRequest.pageNumber);
+            // Display/Adapter
+            var model = new IndexResponseModel()
+            {
+                HasPreviousPage = stockInfoRequest.pageNumber >= 1,
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                StockInfoDatums = stockInfoDatums.ToList(),
+                PageIndex = stockInfoRequest.pageNumber ?? 0
+            };
+            return Redirect("/?pageNumber=1");
+        }
         public IActionResult Privacy()
         {
             return View();

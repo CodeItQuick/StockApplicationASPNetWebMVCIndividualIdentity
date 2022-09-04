@@ -66,3 +66,7 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Users/Owner/source/repos/StockApplicationASPNetWebMVCIndividualIdentity/StockApplicationASPNetWebMVCIndividualIdentity/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Owner/source/repos/StockApplicationASPNetWebMVCIndividualIdentity/StockApplicationASPNetWebMVCIndividualIdentity/Views/Home/Shortlist.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaG9ydGxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

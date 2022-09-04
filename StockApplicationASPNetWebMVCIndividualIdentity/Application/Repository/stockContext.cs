@@ -19,6 +19,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             optionsBuilder.UseSqlServer(_connectionString);
         }
 
+        // _Some_ kind of creational pattern seems like it would be useful here,
+        // I see its a "modelBuilder", but how to add multiple properties to
+        // the builder properly? is factory method a solution?
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -26,89 +29,89 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             {
                 entity.Property(e => e.BvS)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("BvS");
+                    .HasColumnName(nameof(StockInfoDatumDTO.BvS));
             
                 entity.Property(e => e.BvS1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("BvS1");
+                    .HasColumnName(nameof(StockInfoDatumDTO.BvS1));
             
                 entity.Property(e => e.BvS2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("BvS2");
+                    .HasColumnName(nameof(StockInfoDatumDTO.BvS2));
             
                 entity.Property(e => e.BvS3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("BvS3");
+                    .HasColumnName(nameof(StockInfoDatumDTO.BvS3));
             
                 entity.Property(e => e.BvS4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("BvS4");
+                    .HasColumnName(nameof(StockInfoDatumDTO.BvS4));
             
                 entity.Property(e => e.CashFlowToSales)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("CashFlowToSales");
+                    .HasColumnName(nameof(StockInfoDatumDTO.CashFlowToSales));
             
                 entity.Property(e => e.Date).HasColumnName("date");
             
                 entity.Property(e => e.DivYield)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("DivYield");
+                    .HasColumnName(nameof(StockInfoDatumDTO.DivYield));
             
                 entity.Property(e => e.DivYield1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("DivYield1");
+                    .HasColumnName(nameof(StockInfoDatumDTO.DivYield1));
             
                 entity.Property(e => e.DivYield2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("DivYield2");
+                    .HasColumnName(nameof(StockInfoDatumDTO.DivYield2));
             
                 entity.Property(e => e.DivYield3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("DivYield3");
+                    .HasColumnName(nameof(StockInfoDatumDTO.DivYield3));
             
                 entity.Property(e => e.DivYield4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("DivYield4");
+                    .HasColumnName(nameof(StockInfoDatumDTO.DivYield4));
             
                 entity.Property(e => e.Eps)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("eps");
+                    .HasColumnName(nameof(StockInfoDatumDTO.Eps));
             
                 entity.Property(e => e.MarketCap)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("MarketCap");
+                    .HasColumnName(nameof(StockInfoDatumDTO.MarketCap));
             
                 entity.Property(e => e.OneDay)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("OneDay");
+                    .HasColumnName(nameof(StockInfoDatumDTO.OneDay));
             
                 entity.Property(e => e.PbRatio)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("PbRatio");
+                    .HasColumnName(nameof(StockInfoDatumDTO.PbRatio));
             
                 entity.Property(e => e.PeRatio)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("PeRatio");
+                    .HasColumnName(nameof(StockInfoDatumDTO.PeRatio));
             
                 entity.Property(e => e.Roe)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("Roe");
+                    .HasColumnType("decimal(18, 16)")
+                    .HasColumnName(nameof(StockInfoDatumDTO.Roe));
             
-                entity.Property(e => e.Roe_1)
+                entity.Property(e => e.Roe1)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("Roe_1");
+                    .HasColumnName(nameof(StockInfoDatumDTO.Roe1));
             
-                entity.Property(e => e.Roe_2)
+                entity.Property(e => e.Roe2)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("Roe_2");
+                    .HasColumnName(nameof(StockInfoDatumDTO.Roe2));
             
-                entity.Property(e => e.Roe_3)
+                entity.Property(e => e.Roe3)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("Roe_3");
+                    .HasColumnName(nameof(StockInfoDatumDTO.Roe3));
             
-                entity.Property(e => e.Roe_4)
+                entity.Property(e => e.Roe4)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("Roe_4");
+                    .HasColumnName(nameof(StockInfoDatumDTO.Roe4));
             
                 entity.Property(e => e.SixMonths)
                     .HasColumnType("decimal(18, 2)")

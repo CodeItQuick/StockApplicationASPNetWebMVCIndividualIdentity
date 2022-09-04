@@ -19,4 +19,24 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    [Fact]
+    public async Task WhenAShortlistIsRequestedThenItReturns200()
+    {
+        var response = await _client.GetAsync($"/Home/Shortlist");
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task WhenAddingAShortlistedStockThenItReturns200()
+    {
+        var response = await _client.PutAsync(
+            $"/Home/Shortlist/Add/AAPL", 
+            new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                { "hello", "world" }
+            }));
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
 }

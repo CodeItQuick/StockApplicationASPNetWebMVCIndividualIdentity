@@ -69,10 +69,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     "SixMonths",
                     "CashFlowToSales",
                     "Roe",
-                    "Roe_1",
-                    "Roe_2",
-                    "Roe_3",
-                    "Roe_4",
+                    "Roe1",
+                    "Roe2",
+                    "Roe3",
+                    "Roe4",
                     "BvS",
                     "BvS1",
                     "BvS2",
@@ -97,7 +97,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     "decimal(18,2)",
                     "decimal(18,2)",
                     "decimal(18,2)",
-                    "decimal(18,2)",
+                    "decimal(18,16)",
                     "decimal(18,2)",
                     "decimal(18,2)",
                     "decimal(18,2)",
@@ -135,20 +135,20 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 convertedRecords[idx, 9] = stockInfoData.SixMonths;
                 convertedRecords[idx, 10] = stockInfoData.CashFlowToSales;
                 convertedRecords[idx, 11] = stockInfoData.Roe;
-                convertedRecords[idx, 11] = stockInfoData.Roe_1;
-                convertedRecords[idx, 11] = stockInfoData.Roe_2;
-                convertedRecords[idx, 11] = stockInfoData.Roe_3;
-                convertedRecords[idx, 11] = stockInfoData.Roe_4;
+                convertedRecords[idx, 12] = stockInfoData.Roe1;
+                convertedRecords[idx, 13] = stockInfoData.Roe2;
+                convertedRecords[idx, 14] = stockInfoData.Roe3;
+                convertedRecords[idx, 15] = stockInfoData.Roe4;
                 convertedRecords[idx, 16] = stockInfoData.BvS;
-                convertedRecords[idx, 16] = stockInfoData.BvS1;
-                convertedRecords[idx, 16] = stockInfoData.BvS2;
-                convertedRecords[idx, 16] = stockInfoData.BvS3;
-                convertedRecords[idx, 16] = stockInfoData.BvS4;
+                convertedRecords[idx, 17] = stockInfoData.BvS1;
+                convertedRecords[idx, 18] = stockInfoData.BvS2;
+                convertedRecords[idx, 19] = stockInfoData.BvS3;
+                convertedRecords[idx, 20] = stockInfoData.BvS4;
                 convertedRecords[idx, 21] = stockInfoData.DivYield;
-                convertedRecords[idx, 21] = stockInfoData.DivYield1;
-                convertedRecords[idx, 21] = stockInfoData.DivYield2;
-                convertedRecords[idx, 21] = stockInfoData.DivYield3;
-                convertedRecords[idx, 21] = stockInfoData.DivYield4;
+                convertedRecords[idx, 22] = stockInfoData.DivYield1;
+                convertedRecords[idx, 23] = stockInfoData.DivYield2;
+                convertedRecords[idx, 24] = stockInfoData.DivYield3;
+                convertedRecords[idx, 25] = stockInfoData.DivYield4;
                 idx++;
             }
 

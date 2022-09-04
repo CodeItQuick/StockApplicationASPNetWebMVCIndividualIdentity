@@ -25,4 +25,14 @@ public class ShortList
     {
         _stocks.Remove(stock);
     }
+
+    public void Populate(IEnumerable<Stock> allShortlistedStocks)
+    {
+        _stocks = allShortlistedStocks.ToList();
+    }
+
+    public IEnumerable<Stock> RetrieveStocks(int pageNumber)
+    {
+        return _stocks.Skip(pageNumber).Take(20);
+    }
 }

@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+namespace StockApplication.Core.Tests.Application;
 
-public interface IStockDataRepository
+public interface IShortListRepository
 {
-     IEnumerable<StockInfoDatumDTO> Get(  
+    IEnumerable<StockInfoDatumDTO> Get(  
         Expression<Func<StockInfoDatumDTO, bool>> filter = null,  
         Func<IQueryable<StockInfoDatumDTO>, IOrderedQueryable<StockInfoDatumDTO>> orderBy = null,  
         string? includeProperties = "");

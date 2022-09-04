@@ -1,0 +1,55 @@
+@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndexResponseModel
+
+    <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+
+    <table class="table">
+    <thead>
+    <tr>
+    <th scope="col">Symbol</th>
+    <th scope="col">PE Ratio</th>
+    <th scope="col">Pb Ratio</th>
+    <th scope="col">Cash Flow To Sales</th>
+    <th scope="col">Roe</th>
+    <th scope="col">BvS</th>
+    <th scope="col">DivYield</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
+{
+    <tr>
+        <th scope="row">@item.Symbol</th>
+        <td>@item.PeRatio</td>
+        <td>@item.PbRatio</td>
+        <td>@item.CashFlowToSales</td>
+        <td>@item.Roe</td>
+        <td>@item.BvS</td>
+        <td>@item.DivYield</td>
+        </tr>
+}
+</tbody>
+    </table>
+
+    @{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+Page: @(Model.PageIndex + 1) &nbsp;
+    <a asp-action="Index"
+asp-route-sortOrder="@ViewData["CurrentSort"]"
+asp-route-pageNumber="@(Model.PageIndex - 1)"
+asp-route-currentFilter="@ViewData["CurrentFilter"]"
+class="btn btn-default @prevDisabled">
+    Previous
+    </a>
+    <a asp-action="Index"
+asp-route-sortOrder="@ViewData["CurrentSort"]"
+asp-route-pageNumber="@(Model.PageIndex + 1)"
+asp-route-currentFilter="@ViewData["CurrentFilter"]"
+class="btn btn-default @nextDisabled">
+    Next
+    </a>
