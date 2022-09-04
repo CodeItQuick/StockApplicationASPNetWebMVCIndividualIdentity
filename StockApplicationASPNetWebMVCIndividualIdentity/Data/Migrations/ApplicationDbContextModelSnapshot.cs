@@ -14,7 +14,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
-    [DbContext(typeof(stockContext))]
+    [DbContext(typeof(StockContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

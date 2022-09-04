@@ -25,8 +25,8 @@
     @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
     {
       <tr>
-        <th scope="row">@item.Ticker()</th>
-        <td>@item.RetrieveAttributeFor(@item.Ticker(), "PeRatio")</td>
+        <th scope="row">@item.Symbol</th>
+        <td>@item.PeRatio</td>
       </tr>
     }
   </tbody>

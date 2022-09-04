@@ -4,9 +4,9 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-internal class StockDataRepository : Repository<StockInfoDatumDTO>
+public class StockDataRepository : Repository<StockInfoDatumDTO>, IStockDataRepository
 {
-    public StockDataRepository(stockContext stockContext) : base(stockContext)
+    public StockDataRepository(StockContext stockContext) : base(stockContext)
     {
     }
 

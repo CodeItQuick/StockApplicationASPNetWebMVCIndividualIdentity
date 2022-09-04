@@ -1,4 +1,5 @@
 using StockApplication.Core.Tests.Domain;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
@@ -6,10 +7,23 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class StockService
 {
-    public IEnumerable<Stock> DisplayAllStocks(int pageNumber)
+    private readonly IStockDataRepository? _stockDataRepository;
+
+    public StockService()
+    {
+        
+    }
+
+    public StockService(IStockDataRepository stockDataRepository)
+    {
+        _stockDataRepository = stockDataRepository;
+    }
+
+    public IEnumerable<StockAdapterDTO> DisplayAllStocks(int pageNumber)
     {
         using var unitOfWork = new UnitOfWork();
-        var stockInfo = unitOfWork.StockRepository.Get();
+        IStockDataRepository stockDataRepository = _stockDataRepository ?? unitOfWork.StockRepository;
+        var stockInfo = stockDataRepository.Get();
         var stockList = new IndexStock("W5000");
 
         var mappedStocks = stockInfo.Select(stockData =>
@@ -25,7 +39,13 @@ public class StockService
             return new Stock("undefined");
         }); 
         stockList.Populate(mappedStocks);
-        
-        return stockList.RetrieveIndex(pageNumber);
+
+        var displayAllStocks = stockList.RetrieveIndex(pageNumber)
+            .Select(r => new StockAdapterDTO()
+            {
+                Symbol = r.Ticker(),
+                PeRatio = r.RetrieveAttributeFor(r.Ticker(), "PeRatio")!.Value
+            });
+        return displayAllStocks;
     }
 }

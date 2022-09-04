@@ -14,7 +14,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
-    [DbContext(typeof(stockContext))]
+    [DbContext(typeof(StockContext))]
     [Migration("20220826005403_seed_dev_data")]
     partial class seed_dev_data
     {

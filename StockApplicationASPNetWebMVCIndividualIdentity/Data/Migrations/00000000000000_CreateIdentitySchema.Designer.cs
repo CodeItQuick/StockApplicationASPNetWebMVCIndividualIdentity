@@ -11,7 +11,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
-    [DbContext(typeof(stockContext))]
+    [DbContext(typeof(StockContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

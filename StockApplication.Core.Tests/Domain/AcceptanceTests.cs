@@ -75,7 +75,7 @@ public class AcceptanceTests
         var stocks = new List<Stock> { stockWithAttributes, new("MSFT") };
         index.Populate(stocks);
 
-        IEnumerable<Stock> stockList = index.RetrieveIndex(1);
+        IEnumerable<Stock> stockList = index.RetrieveIndex(0);
 
         Assert.Equal(2, stockList.Count());
     }

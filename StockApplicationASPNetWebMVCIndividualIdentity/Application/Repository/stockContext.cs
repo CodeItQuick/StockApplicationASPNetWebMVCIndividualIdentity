@@ -4,11 +4,11 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
 {
-    internal partial class stockContext : IdentityDbContext
+    public class StockContext : IdentityDbContext
     {
         private string? _connectionString;
 
-        public stockContext()
+        public StockContext()
         {
             _connectionString = "data source=localhost,1433; User Id=sa; password=Sqlserver0!; Database=stock;Integrated Security=false;";
         }

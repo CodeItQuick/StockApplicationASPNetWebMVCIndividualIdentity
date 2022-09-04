@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-internal class Repository<TEntity>: IRepository<TEntity> where TEntity : class  
+public class Repository<TEntity>: IRepository<TEntity> where TEntity : class  
 {  
     protected DbSet<TEntity> Entities;  
     private readonly DbContext _dbContext;  
@@ -25,7 +25,7 @@ internal class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     public virtual IEnumerable<TEntity> Get(  
         Expression<Func<TEntity, bool>> filter = null,  
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,  
-        string includeProperties = "")  
+        string? includeProperties = "")  
     {  
         IQueryable<TEntity> query = Entities;  
   

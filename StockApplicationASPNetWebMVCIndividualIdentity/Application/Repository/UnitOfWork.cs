@@ -1,32 +1,30 @@
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-internal class UnitOfWork : IUnitOfWork  
+public class UnitOfWork : IUnitOfWork  
 {  
-    protected readonly stockContext Context;  
+    protected readonly StockContext Context;  
   
     public UnitOfWork()  
     {  
-        Context = new stockContext();  
+        Context = new StockContext();  
     }  
   
     public bool SaveChanges()  
     {  
-        bool returnValue = true;  
-        using (var dbContextTransaction = Context.Database.BeginTransaction())  
+        bool returnValue = true;
+        using var dbContextTransaction = Context.Database.BeginTransaction();
+        try  
         {  
-            try  
-            {  
-                Context.SaveChanges();  
-                dbContextTransaction.Commit();  
-            }  
-            catch (Exception)  
-            {  
-                //Log Exception Handling message                      
-                returnValue = false;  
-                dbContextTransaction.Rollback();  
-            }  
+            Context.SaveChanges();  
+            dbContextTransaction.Commit();  
         }  
-  
+        catch (Exception)  
+        {  
+            //Log Exception Handling message                      
+            returnValue = false;  
+            dbContextTransaction.Rollback();  
+        }
+
         return returnValue;  
     }  
  
