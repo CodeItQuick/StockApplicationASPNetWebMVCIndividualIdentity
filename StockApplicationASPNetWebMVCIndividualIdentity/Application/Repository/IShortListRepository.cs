@@ -1,12 +1,12 @@
 using System.Linq.Expressions;
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
+using StockApplication.Core.Tests.Application;
 
-namespace StockApplication.Core.Tests.Application;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 public interface IShortListRepository
 {
-    IEnumerable<StockInfoDatumDTO> Get(  
-        Expression<Func<StockInfoDatumDTO, bool>> filter = null,  
-        Func<IQueryable<StockInfoDatumDTO>, IOrderedQueryable<StockInfoDatumDTO>> orderBy = null,  
+    IEnumerable<ShortListDTO> Get(  
+        Expression<Func<ShortListDTO, bool>> filter = null,  
+        Func<IQueryable<ShortListDTO>, IOrderedQueryable<ShortListDTO>> orderBy = null,  
         string? includeProperties = "");
 }

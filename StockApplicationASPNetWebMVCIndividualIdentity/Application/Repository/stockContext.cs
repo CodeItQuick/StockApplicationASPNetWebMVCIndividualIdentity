@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
@@ -25,6 +26,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ShortListDTO>(entity =>
+            {
+                entity.Property(e => e.Symbol)
+                    .HasColumnType("string")
+                    .HasColumnName(nameof(StockInfoDatumDTO.Symbol));
+            });
             modelBuilder.Entity<StockInfoDatumDTO>(entity =>
             {
                 entity.Property(e => e.BvS)

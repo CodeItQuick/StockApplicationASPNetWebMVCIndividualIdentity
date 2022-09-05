@@ -1,4 +1,5 @@
 using System.Net;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplication.Core.Tests.Adapter;
 
@@ -22,7 +23,8 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
     [Fact]
     public async Task WhenAShortlistIsRequestedThenItReturns200()
     {
-        var response = await _client.GetAsync($"/Home/Shortlist");
+        
+        var response = await _client.GetAsync($"/Shortlist");
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -30,12 +32,7 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
     [Fact]
     public async Task WhenAddingAShortlistedStockThenItReturns200()
     {
-        var response = await _client.PutAsync(
-            $"/Home/Shortlist/Add/AAPL", 
-            new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                { "hello", "world" }
-            }));
+        var response = await _client.PutAsync($"/Shortlist/Add/AAPL", null);
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

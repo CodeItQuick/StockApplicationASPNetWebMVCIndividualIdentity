@@ -59,7 +59,7 @@ public class ApplicationTests
         var repository = new Mock<IShortListRepository>();
         repository.Setup(r => 
                 r.Get(null, null, ""))
-            .Returns(new List<StockInfoDatumDTO>());
+            .Returns(new List<ShortListDTO>());
         var service = new StockService(repository.Object);
         
         var allStocks = service

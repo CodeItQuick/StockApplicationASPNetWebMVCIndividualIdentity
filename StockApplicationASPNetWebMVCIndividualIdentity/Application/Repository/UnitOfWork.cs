@@ -33,8 +33,8 @@ public class UnitOfWork : IUnitOfWork
     private StockDataRepository? _stockDataRepository;  
     
     public StockDataRepository StockRepository => _stockDataRepository ??= new StockDataRepository(Context);
-    public StockDataRepository? _shortListRepository { get; set; }
-    public StockDataRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
+    public ShortListRepository? _shortListRepository { get; set; }
+    public ShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
 
     #endregion  
  
