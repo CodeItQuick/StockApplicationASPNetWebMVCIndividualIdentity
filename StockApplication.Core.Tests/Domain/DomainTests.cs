@@ -93,4 +93,18 @@ public class AcceptanceTests
 
         Assert.Equal(2, stockList.Count());
     }
+
+    [Fact]
+    public void GivenDefaultSettingsCanPopulateAttributes()
+    {
+        var stock = new Stock("AAPL");
+        
+        stock.AddDefaultAttributes(
+            new decimal(0.1),
+            new decimal(0.2),
+            new decimal(0.3),
+            new decimal(0.4));
+        
+        Assert.Equal(stock.Attributes().Count, 4);
+    }
 }

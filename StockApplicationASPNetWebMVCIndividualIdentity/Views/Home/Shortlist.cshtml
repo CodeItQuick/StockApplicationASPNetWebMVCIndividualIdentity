@@ -19,17 +19,15 @@
     </thead>
     <tbody>
     @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
-{
-    <tr>
-        <th scope="row">@item.Symbol</th>
-        <td>@item.PeRatio</td>
-        <td>@item.PbRatio</td>
-        <td>@item.CashFlowToSales</td>
-        <td>@item.Roe</td>
-        <td>@item.BvS</td>
-        <td>@item.DivYield</td>
+    {
+        <tr>
+        <th scope="row">@item.Ticker</th>
+        @foreach (var stockAttribute in item.stockAttribute ?? new Dictionary<string, decimal>())
+        {
+                <td>@stockAttribute.Value</td>
+        }
         </tr>
-}
+    }
 </tbody>
     </table>
 

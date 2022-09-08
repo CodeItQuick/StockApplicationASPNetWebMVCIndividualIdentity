@@ -4,6 +4,7 @@ using StockApplication.Core.Tests.Domain;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
+using static System.Decimal;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
@@ -26,87 +27,63 @@ public class StockService
         _shortListRepository = shortListRepository;
     }
 
-    public IEnumerable<StockAdapterDTO> DisplayAllStocks(int pageNumber)
+    public List<StocksAdapter> DisplayAllStocks(int pageNumber)
     {
         // Get Data
         using var unitOfWork = new UnitOfWork();
         IStockDataRepository stockDataRepository = _stockDataRepository ?? unitOfWork.StockRepository;
-        var stockInfo = stockDataRepository.Get();
-        var stockList = new IndexStock("W5000");
+        var stockInfo = stockDataRepository
+            .Get()
+            .Skip(pageNumber).Take(20);
 
-        // Map from database to domain
-        var mappedStocks = stockInfo.Select(stockData =>
+        var stocksList = stockInfo.Select(r =>
         {
-            if (stockData is not { PeRatio: { }, Symbol: { } })
-            {
-                return new Stock("undefined");
-            }
-            var defaultAttributes = StockAttributeDecimalsForDisplay(stockData);
+            var stock = new Stock(r.Symbol ?? "undefined");
+            stock.AddDefaultAttributes(
+                r.Roe ?? Zero,
+                r.PeRatio ?? Zero,
+                Parse(r.MarketCap.ToString() ?? "0"),
+                r.Eps ?? Zero
+            );
+            
+            StocksAdapter stockAdapterData = new StocksAdapter();
+            stockAdapterData.stockAttribute = stock.Attributes();
+            return stockAdapterData;
+        });
 
-            return new Stock(stockData.Symbol, defaultAttributes);
-
-        }); 
-        
-        // construct the domain through the "populate" method
-        stockList.Populate(mappedStocks);
-        
-        // retrieve the index with the requested? attributes
-        // Possible extensions:
-        // 1. Default set of ratios/numbers
-        // 2. User adjustment set of attributes
-        var displayAllStocks = stockList.RetrieveIndex(pageNumber)
-            .Select(r => new StockAdapterDTO() // Map to the Adapter
-            {
-                Symbol = r.Ticker(),
-                PeRatio = r.RetrieveAttributeFor("PeRatio")!.Value,
-                PbRatio = r.RetrieveAttributeFor("PbRatio")!.Value,
-                CashFlowToSales = r.RetrieveAttributeFor("CashFlowToSales")!.Value,
-                Roe = r.RetrieveAttributeFor("Roe")!.Value,
-                BvS = r.RetrieveAttributeFor("BvS")!.Value,
-                DivYield = r.RetrieveAttributeFor("DivYield")!.Value,
-            });
-        return displayAllStocks;
+        return stocksList.ToList();
     }
 
-    private static List<StockAttributeDecimal> StockAttributeDecimalsForDisplay(StockInfoDatumDTO stockData)
-    {
-        var defaultAttributes = new List<StockAttributeDecimal>()
-        {
-            new("PeRatio", stockData?.PeRatio ?? 0),
-            new("PbRatio", stockData?.PbRatio ?? 0),
-            new("CashFlowToSales", stockData?.CashFlowToSales ?? 0),
-            new("Roe", stockData?.Roe ?? 0),
-            new("BvS", stockData?.BvS ?? 0),
-            new("DivYield", stockData?.DivYield ?? 0),
-        };
-        return defaultAttributes;
-    }
-
-    public IEnumerable<StockAdapterDTO> ShortlistedStocks(int pageNumber)
+    public List<ShortListDTO> ShortlistedStocks(int pageNumber)
     {
         using var unitOfWork = new UnitOfWork();
         IShortListRepository shortListRepository = _shortListRepository ?? unitOfWork.ShortListRepository;
-        var stockInfo = shortListRepository.Get();
-        var shortList = new ShortList();
-        var mappedStocks = stockInfo.Select(stockData =>
+        var stockInfo = shortListRepository.Get()
+            .Skip(pageNumber).Take(20).ToList();
+
+        List<StocksAdapter> shortlistStocks = new List<StocksAdapter>();
+        foreach (var shortListDto in stockInfo)
         {
-            if (stockData is not { Symbol: { } })
+            if (shortListDto.Symbol != null)
             {
-                return new Stock("undefined");
+                StocksAdapter stockAdapter = new StocksAdapter();
+                stockAdapter.Ticker = shortListDto.Symbol ?? "";
+                shortListDto.GetType().GetProperties().ToList().ForEach(r =>
+                {
+                    if (stockAdapter.stockAttribute != null && r.PropertyType == typeof(decimal))
+                    {
+                        stockAdapter.stockAttribute.Add(r.ToString(), 
+                            r.GetValue(shortListDto, null) is decimal ? 
+                                (decimal)(r.GetValue(shortListDto, null) ?? 
+                                          Zero) : 0);
+                    };
+                });
+                shortlistStocks.Add(stockAdapter);
             }
-            var defaultAttributes = StockAttributeDecimalsForShortlist(stockData);
-
-            return new Stock(stockData.Symbol, defaultAttributes);
-
-        }); 
-        shortList.Populate(mappedStocks);
-
-        var displayAllStocks = shortList.RetrieveStocks(pageNumber)
-            .Select(r => new StockAdapterDTO()
-            {
-                Symbol = r.Ticker(),
-            });
-        return displayAllStocks;
+            
+        }
+        
+        return stockInfo.ToList();
     }
 
     public IEnumerable<StockAdapterDTO> AddToShortlist(string id, int? pageNumber)
@@ -143,4 +120,10 @@ public class StockService
         };
         return defaultAttributes;
     }
+}
+
+public class StocksAdapter
+{
+    public string Ticker { get; set; }
+    public Dictionary<string, decimal>? stockAttribute { get; set; } = new Dictionary<string, decimal>();
 }

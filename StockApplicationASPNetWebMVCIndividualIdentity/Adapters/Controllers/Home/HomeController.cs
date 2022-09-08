@@ -28,7 +28,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
                 HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
-                StockInfoDatums = stockInfoDatums.ToList(),
+                StockInfoDatums = stockInfoDatums,
                 PageIndex = stockInfoRequest.pageNumber ?? 0
             };
             return View(model);
@@ -50,17 +50,6 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             StockInfoRequest stockInfoRequest,
             string symbol)
         {
-            // DB/Application
-            var stockInfoDatums = _stockService
-                .AddToShortlist(symbol, stockInfoRequest.pageNumber);
-            // Display/Adapter
-            var model = new IndexResponseModel()
-            {
-                HasPreviousPage = stockInfoRequest.pageNumber >= 1,
-                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
-                StockInfoDatums = stockInfoDatums.ToList(),
-                PageIndex = stockInfoRequest.pageNumber ?? 0
-            };
             //FIXME: Should display shortlist
             return Redirect("/?pageNumber=1");
         }

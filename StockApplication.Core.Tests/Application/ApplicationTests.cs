@@ -22,11 +22,10 @@ public class ApplicationTests
         var allStocks = service.DisplayAllStocks(1);
         
         // check the return value + that we got all the repository calls
-        Assert.Equal(new List<StockAdapterDTO>(), allStocks);
+        Assert.Equal(new List<StocksAdapter>(), allStocks);
         repository.Verify(r => 
             r.Get(null, null, ""));
         repository.VerifyNoOtherCalls();
-        
     }
     [Fact]
     public void GivenAnIndexCanHandleListOfStocks()
@@ -65,7 +64,7 @@ public class ApplicationTests
         var allStocks = service
             .ShortlistedStocks(1);
         
-        Assert.Equal(new List<StockAdapterDTO>(), allStocks);
+        Assert.Equal(new List<ShortListDTO>(), allStocks.ToList());
         repository.Verify(r => 
             r.Get(null, null, ""));
         repository.VerifyNoOtherCalls();
