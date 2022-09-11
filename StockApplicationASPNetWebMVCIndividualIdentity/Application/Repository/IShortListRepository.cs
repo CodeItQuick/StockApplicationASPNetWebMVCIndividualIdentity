@@ -9,4 +9,6 @@ public interface IShortListRepository
         Expression<Func<ShortListDTO, bool>> filter = null,  
         Func<IQueryable<ShortListDTO>, IOrderedQueryable<ShortListDTO>> orderBy = null,  
         string? includeProperties = "");
+
+    public void Add(ShortListDTO entity);
 }

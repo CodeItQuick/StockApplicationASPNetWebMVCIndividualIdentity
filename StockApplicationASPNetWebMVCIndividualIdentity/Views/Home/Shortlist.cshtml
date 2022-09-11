@@ -1,4 +1,4 @@
-@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndexResponseModel
+@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndexResponseModel<StockApplication.Core.Tests.Application.ShortListDTO>
 
     <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -18,14 +18,10 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
+    @foreach (var item in Model.StockInfoDatums.GetRange(0, Model.StockInfoDatums.Count))
     {
         <tr>
-        <th scope="row">@item.Ticker</th>
-        @foreach (var stockAttribute in item.stockAttribute ?? new Dictionary<string, decimal>())
-        {
-                <td>@stockAttribute.Value</td>
-        }
+        <th scope="row">@item.Symbol</th>
         </tr>
     }
 </tbody>

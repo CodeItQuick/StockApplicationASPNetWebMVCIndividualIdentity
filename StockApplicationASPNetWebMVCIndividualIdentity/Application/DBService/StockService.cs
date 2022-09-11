@@ -1,6 +1,6 @@
+using System.Globalization;
 using StockApplication.Core.Tests;
 using StockApplication.Core.Tests.Application;
-using StockApplication.Core.Tests.Domain;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
@@ -42,11 +42,12 @@ public class StockService
             stock.AddDefaultAttributes(
                 r.Roe ?? Zero,
                 r.PeRatio ?? Zero,
-                Parse(r.MarketCap.ToString() ?? "0"),
+                Parse((r.MarketCap != null ? r.MarketCap.ToString() : "0.0") ?? "0.0"),
                 r.Eps ?? Zero
             );
             
             StocksAdapter stockAdapterData = new StocksAdapter();
+            stockAdapterData.Ticker = stock.Ticker();
             stockAdapterData.stockAttribute = stock.Attributes();
             return stockAdapterData;
         });
@@ -86,39 +87,11 @@ public class StockService
         return stockInfo.ToList();
     }
 
-    public IEnumerable<StockAdapterDTO> AddToShortlist(string id, int? pageNumber)
+    public void AddToShortlist(ShortListDTO shortListDto)
     {
         using var unitOfWork = new UnitOfWork();
         IShortListRepository shortListRepository = _shortListRepository ?? unitOfWork.ShortListRepository;
-        var stockInfo = shortListRepository.Get();
-        var shortList = new ShortList();
-
-        var mappedStocks = stockInfo.Select(stockData =>
-        {
-            if (stockData is not { Symbol: { } })
-            {
-                return new Stock("undefined");
-            }
-            var defaultAttributes = StockAttributeDecimalsForShortlist(stockData);
-
-            return new Stock(stockData.Symbol, defaultAttributes);
-
-        }); 
-        shortList.Populate(mappedStocks);
-        
-        var displayAllStocks = shortList.RetrieveStocks(pageNumber ?? 0)
-            .Select(r => new StockAdapterDTO()
-            {
-                Symbol = r.Ticker(),
-            });
-        return displayAllStocks;
-    }
-    private static List<StockAttributeDecimal> StockAttributeDecimalsForShortlist(ShortListDTO stockData)
-    {
-        var defaultAttributes = new List<StockAttributeDecimal>()
-        {
-        };
-        return defaultAttributes;
+        shortListRepository.Add(shortListDto);
     }
 }
 

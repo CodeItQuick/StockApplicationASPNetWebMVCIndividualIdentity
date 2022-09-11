@@ -70,4 +70,58 @@ public class ApplicationTests
         repository.VerifyNoOtherCalls();
         
     }
+    [Fact]
+    public void CanProduceMultipleStocksInShortlist()
+    {
+        var repository = new Mock<IShortListRepository>();
+        repository.Setup(r => 
+                r.Get(null, null, ""))
+            .Returns(new List<ShortListDTO>()
+            {
+                new()
+                {
+                    Id = 1,
+                    Symbol = "MSFT"
+                },
+                new()
+                {
+                    Id = 2,
+                    Symbol = "AAPL"
+                },
+                new()
+                {
+                    Id = 3,
+                    Symbol = "COKE"
+                },
+            });
+        var service = new StockService(repository.Object);
+        
+        var allStocks = service
+            .ShortlistedStocks(0);
+        
+        Assert.Equal(3, allStocks.ToList().Count);
+        repository.Verify(r => 
+            r.Get(null, null, ""));
+        repository.VerifyNoOtherCalls();
+        
+    }
+    [Fact]
+    public void CanAddToShortlistRepository()
+    {
+        var repository = new Mock<IShortListRepository>();
+        ShortListDTO shortListDTO = new ShortListDTO()
+        {
+            Symbol = "new ticker"
+        };
+        repository.Setup(r => 
+                r.Add(shortListDTO));
+        var service = new StockService(repository.Object);
+
+        service.AddToShortlist(shortListDTO);
+
+        repository.Verify(r => 
+            r.Add(shortListDTO));
+        repository.VerifyNoOtherCalls();
+        
+    }
 }

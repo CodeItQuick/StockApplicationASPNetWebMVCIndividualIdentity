@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -24,7 +25,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var stockInfoDatums = _stockService.DisplayAllStocks(
                 stockInfoRequest.pageNumber ?? 0);
             // Display/Adapter
-            var model = new IndexResponseModel()
+            var model = new IndexResponseModel<StocksAdapter>()
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
                 HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
@@ -42,7 +43,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             // DB/Application
             var stockInfoDatums = _stockService.ShortlistedStocks(
                 stockInfoRequest?.pageNumber ?? 0);
-            return Redirect("/?pageNumber=1");
+            // Display/Adapter
+            var model = new IndexResponseModel<ShortListDTO>
+            {
+                HasPreviousPage = stockInfoRequest.pageNumber >= 1,
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                StockInfoDatums = stockInfoDatums,
+                PageIndex = stockInfoRequest.pageNumber ?? 0
+            };
+            return View(model);
         }
         [Route("/Shortlist/Add/{symbol}")]
         [HttpPut]
@@ -50,6 +59,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             StockInfoRequest stockInfoRequest,
             string symbol)
         {
+            _stockService.AddToShortlist(new ShortListDTO()
+            {
+                Symbol = symbol
+            });
             //FIXME: Should display shortlist
             return Redirect("/?pageNumber=1");
         }
