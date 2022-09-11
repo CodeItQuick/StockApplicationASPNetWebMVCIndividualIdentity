@@ -38,7 +38,7 @@ public class StockService
 
         var stocksList = stockInfo.Select(r =>
         {
-            var stock = new Stock(r.Symbol ?? "undefined");
+            var stock = new Stock(r.Ticker ?? "undefined");
             stock.AddDefaultAttributes(
                 r.Roe ?? Zero,
                 r.PeRatio ?? Zero,
@@ -65,10 +65,11 @@ public class StockService
         List<StocksAdapter> shortlistStocks = new List<StocksAdapter>();
         foreach (var shortListDto in stockInfo)
         {
-            if (shortListDto.Symbol != null)
+            if (shortListDto.Ticker != null)
             {
                 StocksAdapter stockAdapter = new StocksAdapter();
-                stockAdapter.Ticker = shortListDto.Symbol ?? "";
+                stockAdapter.Ticker = shortListDto.Ticker ?? "";
+                stockAdapter.Id = shortListDto.Id;
                 shortListDto.GetType().GetProperties().ToList().ForEach(r =>
                 {
                     if (stockAdapter.stockAttribute != null && r.PropertyType == typeof(decimal))
@@ -92,6 +93,7 @@ public class StockService
         using var unitOfWork = new UnitOfWork();
         IShortListRepository shortListRepository = _shortListRepository ?? unitOfWork.ShortListRepository;
         shortListRepository.Add(shortListDto);
+        unitOfWork.SaveChanges();
     }
 }
 
@@ -99,4 +101,5 @@ public class StocksAdapter
 {
     public string Ticker { get; set; }
     public Dictionary<string, decimal>? stockAttribute { get; set; } = new Dictionary<string, decimal>();
+    public long Id { get; set; }
 }

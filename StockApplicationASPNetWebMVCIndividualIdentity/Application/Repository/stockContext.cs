@@ -28,9 +28,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ShortListDTO>(entity =>
             {
-                entity.Property(e => e.Symbol)
+                entity.Property(e => e.Ticker)
                     .HasColumnType("string")
-                    .HasColumnName(nameof(StockInfoDatumDTO.Symbol));
+                    .HasColumnName(nameof(StockInfoDatumDTO.Ticker));
             });
             modelBuilder.Entity<StockInfoDatumDTO>(entity =>
             {
@@ -124,7 +124,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("SixMonths");
             
-                entity.Property(e => e.Symbol).HasColumnName("symbol");
+                entity.Property(e => e.Ticker).HasColumnName("symbol");
             
                 entity.Property(e => e.YoySuccess)
                     .HasColumnType("decimal(18, 2)")

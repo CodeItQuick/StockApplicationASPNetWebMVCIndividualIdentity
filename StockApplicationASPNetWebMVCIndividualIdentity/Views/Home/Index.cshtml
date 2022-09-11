@@ -16,16 +16,28 @@
     </tr>
   </thead>
   <tbody>
-    @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
-    {
-        <tr>
-        <th scope="row">@item.Ticker</th>
-        @foreach (var stockAttribute in item.stockAttribute ?? new Dictionary<string, decimal>())
-        {
-                <td>@stockAttribute.Value</td>
-        }
-        </tr>
-    }
+  <form method="POST">
+      
+  @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
+  {
+      <tr>
+          <th scope="row">@item.Ticker</th>
+          @foreach (var stockAttribute in item.stockAttribute ?? new Dictionary<string, decimal>())
+          {
+              <td>@stockAttribute.Value</td>
+          }
+          <td>
+              <input type="submit"
+                     asp-action="AddShortlist"
+                     asp-controller="Home"
+                     asp-route-ticker="@item.Ticker"
+                     asp-route-stockId="@item.Id"
+                     value="Add To Shortlist"
+                     />
+          </td>
+      </tr>
+  }
+  </form>
   </tbody>
 </table>
 

@@ -8,7 +8,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
     {
         [Key]
         public long Id { get; set; }
-        public string? Symbol { get; set; }
+        public string? Ticker { get; set; }
         public decimal? YoySuccess { get; set; }
         public string? Date { get; set; }
         public decimal? Eps { get; set; }

@@ -58,7 +58,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 columns: new[]
                 {
                     "Id",
-                    "Symbol",
+                    "Ticker",
                     "YoySuccess",
                     "date",
                     "eps",
@@ -124,7 +124,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
             foreach (var stockInfoData in recordsForBatch)
             {
                 convertedRecords[idx, 0] = stockInfoData.Id;
-                convertedRecords[idx, 1] = stockInfoData.Symbol;
+                convertedRecords[idx, 1] = stockInfoData.Ticker;
                 convertedRecords[idx, 2] = stockInfoData.YoySuccess;
                 convertedRecords[idx, 3] = stockInfoData.Date;
                 convertedRecords[idx, 4] = stockInfoData.Eps;

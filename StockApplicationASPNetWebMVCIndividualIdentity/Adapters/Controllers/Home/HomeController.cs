@@ -53,15 +53,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
-        [Route("/Shortlist/Add/{symbol}")]
-        [HttpPut]
-        public IActionResult AddShortlist(
-            StockInfoRequest stockInfoRequest,
-            string symbol)
+        [Route("/Shortlist/Add/{ticker}/{stockId}")]
+        [HttpPost]
+        public IActionResult AddShortlist(string ticker, long stockId)
         {
             _stockService.AddToShortlist(new ShortListDTO()
             {
-                Symbol = symbol
+                Ticker = ticker,
+                StockInfoDataId = stockId,
+                UserId = 1
             });
             //FIXME: Should display shortlist
             return Redirect("/?pageNumber=1");

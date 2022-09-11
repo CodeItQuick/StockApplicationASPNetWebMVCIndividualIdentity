@@ -35,7 +35,7 @@ public class ApplicationTests
         {
             new()
             {
-                Symbol = "DummySymbol",
+                Ticker = "DummySymbol",
                 PeRatio = new decimal(0.25),
             }
         };
@@ -81,17 +81,17 @@ public class ApplicationTests
                 new()
                 {
                     Id = 1,
-                    Symbol = "MSFT"
+                    Ticker = "MSFT"
                 },
                 new()
                 {
                     Id = 2,
-                    Symbol = "AAPL"
+                    Ticker = "AAPL"
                 },
                 new()
                 {
                     Id = 3,
-                    Symbol = "COKE"
+                    Ticker = "COKE"
                 },
             });
         var service = new StockService(repository.Object);
@@ -111,7 +111,7 @@ public class ApplicationTests
         var repository = new Mock<IShortListRepository>();
         ShortListDTO shortListDTO = new ShortListDTO()
         {
-            Symbol = "new ticker"
+            Ticker = "new ticker"
         };
         repository.Setup(r => 
                 r.Add(shortListDTO));

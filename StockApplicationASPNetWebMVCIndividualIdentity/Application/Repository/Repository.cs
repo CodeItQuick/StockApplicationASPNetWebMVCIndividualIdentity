@@ -107,7 +107,7 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     /// <param name="entity">The entity.</param>  
     public void Add(TEntity entity)  
     {  
-        Entities.Add(entity);  
+        Entities.Add(entity);
     }  
   
     /// <summary>  

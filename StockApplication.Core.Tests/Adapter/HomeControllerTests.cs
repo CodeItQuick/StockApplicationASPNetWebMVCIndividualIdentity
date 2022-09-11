@@ -32,7 +32,7 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
     [Fact]
     public async Task WhenAddingAShortlistedStockThenItReturns200()
     {
-        var response = await _client.PutAsync($"/Shortlist/Add/AAPL", null);
+        var response = await _client.PostAsync($"/Shortlist/Add/AAPL/1", null);
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
