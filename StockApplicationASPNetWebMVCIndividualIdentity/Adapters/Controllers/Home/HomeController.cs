@@ -10,20 +10,23 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly StockService _stockService;
+        private readonly StockIndexService _stockIndexService;
+        private readonly ShortListService _shortListService;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _stockService = new StockService();
+            _stockIndexService = new StockIndexService();
+            _shortListService = new ShortListService();
         }
 
         public IActionResult Index(
-            StockInfoRequest stockInfoRequest)
+            StockInfoRequest stockInfoRequest,
+            int? pageNumber)
         {
             // DB/Application
-            var stockInfoDatums = _stockService.DisplayAllStocks(
-                stockInfoRequest.pageNumber ?? 0);
+            var stockInfoDatums = _stockIndexService.DisplayAllStocks(
+                stockInfoRequest.pageNumber ?? pageNumber ?? 0);
             // Display/Adapter
             var model = new IndexResponseModel<StocksAdapter>()
             {
@@ -41,10 +44,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             StockInfoRequest? stockInfoRequest)
         {
             // DB/Application
-            var stockInfoDatums = _stockService.ShortlistedStocks(
+            var stockInfoDatums = _shortListService.ShortlistedStocks(
                 stockInfoRequest?.pageNumber ?? 0);
             // Display/Adapter
-            var model = new IndexResponseModel<ShortListDTO>
+            var model = new IndexResponseModel<StocksAdapter>
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
                 HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
@@ -53,14 +56,14 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
-        [Route("/Shortlist/Add/{ticker}/{stockId}")]
+        [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
-        public IActionResult AddShortlist(string ticker, long stockId)
+        public IActionResult AddShortlist(string ticker, long stockid)
         {
-            _stockService.AddToShortlist(new ShortListDTO()
+            _shortListService.AddToShortlist(new ShortListDTO()
             {
                 Ticker = ticker,
-                StockInfoDataId = stockId,
+                Id = stockid,
                 UserId = 1
             });
             //FIXME: Should display shortlist

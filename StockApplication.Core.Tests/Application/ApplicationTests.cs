@@ -16,7 +16,7 @@ public class ApplicationTests
         repository.Setup(r => 
             r.Get(null, null, ""))
             .Returns(new List<StockInfoDatumDTO>());
-        var service = new StockService(repository.Object);
+        var service = new StockIndexService(repository.Object);
         
         // display the stocks from the service
         var allStocks = service.DisplayAllStocks(1);
@@ -42,7 +42,7 @@ public class ApplicationTests
         repository.Setup(r => 
                 r.Get(null, null, ""))
             .Returns(stockInfoDatumDtos);
-        var service = new StockService(repository.Object);
+        var service = new StockIndexService(repository.Object);
         
         var allStocks = service.DisplayAllStocks(0).ToList();
         
@@ -59,12 +59,12 @@ public class ApplicationTests
         repository.Setup(r => 
                 r.Get(null, null, ""))
             .Returns(new List<ShortListDTO>());
-        var service = new StockService(repository.Object);
+        var service = new ShortListService(repository.Object);
         
         var allStocks = service
             .ShortlistedStocks(1);
         
-        Assert.Equal(new List<ShortListDTO>(), allStocks.ToList());
+        Assert.Equal(new List<StocksAdapter>(), allStocks.ToList());
         repository.Verify(r => 
             r.Get(null, null, ""));
         repository.VerifyNoOtherCalls();
@@ -94,7 +94,7 @@ public class ApplicationTests
                     Ticker = "COKE"
                 },
             });
-        var service = new StockService(repository.Object);
+        var service = new ShortListService(repository.Object);
         
         var allStocks = service
             .ShortlistedStocks(0);
@@ -115,7 +115,7 @@ public class ApplicationTests
         };
         repository.Setup(r => 
                 r.Add(shortListDTO));
-        var service = new StockService(repository.Object);
+        var service = new ShortListService(repository.Object);
 
         service.AddToShortlist(shortListDTO);
 

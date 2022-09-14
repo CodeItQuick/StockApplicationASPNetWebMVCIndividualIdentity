@@ -3,12 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockApplication.Core.Tests.Application;
 
-[Table("Shortlist")]
+[Table("ShortlistStockInfoDataView")]
 public class ShortListDTO
 {
     [Key]
     public long Id { get; set; }
     public string? Ticker { get; set; }
-    public long StockInfoDataId { get; set; }
-    public long UserId { get; set; }
+    public int UserId { get; set; }
+    public decimal? Eps { get; set; }
+    public decimal? PeRatio { get; set; }
+    public decimal? MarketCap { get; set; }
+    public decimal? Roe { get; set; }
+
 }

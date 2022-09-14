@@ -16,7 +16,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 columns: table => new {
                     Id = table.Column<long>().Annotation("SqlServer:ValueGenerationStrategy", 
                         SqlServerValueGenerationStrategy.IdentityColumn),
-                    symbol = table.Column<string>(nullable: true),
+                    Ticker = table.Column<string>(nullable: true),
                     YoySuccess = table.Column<decimal>(nullable: true),
                     date = table.Column<string>(nullable: true),
                     eps = table.Column<decimal>(nullable: true),

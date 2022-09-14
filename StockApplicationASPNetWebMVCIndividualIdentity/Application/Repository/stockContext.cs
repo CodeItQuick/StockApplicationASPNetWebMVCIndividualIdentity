@@ -124,7 +124,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("SixMonths");
             
-                entity.Property(e => e.Ticker).HasColumnName("symbol");
+                entity.Property(e => e.Ticker).HasColumnName("ticker");
             
                 entity.Property(e => e.YoySuccess)
                     .HasColumnType("decimal(18, 2)")
