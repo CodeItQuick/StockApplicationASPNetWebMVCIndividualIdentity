@@ -19,7 +19,8 @@ public class ShortlistStockInfoDataService
     public List<StocksAdapter> ShortlistedStocks(int pageNumber)
     {
         using var unitOfWork = new UnitOfWork();
-        IShortlistStockInfoDataViewRepository shortListRepository = _shortlistStockInfoDataViewRepository ?? unitOfWork.ShortlistStockInfoDataViewRepository;
+        IShortlistStockInfoDataViewRepository shortListRepository = 
+            _shortlistStockInfoDataViewRepository ?? unitOfWork.ShortlistStockInfoDataViewRepository;
         var stockInfo = shortListRepository.Get()
             .Skip(pageNumber * 20).Take(20).ToList();
 

@@ -124,4 +124,34 @@ public class ApplicationTests
         repository.VerifyNoOtherCalls();
         
     }
+
+    [Fact]
+    public void ShortListAdapterCanConvertToStocksAdapter()
+    {
+        var shortlistStockInfoDataViews = new List<ShortlistStockInfoDataView>()
+        {
+            new ShortlistStockInfoDataView()
+            {
+                Id = 1,
+                TickerId = 1,
+                Ticker = "HPR",
+                UserId = 1,
+                Eps = -274.65m,
+                PeRatio = -0.04m,
+                MarketCap = 4600000.00m,
+                Roe = 250.0m
+            }
+        };
+
+        var stocksAdapters = ShortListAdapterConverter
+            .Convert(shortlistStockInfoDataViews);
+        
+        Assert.Single(stocksAdapters);
+        Assert.Equal("HPR",stocksAdapters.Single().Ticker);
+        Assert.Equal(1,stocksAdapters.Single().Id);
+        Assert.Equal(4600000.00m,stocksAdapters.Single().MarketCap);
+        Assert.Equal(-0.04m,stocksAdapters.Single().PeRatio);
+        Assert.Equal(250.0m,stocksAdapters.Single().Roe);
+        Assert.Equal(-274.65m,stocksAdapters.Single().Eps);
+    }
 }

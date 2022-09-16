@@ -5,7 +5,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 public class ShortListAdapterConverter
 {
     
-    public static List<StocksAdapter> Convert(List<StockApplication.Core.Tests.Application.ShortlistStockInfoDataView> stockInfo)
+    public static List<StocksAdapter> Convert(List<ShortlistStockInfoDataView> stockInfo)
     {
         List<StocksAdapter> shortlistStocks = new List<StocksAdapter>();
         foreach (var shortListDto in stockInfo)
@@ -15,19 +15,10 @@ public class ShortListAdapterConverter
                 StocksAdapter stockAdapter = new StocksAdapter();
                 stockAdapter.Ticker = shortListDto.Ticker ?? "";
                 stockAdapter.Id = shortListDto.Id;
-                shortListDto.GetType().GetProperties().ToList().ForEach(r =>
-                {
-                    if (stockAdapter.stockAttribute != null && r.PropertyType == typeof(decimal))
-                    {
-                        stockAdapter.stockAttribute.Add(r.ToString(),
-                            r.GetValue(shortListDto, null) is decimal
-                                ? (decimal)(r.GetValue(shortListDto, null) ??
-                                            Decimal.Zero)
-                                : 0);
-                    }
-
-                    ;
-                });
+                stockAdapter.Roe = shortListDto.Roe ?? 0.0m;
+                stockAdapter.PeRatio = shortListDto.PeRatio ?? 0.0m;
+                stockAdapter.MarketCap = shortListDto.MarketCap ?? 0.0m;
+                stockAdapter.Eps = shortListDto.Eps ?? 0.0m;
                 shortlistStocks.Add(stockAdapter);
             }
         }

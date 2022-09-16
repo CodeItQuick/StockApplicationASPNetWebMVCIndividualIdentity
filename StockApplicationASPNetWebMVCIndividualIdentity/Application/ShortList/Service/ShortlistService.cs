@@ -19,7 +19,8 @@ public class ShortlistService
     public void AddToShortlist(ShortlistDto shortListDto)
     {
         using var unitOfWork = new UnitOfWork();
-        IShortListRepository shortListRepository = _shortListRepository ?? unitOfWork.ShortListRepository;
+        IShortListRepository shortListRepository = 
+            _shortListRepository ?? unitOfWork.ShortListRepository;
         shortListRepository.Add(shortListDto);
         unitOfWork.SaveChanges();
     }
