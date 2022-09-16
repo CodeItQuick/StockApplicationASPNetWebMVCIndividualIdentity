@@ -34,7 +34,7 @@ public class UnitOfWork : IUnitOfWork
     
     public StockDataRepository StockRepository => _stockDataRepository ??= new StockDataRepository(Context);
     public ShortListRepository? _shortListRepository;
-    public ShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
+    public IShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
 
     public ShortlistStockInfoDataViewRepository _shortlistStockInfoDataViewRepository;
     public ShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository => new ShortlistStockInfoDataViewRepository(Context);
@@ -81,5 +81,6 @@ public class UnitOfWork : IUnitOfWork
 
 public interface IUnitOfWork : IDisposable  
 {  
-    bool SaveChanges();  
+    bool SaveChanges();
+    IShortListRepository ShortListRepository { get; }
 } 

@@ -19,7 +19,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _logger = logger;
             _stockIndexService = new StockIndexService();
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService();
-            _shortlistService = new ShortlistService();
+            _shortlistService = new ShortlistService(new UnitOfWork());
         }
 
         public IActionResult Index(
