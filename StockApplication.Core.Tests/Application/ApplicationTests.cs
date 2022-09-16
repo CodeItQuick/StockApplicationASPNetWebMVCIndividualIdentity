@@ -55,11 +55,11 @@ public class ApplicationTests
     [Fact]
     public void GivenShortListedStocksCanHandleEmptyListOfStocks()
     {
-        var repository = new Mock<IShortListRepository>();
+        var repository = new Mock<IShortlistStockInfoDataViewRepository>();
         repository.Setup(r => 
                 r.Get(null, null, ""))
-            .Returns(new List<ShortListDTO>());
-        var service = new ShortListService(repository.Object);
+            .Returns(new List<ShortlistStockInfoDataView>());
+        var service = new ShortlistStockInfoDataService(repository.Object);
         
         var allStocks = service
             .ShortlistedStocks(1);
@@ -73,10 +73,10 @@ public class ApplicationTests
     [Fact]
     public void CanProduceMultipleStocksInShortlist()
     {
-        var repository = new Mock<IShortListRepository>();
+        var repository = new Mock<IShortlistStockInfoDataViewRepository>();
         repository.Setup(r => 
                 r.Get(null, null, ""))
-            .Returns(new List<ShortListDTO>()
+            .Returns(new List<ShortlistStockInfoDataView>()
             {
                 new()
                 {
@@ -94,7 +94,7 @@ public class ApplicationTests
                     Ticker = "COKE"
                 },
             });
-        var service = new ShortListService(repository.Object);
+        var service = new ShortlistStockInfoDataService(repository.Object);
         
         var allStocks = service
             .ShortlistedStocks(0);
@@ -109,13 +109,13 @@ public class ApplicationTests
     public void CanAddToShortlistRepository()
     {
         var repository = new Mock<IShortListRepository>();
-        ShortListDTO shortListDTO = new ShortListDTO()
+        ShortlistDto shortListDTO = new ShortlistDto()
         {
             Ticker = "new ticker"
         };
         repository.Setup(r => 
                 r.Add(shortListDTO));
-        var service = new ShortListService(repository.Object);
+        var service = new ShortlistService(repository.Object);
 
         service.AddToShortlist(shortListDTO);
 

@@ -33,15 +33,19 @@ public class UnitOfWork : IUnitOfWork
     private StockDataRepository? _stockDataRepository;  
     
     public StockDataRepository StockRepository => _stockDataRepository ??= new StockDataRepository(Context);
-    public ShortListRepository? _shortListRepository { get; set; }
+    public ShortListRepository? _shortListRepository;
     public ShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
 
-    #endregion  
- 
- 
-    #region IDisposable Support  
+    public ShortlistStockInfoDataViewRepository _shortlistStockInfoDataViewRepository;
+    public ShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository => new ShortlistStockInfoDataViewRepository(Context);
+
+    #endregion
+
+
+    #region IDisposable Support
+
     private bool _disposedValue = false; // To detect redundant calls  
-  
+
     protected virtual void Dispose(bool disposing)  
     {  
         if (_disposedValue) return;  

@@ -5,7 +5,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 public class ShortListAdapterConverter
 {
     
-    public static List<StocksAdapter> Convert(List<ShortListDTO> stockInfo)
+    public static List<StocksAdapter> Convert(List<StockApplication.Core.Tests.Application.ShortlistStockInfoDataView> stockInfo)
     {
         List<StocksAdapter> shortlistStocks = new List<StocksAdapter>();
         foreach (var shortListDto in stockInfo)

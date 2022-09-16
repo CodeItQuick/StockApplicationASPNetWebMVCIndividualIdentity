@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StockApplication.Core.Tests.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
@@ -26,11 +27,38 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ShortListDTO>(entity =>
+            modelBuilder.Entity<ShortlistDto>(entity =>
             {
                 entity.Property(e => e.Ticker)
                     .HasColumnType("string")
                     .HasColumnName(nameof(StockInfoDatumDTO.Ticker));
+            });
+            modelBuilder.Entity<ShortlistStockInfoDataView>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnType("long")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.Id));
+                entity.Property(e => e.UserId)
+                    .HasColumnType("long")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.UserId));
+                entity.Property(e => e.TickerId)
+                    .HasColumnType("long")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.TickerId));
+                entity.Property(e => e.Ticker)
+                    .HasColumnType("string")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.Ticker));
+                entity.Property(e => e.Eps)
+                    .HasColumnType("decimal(18,2)")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.Eps));
+                entity.Property(e => e.Roe)
+                    .HasColumnType("decimal(18,2)")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.Roe));
+                entity.Property(e => e.PeRatio)
+                    .HasColumnType("decimal(18,2)")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.PeRatio));
+                entity.Property(e => e.MarketCap)
+                    .HasColumnType("decimal(18,2)")
+                    .HasColumnName(nameof(ShortlistStockInfoDataView.MarketCap));
             });
             modelBuilder.Entity<StockInfoDatumDTO>(entity =>
             {

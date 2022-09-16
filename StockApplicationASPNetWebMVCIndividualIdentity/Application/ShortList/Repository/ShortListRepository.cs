@@ -1,8 +1,8 @@
-using StockApplication.Core.Tests.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-public class ShortListRepository : Repository<ShortListDTO>, IShortListRepository
+public class ShortListRepository : Repository<ShortlistDto>, IShortListRepository
 {
     public ShortListRepository(StockContext context) : base(context)
     {

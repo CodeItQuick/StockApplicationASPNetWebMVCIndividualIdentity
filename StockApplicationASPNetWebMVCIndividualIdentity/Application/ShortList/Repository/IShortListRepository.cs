@@ -1,14 +1,10 @@
 using System.Linq.Expressions;
-using StockApplication.Core.Tests.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 public interface IShortListRepository
 {
-    IEnumerable<ShortListDTO> Get(  
-        Expression<Func<ShortListDTO, bool>> filter = null,  
-        Func<IQueryable<ShortListDTO>, IOrderedQueryable<ShortListDTO>> orderBy = null,  
-        string? includeProperties = "");
 
-    public void Add(ShortListDTO entity);
+    public void Add(ShortlistDto entity);
 }
