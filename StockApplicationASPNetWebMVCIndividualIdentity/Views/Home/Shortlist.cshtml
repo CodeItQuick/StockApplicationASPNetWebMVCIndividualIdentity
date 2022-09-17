@@ -20,10 +20,10 @@
     {
         <tr>
             <th scope="row">@item.Ticker</th>
-            <td>@item.stockAttribute["PbRatio"]</td>
-            <td>@item.stockAttribute["PeRatio"]</td>
-            <td>@item.stockAttribute["Eps"]</td>
-            <td>@item.stockAttribute["DivYield"]</td>
+            <td>@item.stockAttribute?["PbRatio"]</td>
+            <td>@item.stockAttribute?["PeRatio"]</td>
+            <td>@item.stockAttribute?["Eps"]</td>
+            <td>@item.stockAttribute?["DivYield"]</td>
         </tr>
     }
 </tbody>

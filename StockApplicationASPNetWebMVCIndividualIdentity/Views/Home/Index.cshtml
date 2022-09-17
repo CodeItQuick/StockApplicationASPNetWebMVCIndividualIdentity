@@ -6,39 +6,38 @@
 </div>
 
 <table class="table">
-  <thead>
+    <thead>
     <tr>
-      <th scope="col">Symbol</th>
-      <th scope="col">Pb Ratio</th>
-      <th scope="col">Pe Ratio</th>
-      <th scope="col">Div Yield</th>
-      <th scope="col">Eps</th>
+        <th scope="col">Symbol</th>
+        <th scope="col">Pb Ratio</th>
+        <th scope="col">Pe Ratio</th>
+        <th scope="col">Eps</th>
+        <th scope="col">Div Yield</th>
     </tr>
-  </thead>
-  <tbody>
-  <form method="POST">
-      
-  @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
-  {
-      <tr>
-          <th scope="row">@item.Ticker</th>
-          @foreach (var stockAttribute in item.stockAttribute ?? new Dictionary<string, decimal>())
-          {
-              <td>@stockAttribute.Value</td>
-          }
-          <td>
-              <input type="submit"
-                     asp-action="AddShortlist"
-                     asp-controller="Home"
-                     asp-route-ticker="@item.Ticker"
-                     asp-route-stockid="@item.Id"
-                     value="Add To Shortlist"
-                     />
-          </td>
-      </tr>
-  }
-  </form>
-  </tbody>
+    </thead>
+    <tbody>
+    <form method="POST">
+
+        @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
+        {
+            <tr>
+                <th scope="row">@item.Ticker</th>
+                <td>@item.stockAttribute?["PbRatio"]</td>
+                <td>@item.stockAttribute?["PeRatio"]</td>
+                <td>@item.stockAttribute?["Eps"]</td>
+                <td>@item.stockAttribute?["DivYield"]</td>
+                <td>
+                    <input type="submit"
+                           asp-action="AddShortlist"
+                           asp-controller="Home"
+                           asp-route-ticker="@item.Ticker"
+                           asp-route-stockid="@item.Id"
+                           value="Add To Shortlist"/>
+                </td>
+            </tr>
+        }
+    </form>
+    </tbody>
 </table>
 
 @{

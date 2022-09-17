@@ -43,7 +43,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
             // Investment Value Metrics
             _allStockAttributes.Add("PbRatio", new StockAttributeDecimal("PbRatio", PbRatio));
             _allStockAttributes.Add("PeRatio", new StockAttributeDecimal("PeRatio", peRatio));
-            _allStockAttributes.Add("eps", new StockAttributeDecimal("eps", eps));
+            _allStockAttributes.Add("Eps", new StockAttributeDecimal("Eps", eps));
             // Overall good thing to know
             _allStockAttributes.Add("DivYield", new StockAttributeDecimal("DivYield", DivYield));
         }
