@@ -38,12 +38,14 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
                     r.Value.AttributeName.Equals(attrib)).Value.AttributeValue;
         }
 
-        public void AddDefaultAttributes(decimal roe, decimal peRatio, decimal marketCap, decimal eps)
+        public void AddDefaultAttributes(decimal PbRatio, decimal peRatio, decimal DivYield, decimal eps)
         {
-            _allStockAttributes.Add("Roe", new StockAttributeDecimal("Roe", roe));
+            // Investment Value Metrics
+            _allStockAttributes.Add("PbRatio", new StockAttributeDecimal("PbRatio", PbRatio));
             _allStockAttributes.Add("PeRatio", new StockAttributeDecimal("PeRatio", peRatio));
-            _allStockAttributes.Add("MarketCap", new StockAttributeDecimal("MarketCap", marketCap));
             _allStockAttributes.Add("eps", new StockAttributeDecimal("eps", eps));
+            // Overall good thing to know
+            _allStockAttributes.Add("DivYield", new StockAttributeDecimal("DivYield", DivYield));
         }
 
         public Dictionary<string, decimal> Attributes()

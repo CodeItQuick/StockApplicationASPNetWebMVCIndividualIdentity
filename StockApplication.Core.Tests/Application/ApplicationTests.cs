@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Moq;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
@@ -55,27 +56,34 @@ public class ApplicationTests
     [Fact]
     public void GivenShortListedStocksCanHandleEmptyListOfStocks()
     {
-        var repository = new Mock<IShortlistStockInfoDataViewRepository>();
-        repository.Setup(r => 
-                r.Get(null, null, ""))
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(r => 
+                r.ShortlistStockInfoDataViewRepository.Get(null, null, null))
             .Returns(new List<ShortlistStockInfoDataView>());
-        var service = new ShortlistStockInfoDataService(repository.Object);
+        unitOfWork.Setup(r =>
+            r.StockRepository.Get(null, null, null));
+        var service = new ShortlistStockInfoDataService(unitOfWork.Object);
         
         var allStocks = service
             .ShortlistedStocks(1);
         
         Assert.Equal(new List<StocksAdapter>(), allStocks.ToList());
-        repository.Verify(r => 
-            r.Get(null, null, ""));
-        repository.VerifyNoOtherCalls();
+        unitOfWork.Verify(r => 
+            r.ShortlistStockInfoDataViewRepository.Get(null, null, ""),
+            Times.Once);
+        unitOfWork.Verify(r => 
+            r.StockRepository.Get(null, null, ""),
+            Times.Once);
+        unitOfWork.VerifyNoOtherCalls();
         
     }
     [Fact]
     public void CanProduceMultipleStocksInShortlist()
     {
-        var repository = new Mock<IShortlistStockInfoDataViewRepository>();
-        repository.Setup(r => 
-                r.Get(null, null, ""))
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(r => 
+                r.ShortlistStockInfoDataViewRepository
+                    .Get(null, null, ""))
             .Returns(new List<ShortlistStockInfoDataView>()
             {
                 new()
@@ -94,15 +102,45 @@ public class ApplicationTests
                     Ticker = "COKE"
                 },
             });
-        var service = new ShortlistStockInfoDataService(repository.Object);
+        unitOfWork.Setup(r =>
+            r.StockRepository.Get(null, null, ""))
+            .Returns(new List<StockInfoDatumDTO>()
+            {
+                new()
+                {
+                    Id = 1,
+                    Ticker = "MSFT",
+                    PeRatio = 0.12m,
+                    PbRatio = 0.13m,
+                    Eps = 0.14m,
+                    DivYield = 0.15m,
+                },
+                new()
+                {
+                    Id = 2,
+                    Ticker = "AAPL"
+                },
+                new()
+                {
+                    Id = 3,
+                    Ticker = "COKE"
+                },
+            });
+        var service = new ShortlistStockInfoDataService(unitOfWork.Object);
         
         var allStocks = service
             .ShortlistedStocks(0);
         
         Assert.Equal(3, allStocks.ToList().Count);
-        repository.Verify(r => 
-            r.Get(null, null, ""));
-        repository.VerifyNoOtherCalls();
+        Assert.Equal(0.12m, allStocks.ToList().First().stockAttribute?["PeRatio"]);
+        Assert.Equal(0.13m, allStocks.ToList().First().stockAttribute?["PbRatio"]);
+        Assert.Equal(0.14m, allStocks.ToList().First().stockAttribute?["Eps"]);
+        Assert.Equal(0.15m, allStocks.ToList().First().stockAttribute?["DivYield"]);
+        unitOfWork.Verify(r => 
+            r.ShortlistStockInfoDataViewRepository.Get(null, null, ""));
+        unitOfWork.Verify(r => 
+            r.StockRepository.Get(null, null, ""));
+        unitOfWork.VerifyNoOtherCalls();
         
     }
     [Fact]
@@ -138,23 +176,30 @@ public class ApplicationTests
                 Id = 1,
                 TickerId = 1,
                 Ticker = "HPR",
-                UserId = 1,
-                Eps = -274.65m,
+            }
+        };
+        var allStocks = new List<StockInfoDatumDTO>()
+        {
+            new StockInfoDatumDTO()
+            {
+                Id = 1,
+                Ticker = "HPR",
+                PbRatio = 0.20m,
                 PeRatio = -0.04m,
-                MarketCap = 4600000.00m,
-                Roe = 250.0m
+                Eps = -0.24m,
+                DivYield = 2.04m,
             }
         };
 
         var stocksAdapters = ShortListAdapterConverter
-            .Convert(shortlistStockInfoDataViews);
+            .Convert(shortlistStockInfoDataViews, allStocks);
         
         Assert.Single(stocksAdapters);
         Assert.Equal("HPR",stocksAdapters.Single().Ticker);
         Assert.Equal(1,stocksAdapters.Single().Id);
-        Assert.Equal(4600000.00m,stocksAdapters.Single().MarketCap);
-        Assert.Equal(-0.04m,stocksAdapters.Single().PeRatio);
-        Assert.Equal(250.0m,stocksAdapters.Single().Roe);
-        Assert.Equal(-274.65m,stocksAdapters.Single().Eps);
+        Assert.Equal(0.20m,stocksAdapters.Single().stockAttribute["PbRatio"]);
+        Assert.Equal(-0.04m,stocksAdapters.Single().stockAttribute["PeRatio"]);
+        Assert.Equal(-0.24m,stocksAdapters.Single().stockAttribute["Eps"]);
+        Assert.Equal(2.04m,stocksAdapters.Single().stockAttribute["DivYield"]);
     }
 }

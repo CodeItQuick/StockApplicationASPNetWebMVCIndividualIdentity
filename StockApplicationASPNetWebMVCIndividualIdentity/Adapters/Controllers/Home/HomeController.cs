@@ -18,7 +18,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         {
             _logger = logger;
             _stockIndexService = new StockIndexService(new UnitOfWork());
-            _shortlistStockInfoDataService = new ShortlistStockInfoDataService();
+            _shortlistStockInfoDataService = new ShortlistStockInfoDataService(new UnitOfWork());
             _shortlistService = new ShortlistService(new UnitOfWork());
         }
 
@@ -69,7 +69,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 UserId = 1
             });
             //FIXME: Should display shortlist
-            return Redirect("/?pageNumber=1");
+            return Redirect("/?pageNumber=0");
         }
         public IActionResult Privacy()
         {

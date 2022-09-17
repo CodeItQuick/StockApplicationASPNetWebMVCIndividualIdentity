@@ -16,7 +16,7 @@ public class StockIndexService
         // Get Data
         using var unitOfWork = new UnitOfWork();
         var stockInfo = _unitOfWork.StockRepository
-            .Get()
+            .Get(null, null)
             .Skip(pageNumber * 20).Take(20);
 
         var stocksList = StocksAdapterConverter.ConvertFrom(stockInfo);

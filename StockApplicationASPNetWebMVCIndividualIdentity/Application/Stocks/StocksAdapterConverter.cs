@@ -11,9 +11,9 @@ public class StocksAdapterConverter
         {
             var stock = new Stock(r.Ticker ?? "undefined");
             stock.AddDefaultAttributes(
-                r.Roe ?? Decimal.Zero,
+                r.PbRatio ?? Decimal.Zero,
                 r.PeRatio ?? Decimal.Zero,
-                Decimal.Parse((r.MarketCap != null ? r.MarketCap.ToString() : "0.0") ?? "0.0"),
+                r.DivYield ?? Decimal.Zero,
                 r.Eps ?? Decimal.Zero
             );
 

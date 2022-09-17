@@ -5,26 +5,25 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class ShortlistStockInfoDataService
 {
-    private readonly IShortlistStockInfoDataViewRepository _shortlistStockInfoDataViewRepository;
-    
-    public ShortlistStockInfoDataService()
+    private readonly IUnitOfWork _unitOfWork;
+
+    public ShortlistStockInfoDataService(IUnitOfWork unitOfWork)
     {
-        
-    }
-    public ShortlistStockInfoDataService(IShortlistStockInfoDataViewRepository shortlistStockInfoDataViewRepository)
-    {
-        _shortlistStockInfoDataViewRepository = shortlistStockInfoDataViewRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public List<StocksAdapter> ShortlistedStocks(int pageNumber)
     {
-        using var unitOfWork = new UnitOfWork();
-        IShortlistStockInfoDataViewRepository shortListRepository = 
-            _shortlistStockInfoDataViewRepository ?? unitOfWork.ShortlistStockInfoDataViewRepository;
-        var stockInfo = shortListRepository.Get()
+        var stockInfo = _unitOfWork
+            .ShortlistStockInfoDataViewRepository
+            .Get(null, null, "")
             .Skip(pageNumber * 20).Take(20).ToList();
+        var allStocks = _unitOfWork
+            .StockRepository
+            .Get(null, null, "")
+            .ToList();
 
-        var stocksAdapters = ShortListAdapterConverter.Convert(stockInfo);
+        var stocksAdapters = ShortListAdapterConverter.Convert(stockInfo, allStocks);
 
         return stocksAdapters;
     }
