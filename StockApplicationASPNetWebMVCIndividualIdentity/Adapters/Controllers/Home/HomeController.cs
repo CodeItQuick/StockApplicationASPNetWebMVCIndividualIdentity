@@ -17,7 +17,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _stockIndexService = new StockIndexService();
+            _stockIndexService = new StockIndexService(new UnitOfWork());
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService();
             _shortlistService = new ShortlistService(new UnitOfWork());
         }

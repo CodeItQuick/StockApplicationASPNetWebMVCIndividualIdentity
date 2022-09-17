@@ -12,9 +12,9 @@ public class ApplicationTests
     public void GivenAnIndexCanHandleEmptyListOfStocks()
     {
         // construct mock repository
-        var repository = new Mock<IStockDataRepository>();
+        var repository = new Mock<IUnitOfWork>();
         repository.Setup(r => 
-            r.Get(null, null, ""))
+            r.StockRepository.Get(null, null, ""))
             .Returns(new List<StockInfoDatumDTO>());
         var service = new StockIndexService(repository.Object);
         
@@ -24,13 +24,13 @@ public class ApplicationTests
         // check the return value + that we got all the repository calls
         Assert.Equal(new List<StocksAdapter>(), allStocks);
         repository.Verify(r => 
-            r.Get(null, null, ""));
+            r.StockRepository.Get(null, null, ""));
         repository.VerifyNoOtherCalls();
     }
     [Fact]
     public void GivenAnIndexCanHandleListOfStocks()
     {
-        var repository = new Mock<IStockDataRepository>();
+        var repository = new Mock<IUnitOfWork>();
         var stockInfoDatumDtos = new List<StockInfoDatumDTO>()
         {
             new()
@@ -40,7 +40,7 @@ public class ApplicationTests
             }
         };
         repository.Setup(r => 
-                r.Get(null, null, ""))
+                r.StockRepository.Get(null, null, ""))
             .Returns(stockInfoDatumDtos);
         var service = new StockIndexService(repository.Object);
         
@@ -48,7 +48,7 @@ public class ApplicationTests
         
         Assert.Single(allStocks);
         repository.Verify(r => 
-            r.Get(null, null, ""));
+            r.StockRepository.Get(null, null, ""));
         repository.VerifyNoOtherCalls();
         
     }
@@ -108,19 +108,22 @@ public class ApplicationTests
     [Fact]
     public void CanAddToShortlistRepository()
     {
-        var repository = new Mock<IShortListRepository>();
+        var repository = new Mock<IUnitOfWork>();
         ShortlistDto shortListDTO = new ShortlistDto()
         {
             Ticker = "new ticker"
         };
         repository.Setup(r => 
-                r.Add(shortListDTO));
+                r.ShortListRepository.Add(shortListDTO));
+        repository.Setup(r => r.SaveChanges());
         var service = new ShortlistService(repository.Object);
 
         service.AddToShortlist(shortListDTO);
 
         repository.Verify(r => 
-            r.Add(shortListDTO));
+            r.ShortListRepository.Add(shortListDTO));
+        repository.Verify(r => 
+            r.SaveChanges());
         repository.VerifyNoOtherCalls();
         
     }
