@@ -23,8 +23,8 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     }  
   
     public virtual IEnumerable<TEntity> Get(  
-        Expression<Func<TEntity, bool>> filter = null,  
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,  
+        Expression<Func<TEntity, bool>> filter,  
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,  
         string? includeProperties = "")  
     {  
         IQueryable<TEntity> query = Entities;  
