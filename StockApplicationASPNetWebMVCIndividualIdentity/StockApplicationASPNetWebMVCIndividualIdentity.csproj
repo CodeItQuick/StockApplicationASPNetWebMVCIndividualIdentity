@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Adapters\Controllers" />
+    <Folder Include="obj" />
   </ItemGroup>
 
   <ItemGroup>
