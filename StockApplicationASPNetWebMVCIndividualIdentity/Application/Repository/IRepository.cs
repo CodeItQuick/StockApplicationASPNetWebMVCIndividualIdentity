@@ -5,8 +5,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 internal interface IRepository<TEntity> where TEntity : class  
     {  
         IEnumerable<TEntity> Get(  
-           Expression<Func<TEntity, bool>> filter = null,  
-           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,  
+           Expression<Func<TEntity, bool>> filter,  
+           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,  
            string? includeProperties = "");  
   
         /// <summary>  
