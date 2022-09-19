@@ -22,8 +22,20 @@ public class CheckoutController : Controller
         public IActionResult CreateCheckout()
         {
             return View();
-        }   
-        
+        }
+
+        [Route("/success")]
+        [HttpGet]
+        public IActionResult SuccessCheckout()
+        {
+            return View();
+        }
+        [Route("/cancel")]
+        [HttpGet]
+        public IActionResult CancelCheckout()
+        {
+            return View();
+        }
         [Route("/create-checkout-session")]
         [HttpPost]
         public IActionResult CreateCheckoutReq(string subscriptionType)
@@ -54,8 +66,8 @@ public class CheckoutController : Controller
                 AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
                 LineItems = subscriptionsAttached,
                 Mode = "subscription",
-                SuccessUrl = domain + "/success.html",
-                CancelUrl = domain + "/cancel.html",
+                SuccessUrl = domain + "/success",
+                CancelUrl = domain + "/cancel",
             };
             var service = new SessionService();
             Session session = service.Create(options);
@@ -64,41 +76,6 @@ public class CheckoutController : Controller
             return new StatusCodeResult(303);
         }
 
-        [Route("/Checkout/AddSubscription")]
-        [HttpGet]
-        public IActionResult Index()
-        {
-            var optionsProduct = new ProductCreateOptions
-            {
-                Name = "Starter Subscription",
-                Description = "$12/Month subscription",
-            };
-            var serviceProduct = new ProductService();
-            Product product = serviceProduct.Create(optionsProduct);
-            Console.Write("Success! Here is your starter subscription product id: {0}\n", product.Id);
-
-            var optionsPrice = new PriceCreateOptions
-            {
-                UnitAmount = 1200,
-                Currency = "usd",
-                Recurring = new PriceRecurringOptions
-                {
-                    Interval = "month",
-                },
-                Product = product.Id
-            };
-            var servicePrice = new PriceService();
-            Price price = servicePrice.Create(optionsPrice);
-            Console.Write("Success! Here is your starter subscription price id: {0}\n", price.Id);
-
-            var model = new CheckoutResponseModel()
-            {
-                Product = product,
-                Price = price,
-            };
-
-            return View(model);
-        }
 
 }
 
