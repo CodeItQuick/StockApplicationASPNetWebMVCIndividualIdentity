@@ -26,20 +26,33 @@ public class CheckoutController : Controller
         
         [Route("/create-checkout-session")]
         [HttpPost]
-        public IActionResult CreateCheckoutReq()
+        public IActionResult CreateCheckoutReq(string subscriptionType)
         {
             var domain = "https://localhost:7006";
+            var subscriptionsAttached = new List<SessionLineItemOptions>();
+            
+            if (subscriptionType.Equals("Gold"))
+            {
+                subscriptionsAttached.Add(new SessionLineItemOptions
+                {
+                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    Price = "price_1Ljj4wHVaJrn1f0GHOuO8y4N",
+                    Quantity = 1,
+                });
+            } else if (subscriptionType.Equals("Silver"))
+            {
+                subscriptionsAttached.Add(
+                new SessionLineItemOptions
+                {
+                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
+                    Quantity = 2,
+                });
+            }
             var options = new SessionCreateOptions
             {
-                LineItems = new List<SessionLineItemOptions>
-                {
-                    new SessionLineItemOptions
-                    {
-                        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        Price = "price_1LjPRXHVaJrn1f0GzqNdtNsW",
-                        Quantity = 1,
-                    },
-                },
+                AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
+                LineItems = subscriptionsAttached,
                 Mode = "subscription",
                 SuccessUrl = domain + "/success.html",
                 CancelUrl = domain + "/cancel.html",

@@ -8,15 +8,37 @@
 </head>
 <body>
 <section>
-    <div class="product">
-        <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
-        <div class="description">
-            <h3>Stubborn Attachments</h3>
-            <h5>$20.00</h5>
+    <div >
+        <h1>Choose a Subscription Tier</h1>
+        <div style="display: flex;">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Gold Tier</h3>
+                    <p class="card-text">$24.00</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Silver Tier</h3>
+                    <p class="card-text">$12.00</p>
+                </div>
+            </div>
         </div>
     </div>
-    <form asp-action="CreateCheckoutReq" asp-controller="Checkout" method="POST">
-        <button type="submit" id="checkout-button">Checkout</button>
+    <form
+        asp-action="CreateCheckoutReq"
+        asp-controller="Checkout"
+        method="POST">
+        <select class="form-select" aria-label="Default select example" name="subscriptionType">
+            <option selected value="">Select a subscription option</option>
+            <option value="Gold">Gold Tier</option>
+            <option value="Silver">Silver Tier</option>
+        </select>
+        <button
+            type="submit"
+            id="checkout-button">
+            Checkout
+        </button>
     </form>
 </section>
 </body>
