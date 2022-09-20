@@ -159,6 +159,13 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                     .HasColumnName("YoySuccess");
             });
 
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.Property(e => e.StripeCustomerId)
+                    .HasColumnType("string")
+                    .HasColumnName("StripeCustomerId");
+            });
+
         }
     }
 }

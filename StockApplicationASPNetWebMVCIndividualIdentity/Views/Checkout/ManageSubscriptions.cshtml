@@ -1,0 +1,32 @@
+@model Stripe.StripeList<Stripe.Subscription>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Current Subscriptions</h2>
+@foreach (var item in Model.Data)
+{
+    @foreach (var items in item.Items.Data)
+    {
+        <h4>
+            @{
+                string? subscriberName = "";
+                items.Price.Metadata.TryGetValue("SubscriptionName", out subscriberName);
+            }
+            @subscriberName
+        </h4>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>Subscription Start Date: @item.StartDate</td>
+                <td>Price: @(items.Price.UnitAmount / 100L) @item.Currency</td>
+            </tr><tr>
+                <td>Current Billing Start: @item.CurrentPeriodStart.ToLocalTime()</td>
+                <td>Current Billing End: @item.CurrentPeriodEnd.ToLocalTime()</td>
+            </tr>
+            </tbody>
+        </table>
+    }
+}

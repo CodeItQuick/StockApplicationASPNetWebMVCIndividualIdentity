@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<StockContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(
+builder.Services.AddDefaultIdentity<ApplicationUser>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StockContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
