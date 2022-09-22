@@ -10,19 +10,27 @@
 {
     @foreach (var items in item.Items.Data)
     {
-        <h4>
-            @{
-                string? subscriberName = "";
-                items.Price.Metadata.TryGetValue("SubscriptionName", out subscriberName);
-            }
-            @subscriberName
-        </h4>
+        <div class="flex">
+            <h4>
+                @{
+                    string? subscriberName = "";
+                    items.Price.Metadata.TryGetValue("SubscriptionName", out subscriberName);
+                }
+                @subscriberName
+            </h4>
+
+            <form method="POST" asp-controller="Checkout" asp-action="CancelSubscription">
+                <input type="hidden" name="subscriptionId" value="@items.Subscription" />
+                <button class="text-dark" type="submit">Cancel @items.Subscription</button>
+            </form>
+        </div>
         <table class="table">
             <tbody>
             <tr>
                 <td>Subscription Start Date: @item.StartDate</td>
                 <td>Price: @(items.Price.UnitAmount / 100L) @item.Currency</td>
-            </tr><tr>
+            </tr>
+            <tr>
                 <td>Current Billing Start: @item.CurrentPeriodStart.ToLocalTime()</td>
                 <td>Current Billing End: @item.CurrentPeriodEnd.ToLocalTime()</td>
             </tr>

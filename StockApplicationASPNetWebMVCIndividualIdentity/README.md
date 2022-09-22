@@ -4,7 +4,7 @@ TODO List:
 2. Look into IUnitOfWork more, and repository pattern, I'm CERTAIN its not implemented correctly here
 3. Add more domain/functionality (cause there isn't much here)
 4. Add Stripe subscription service to this
-
+5. finish cancel subscription
 
 Desired App Behaviour
 

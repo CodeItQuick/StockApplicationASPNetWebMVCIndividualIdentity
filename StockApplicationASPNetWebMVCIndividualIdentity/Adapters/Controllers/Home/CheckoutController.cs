@@ -114,11 +114,27 @@ public class CheckoutController : Controller
             return new StatusCodeResult(303);
         }
 
-
+        [Route("/cancel-subscription")]
+        [HttpPost]
+        public IActionResult CancelSubscription([FromForm] CancelRequest req)
+        {
+            var domain = "https://localhost:7006";
+            var userIdentity = _userManager.GetUserAsync(User).Result;
+            var customerId = userIdentity.StripeCustomerId;
+            var service = new SubscriptionService();
+            var subscription = service.Cancel(req.subscriptionid);
+            
+            return Redirect("/");
+        }
 }
 
 public class CheckoutResponseModel
 {
     public Product Product { get; set; }
     public Price Price { get; set; }
+}
+
+public class CancelRequest
+{
+    public string subscriptionid { get; set; }
 }
