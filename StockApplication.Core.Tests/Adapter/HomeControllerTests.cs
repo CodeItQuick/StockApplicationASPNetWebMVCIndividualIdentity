@@ -36,4 +36,13 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
+    [Fact]
+    public async Task WhenDeletingAShortlistedStockThenItReturns200()
+    {
+        var response = await _client.PostAsync(
+            $"/Shortlist/Remove/1", 
+            null);
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
 }

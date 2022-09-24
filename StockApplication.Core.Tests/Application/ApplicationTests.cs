@@ -165,6 +165,34 @@ public class ApplicationTests
         repository.VerifyNoOtherCalls();
         
     }
+    [Fact]
+    public void CanDeleteFromShortlistRepository()
+    {
+        var repository = new Mock<IUnitOfWork>();
+        var shortlistStock = new ShortlistDto()
+        {
+            Id = 1
+        };
+        repository.Setup(r => 
+            r.ShortListRepository.Get(1))
+            .Returns(shortlistStock);
+        repository.Setup(r => 
+            r.ShortListRepository
+                .Remove(shortlistStock));
+        repository.Setup(r => r.SaveChanges());
+        var service = new ShortlistService(repository.Object);
+
+        service.DeleteFromShortlist(1);
+
+        repository.Verify(r => 
+            r.ShortListRepository.Get(1), Times.Once);
+        repository.Verify(r => 
+            r.ShortListRepository.Remove(shortlistStock), Times.Once);
+        repository.Verify(r => 
+            r.SaveChanges(), Times.Once);
+        repository.VerifyNoOtherCalls();
+        
+    }
 
     [Fact]
     public void ShortListAdapterCanConvertToStocksAdapter()
@@ -197,9 +225,9 @@ public class ApplicationTests
         Assert.Single(stocksAdapters);
         Assert.Equal("HPR",stocksAdapters.Single().Ticker);
         Assert.Equal(1,stocksAdapters.Single().Id);
-        Assert.Equal(0.20m,stocksAdapters.Single().stockAttribute["PbRatio"]);
-        Assert.Equal(-0.04m,stocksAdapters.Single().stockAttribute["PeRatio"]);
-        Assert.Equal(-0.24m,stocksAdapters.Single().stockAttribute["Eps"]);
-        Assert.Equal(2.04m,stocksAdapters.Single().stockAttribute["DivYield"]);
+        Assert.Equal(0.20m,stocksAdapters.Single().stockAttribute?["PbRatio"]);
+        Assert.Equal(-0.04m,stocksAdapters.Single().stockAttribute?["PeRatio"]);
+        Assert.Equal(-0.24m,stocksAdapters.Single().stockAttribute?["Eps"]);
+        Assert.Equal(2.04m,stocksAdapters.Single().stockAttribute?["DivYield"]);
     }
 }

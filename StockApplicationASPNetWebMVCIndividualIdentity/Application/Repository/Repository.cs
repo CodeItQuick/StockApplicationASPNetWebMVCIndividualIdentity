@@ -56,7 +56,7 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     /// </summary>  
     /// <param name="id">The identifier.</param>  
     /// <returns></returns>  
-    public virtual TEntity Get(int id)  
+    public virtual TEntity Get(long id)  
     {  
         // Here we are working with a DbContext, not specific DbContext.   
         // So we don't have DbSets we need to use the generic Set() method to access them.  

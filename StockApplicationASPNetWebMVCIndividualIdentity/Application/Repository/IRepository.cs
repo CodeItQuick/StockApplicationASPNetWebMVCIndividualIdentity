@@ -14,7 +14,7 @@ internal interface IRepository<TEntity> where TEntity : class
         /// </summary>  
         /// <param name="id">The identifier.</param>  
         /// <returns></returns>  
-        TEntity Get(int id);  
+        TEntity Get(long id);  
   
         /// <summary>  
         /// Gets all.  

@@ -58,6 +58,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
+
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
         public IActionResult AddShortlist(string ticker, long stockid)
@@ -71,7 +72,16 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             //FIXME: Should display shortlist
             return Redirect("/?pageNumber=0");
         }
-        public IActionResult Privacy()
+
+        [Route("/Shortlist/Remove/{stockId:long}")]
+        [HttpPost]
+        public IActionResult DeleteShortlist(long stockId)
+        {
+            _shortlistService.DeleteFromShortlist(stockId);
+            return Redirect("/Shortlist");
+        }
+
+    public IActionResult Privacy()
         {
             return View();
         }

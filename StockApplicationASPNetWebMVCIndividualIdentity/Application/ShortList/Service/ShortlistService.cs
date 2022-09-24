@@ -14,8 +14,14 @@ public class ShortlistService
     
     public void AddToShortlist(ShortlistDto shortListDto)
     {
-        IShortListRepository shortListRepository = _unitOfWork.ShortListRepository;
-        shortListRepository.Add(shortListDto);
+        _unitOfWork.ShortListRepository.Add(shortListDto);
+        _unitOfWork.SaveChanges();
+    }
+
+    public void DeleteFromShortlist(long stockId)
+    {
+        var stockEntity = _unitOfWork.ShortListRepository.Get(stockId);
+        _unitOfWork.ShortListRepository.Remove(stockEntity);
         _unitOfWork.SaveChanges();
     }
 }

@@ -1,18 +1,18 @@
 @model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndexResponseModel<StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService.StocksAdapter>
 
-    <div class="text-center">
+<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>
+</div>
 
-    <table class="table">
+<table class="table">
     <thead>
     <tr>
-      <th scope="col">Symbol</th>
-      <th scope="col">Pb Ratio</th>
-      <th scope="col">Pe Ratio</th>
-      <th scope="col">Eps</th>
-      <th scope="col">Div Yield</th>
+        <th scope="col">Symbol</th>
+        <th scope="col">Pb Ratio</th>
+        <th scope="col">Pe Ratio</th>
+        <th scope="col">Eps</th>
+        <th scope="col">Div Yield</th>
     </tr>
     </thead>
     <tbody>
@@ -24,28 +24,39 @@
             <td>@item.stockAttribute?["PeRatio"]</td>
             <td>@item.stockAttribute?["Eps"]</td>
             <td>@item.stockAttribute?["DivYield"]</td>
+            <td>
+                <form 
+                    asp-action="DeleteShortlist" 
+                    asp-controller="Home" 
+                    asp-route-stockId="@item.Id" 
+                    method="post">
+                    <button type="submit" class="btn btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
     }
-</tbody>
-    </table>
+    </tbody>
+</table>
 
-    @{
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
 Page: @(Model.PageIndex + 1) &nbsp;
 <a asp-action="Shortlist"
-asp-route-sortOrder="@ViewData["CurrentSort"]"
-asp-route-pageNumber="@(Model.PageIndex - 1)"
-asp-route-currentFilter="@ViewData["CurrentFilter"]"
-class="btn btn-default @prevDisabled">
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
     Previous
-    </a>
-    <a asp-action="Shortlist"
-asp-route-sortOrder="@ViewData["CurrentSort"]"
-asp-route-pageNumber="@(Model.PageIndex + 1)"
-asp-route-currentFilter="@ViewData["CurrentFilter"]"
-class="btn btn-default @nextDisabled">
+</a>
+<a asp-action="Shortlist"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
     Next
-    </a>
+</a>
