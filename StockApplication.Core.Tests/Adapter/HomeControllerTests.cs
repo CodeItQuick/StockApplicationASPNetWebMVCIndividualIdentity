@@ -39,9 +39,26 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
     [Fact]
     public async Task WhenDeletingAShortlistedStockThenItReturns200()
     {
+        await _client.PostAsync($"/Shortlist/Add/HPR/1", null);
+        
         var response = await _client.PostAsync(
-            $"/Shortlist/Remove/1", 
+            $"/Shortlist/Remove/HPR", 
             null);
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+    
+    [Fact]
+    public async Task WhenRetrievingSettingsPageReturns200()
+    {
+        var response = await _client.GetAsync("/Settings");
+        
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+    [Fact]
+    public async Task WhenRetrievingAllStockDataPageReturns200()
+    {
+        var response = await _client.PostAsync("/Settings/RetrieveStockData", new StringContent(""));
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

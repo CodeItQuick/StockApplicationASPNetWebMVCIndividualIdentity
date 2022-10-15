@@ -30,7 +30,7 @@
                 <form 
                     asp-action="DeleteShortlist" 
                     asp-controller="Home" 
-                    asp-route-stockId="@item.Id" 
+                    asp-route-ticker="@item.Ticker" 
                     method="post">
                     <button type="submit" class="btn btn-danger">
                         Delete

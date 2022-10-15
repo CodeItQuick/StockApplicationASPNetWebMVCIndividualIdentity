@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
@@ -18,9 +19,9 @@ public class ShortlistService
         _unitOfWork.SaveChanges();
     }
 
-    public void DeleteFromShortlist(long stockId)
+    public void DeleteFromShortlist(string ticker, string userId)
     {
-        var stockEntity = _unitOfWork.ShortListRepository.Get(stockId);
+        var stockEntity = _unitOfWork.ShortListRepository.Find(dto => dto.Ticker == ticker && dto.UserId == userId).Single();
         _unitOfWork.ShortListRepository.Remove(stockEntity);
         _unitOfWork.SaveChanges();
     }

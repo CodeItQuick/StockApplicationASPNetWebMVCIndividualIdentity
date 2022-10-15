@@ -11,7 +11,7 @@ public class ShortlistStockInfoDataView
     public long Id { get; set; }
     public long TickerId { get; set; }
     public string? Ticker { get; set; }
-    public long UserId { get; set; }
+    public string? UserId { get; set; }
     public decimal? Eps { get; set; }
     public decimal? PeRatio { get; set; }
     public decimal? MarketCap { get; set; }

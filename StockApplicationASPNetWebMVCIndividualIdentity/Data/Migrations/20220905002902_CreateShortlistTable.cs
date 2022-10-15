@@ -16,13 +16,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                         SqlServerValueGenerationStrategy.IdentityColumn),
                     Ticker = table.Column<string>(),
                     StockInfoDataId = table.Column<long>(),
-                    UserId = table.Column<long>()
+                    UserId = table.Column<string>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shortlist_ids", x => x.Id);
                     table.ForeignKey("FK_StockInfoData_ids", x => x.StockInfoDataId, "StockInfoData");
-                    table.UniqueConstraint("UK_StockInfoDataId_UserId", x => new { x.StockInfoDataId, x.UserId});
                 });
         }
 

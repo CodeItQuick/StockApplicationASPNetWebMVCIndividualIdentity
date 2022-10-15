@@ -165,29 +165,36 @@ public class ApplicationTests
         repository.VerifyNoOtherCalls();
         
     }
+
     [Fact]
     public void CanDeleteFromShortlistRepository()
     {
         var repository = new Mock<IUnitOfWork>();
-        var shortlistStock = new ShortlistDto()
+        var shortlistStock = new List<ShortlistDto>()
         {
-            Id = 1
+            new ()
+            {
+                Id = 1,
+                StockInfoDataId = 1,
+                Ticker = "AAPL"
+            }
         };
-        repository.Setup(r => 
-            r.ShortListRepository.Get(1))
+
+    repository.Setup(r => 
+            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()))
             .Returns(shortlistStock);
         repository.Setup(r => 
             r.ShortListRepository
-                .Remove(shortlistStock));
+                .Remove(shortlistStock.Single()));
         repository.Setup(r => r.SaveChanges());
         var service = new ShortlistService(repository.Object);
 
-        service.DeleteFromShortlist(1);
+        service.DeleteFromShortlist("AAPL", "");
 
         repository.Verify(r => 
-            r.ShortListRepository.Get(1), Times.Once);
+            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()), Times.Once);
         repository.Verify(r => 
-            r.ShortListRepository.Remove(shortlistStock), Times.Once);
+            r.ShortListRepository.Remove(shortlistStock.Single()), Times.Once);
         repository.Verify(r => 
             r.SaveChanges(), Times.Once);
         repository.VerifyNoOtherCalls();
