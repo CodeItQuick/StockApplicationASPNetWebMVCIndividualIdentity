@@ -58,6 +58,14 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
+        
+        [Route("/Settings")]
+        [HttpGet]
+        public IActionResult Settings(
+            StockInfoRequest? stockInfoRequest)
+        {
+            return View();
+        }
 
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]

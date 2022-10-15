@@ -9,10 +9,9 @@
     <thead>
     <tr>
         <th scope="col">Symbol</th>
-        <th scope="col">Pb Ratio</th>
-        <th scope="col">Pe Ratio</th>
-        <th scope="col">Eps</th>
-        <th scope="col">Div Yield</th>
+        <th scope="col">Value Metrics</th>
+        <th scope="col">Growth Metrics</th>
+        <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -20,10 +19,14 @@
     {
         <tr>
             <th scope="row">@item.Ticker</th>
-            <td>@item.stockAttribute?["PbRatio"]</td>
-            <td>@item.stockAttribute?["PeRatio"]</td>
-            <td>@item.stockAttribute?["Eps"]</td>
-            <td>@item.stockAttribute?["DivYield"]</td>
+            <td>Pb Ratio: @item.stockAttribute?["PbRatio"]<br />
+                Pe Ratio: @item.stockAttribute?["PeRatio"] <br />
+                Eps: @item.stockAttribute?["Eps"] <br />
+                Avg. DivYield: @item.stockAttribute?["DivYield"] </td>
+            <td>Sales Growth: <br />
+                Earnings Growth: <br />
+                Free Cash Flow Growth: <br />
+                Net Profit Margin: </td>
             <td>
                 <form 
                     asp-action="DeleteShortlist" 

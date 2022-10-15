@@ -159,7 +159,11 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     public virtual void UpdateEntity(TEntity entityToUpdate)  
     {  
         Entities.Attach(entityToUpdate);  
-        _dbContext.Entry(entityToUpdate).State = EntityState.Modified;  
-         
-    }  
+        _dbContext.Entry(entityToUpdate).State = EntityState.Modified;
+    }
+
+    public virtual IQueryable<TEntity> Query(Expression<Func<IQueryable<TEntity>>> sqlQuery)
+    {
+        return _dbContext.FromExpression<TEntity>(sqlQuery);
+    }
 }  
