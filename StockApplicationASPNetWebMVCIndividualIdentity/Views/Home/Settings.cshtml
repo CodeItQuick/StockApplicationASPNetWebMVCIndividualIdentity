@@ -1,4 +1,12 @@
 <div class="text-center">
     <h1 class="display-4">Settings</h1>
-    <p><button>Retrieve all stock data</button></p>
+    <form method="post">
+        <input 
+            type="submit" 
+            asp-controller="Home"
+            asp-action="RetrieveStockData"
+            class="btn btn-success" 
+            value="Retrieve all stock data" 
+            />
+    </form>
 </div>
