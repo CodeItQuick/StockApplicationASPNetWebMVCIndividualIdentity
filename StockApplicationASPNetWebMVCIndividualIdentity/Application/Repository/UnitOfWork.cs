@@ -1,3 +1,5 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
+
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 public class UnitOfWork : IUnitOfWork  
@@ -42,6 +44,10 @@ public class UnitOfWork : IUnitOfWork
     private ShortlistStockInfoDataViewRepository? _shortlistStockInfoDataViewRepository;
     public IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository => 
         _shortlistStockInfoDataViewRepository ??= new ShortlistStockInfoDataViewRepository(Context);
+
+    private IncomeStatementRepository? _incomeStatementRepository;
+    public IIncomeStatementRepository IncomeStatementRepository => 
+        _incomeStatementRepository ??= new IncomeStatementRepository(Context);
 
     #endregion
 
@@ -89,4 +95,5 @@ public interface IUnitOfWork : IDisposable
     IShortListRepository ShortListRepository { get; }
     IStockDataRepository StockRepository { get; }
     IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository { get; }
-} 
+    IIncomeStatementRepository IncomeStatementRepository { get; }
+}

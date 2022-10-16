@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-internal interface IRepository<TEntity> where TEntity : class  
+public interface IRepository<TEntity> where TEntity : class  
     {  
         IEnumerable<TEntity> Get(  
            Expression<Func<TEntity, bool>> filter,  

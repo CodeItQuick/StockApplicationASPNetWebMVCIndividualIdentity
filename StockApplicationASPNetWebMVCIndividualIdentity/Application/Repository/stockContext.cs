@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
@@ -27,6 +28,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IncomeStatementDto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("IncomeStatement");
+            });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {
                 entity.Property(e => e.Ticker)

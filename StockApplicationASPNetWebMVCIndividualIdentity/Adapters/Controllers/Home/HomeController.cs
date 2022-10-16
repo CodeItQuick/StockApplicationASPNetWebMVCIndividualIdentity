@@ -3,8 +3,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
@@ -15,18 +17,23 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _config;
         private readonly StockIndexService _stockIndexService;
         private readonly ShortlistStockInfoDataService _shortlistStockInfoDataService;
         private readonly ShortlistService _shortlistService;
+        private static readonly HttpClient client = new HttpClient();
+        private readonly IncomeStatementService _incomeStatementService;
 
         public HomeController(ILogger<HomeController> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IConfiguration config)
         {
             _logger = logger;
             _userManager = userManager;
+            _config = config;
             _stockIndexService = new StockIndexService(new UnitOfWork());
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService(new UnitOfWork());
             _shortlistService = new ShortlistService(new UnitOfWork());
+            _incomeStatementService = new IncomeStatementService(new UnitOfWork());
         }
 
         public IActionResult Index(
@@ -79,6 +86,21 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         public IActionResult RetrieveStockData(
             StockInfoRequest? stockInfoRequest)
         {
+
+            var response = client
+                .GetAsync(
+                    $"https://financialmodelingprep.com/api/v3/income-statement/AAPL?limit=5&apikey={_config["FMP:ApiKey"]}")
+                .Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            
+            var jsonResponse = JsonConvert.DeserializeObject<List<IncomeStatementDto>>(responseString);
+
+            if (jsonResponse != null)
+            {
+                    _incomeStatementService.AddToIncomeStatements(jsonResponse);
+            }
+
             return RedirectToAction("Settings");
         }
         
