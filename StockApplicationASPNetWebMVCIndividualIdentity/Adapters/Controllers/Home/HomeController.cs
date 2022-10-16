@@ -81,15 +81,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return View();
         }
         
-        [Route("/Settings/RetrieveStockData")]
+        [Route("/Settings/RetrieveStockData/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveStockData(
-            StockInfoRequest? stockInfoRequest)
+            StockInfoRequest? stockInfoRequest, string ticker)
         {
 
             var response = client
                 .GetAsync(
-                    $"https://financialmodelingprep.com/api/v3/income-statement/AAPL?limit=5&apikey={_config["FMP:ApiKey"]}")
+                    $"https://financialmodelingprep.com/api/v3/income-statement/{ticker}?limit=5&apikey={_config["FMP:ApiKey"]}")
                 .Result;
 
             var responseString = response.Content.ReadAsStringAsync().Result;
