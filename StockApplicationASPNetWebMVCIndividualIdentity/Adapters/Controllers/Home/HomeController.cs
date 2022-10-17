@@ -23,9 +23,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly ShortlistService _shortlistService;
         private static readonly HttpClient client = new HttpClient();
         private readonly IncomeStatementService _incomeStatementService;
+        private readonly KeyMetricsService _keyMetricsService;
 
-        public HomeController(ILogger<HomeController> logger,
-            UserManager<ApplicationUser> userManager, IConfiguration config)
+        public HomeController(
+            ILogger<HomeController> logger,
+            UserManager<ApplicationUser> userManager, 
+            IConfiguration config)
         {
             _logger = logger;
             _userManager = userManager;
@@ -34,6 +37,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService(new UnitOfWork());
             _shortlistService = new ShortlistService(new UnitOfWork());
             _incomeStatementService = new IncomeStatementService(new UnitOfWork());
+            _keyMetricsService = new KeyMetricsService(new UnitOfWork());
         }
 
         public IActionResult Index(
@@ -122,7 +126,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             if (jsonResponse != null)
             {
-                // _incomeStatementService.AddToKeyMetrics(jsonResponse);
+                _keyMetricsService.AddToKeyMetrics(jsonResponse);
             }
 
             return RedirectToAction("Settings");

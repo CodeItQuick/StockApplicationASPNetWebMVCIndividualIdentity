@@ -48,6 +48,9 @@ public class UnitOfWork : IUnitOfWork
     private IncomeStatementRepository? _incomeStatementRepository;
     public IIncomeStatementRepository IncomeStatementRepository => 
         _incomeStatementRepository ??= new IncomeStatementRepository(Context);
+    private KeyMetricsRepository? _keyMetricsRepository;
+    public IKeyMetricsRepository KeyMetricsRepository => 
+        _keyMetricsRepository ??= new KeyMetricsRepository(Context);
 
     #endregion
 
@@ -87,13 +90,4 @@ public class UnitOfWork : IUnitOfWork
     }  
     #endregion  
   
-}
-
-public interface IUnitOfWork : IDisposable  
-{  
-    bool SaveChanges();
-    IShortListRepository ShortListRepository { get; }
-    IStockDataRepository StockRepository { get; }
-    IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository { get; }
-    IIncomeStatementRepository IncomeStatementRepository { get; }
 }

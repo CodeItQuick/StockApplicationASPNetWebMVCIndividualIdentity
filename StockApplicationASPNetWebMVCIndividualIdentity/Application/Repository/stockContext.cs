@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StockApplication.Core.Tests.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
@@ -32,6 +33,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             {
                 entity.HasKey(e => e.Id);
                 entity.ToTable("IncomeStatement");
+            });
+            modelBuilder.Entity<KeyMetricsDto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("KeyMetrics");
             });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {
