@@ -37,6 +37,16 @@
                         value="Retrieve Income Statements" 
                     />
                 </form>
+                <form method="post">
+                    <input 
+                        type="submit" 
+                        asp-controller="Home"
+                        asp-action="RetrieveKeyMetricData"
+                        asp-route-ticker="@item.Ticker"
+                        class="btn btn-success" 
+                        value="Retrieve Key Metrics" 
+                    />
+                </form>
                 <form 
                     asp-action="DeleteShortlist" 
                     asp-controller="Home" 

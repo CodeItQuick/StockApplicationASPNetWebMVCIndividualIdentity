@@ -105,6 +105,29 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         }
         
 
+        [Route("/Settings/RetrieveKeyMetricData/{ticker}")]
+        [HttpPost]
+        public IActionResult RetrieveKeyMetricData(
+            StockInfoRequest? stockInfoRequest, string ticker)
+        {
+
+            var response = client
+                .GetAsync(
+                    $"https://financialmodelingprep.com/api/v3/key-metrics/{ticker}?limit=10&apikey={_config["FMP:ApiKey"]}")
+                .Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            
+            var jsonResponse = JsonConvert.DeserializeObject<List<KeyMetricsDto>>(responseString);
+
+            if (jsonResponse != null)
+            {
+                // _incomeStatementService.AddToKeyMetrics(jsonResponse);
+            }
+
+            return RedirectToAction("Settings");
+        }
+        
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
         public IActionResult AddShortlist(string ticker, long stockid)
