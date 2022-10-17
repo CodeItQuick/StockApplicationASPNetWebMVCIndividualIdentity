@@ -14,16 +14,15 @@ public class IncomeStatementService
         _unitOfWork = unitOfWork;
     }
     
-    public void AddToIncomeStatements(List<IncomeStatementDto> shortListDto)
+    public void AddToIncomeStatements(List<IncomeStatementDto> incomeStatementDtos)
     {
         try
         {
-            _unitOfWork.IncomeStatementRepository.AddRange(shortListDto);
+            _unitOfWork.IncomeStatementRepository.AddRange(incomeStatementDtos);
             _unitOfWork.SaveChanges();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             throw;
         }
     }
