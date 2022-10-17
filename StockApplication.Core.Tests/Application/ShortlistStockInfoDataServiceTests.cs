@@ -8,52 +8,8 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplication.Core.Tests.Application;
 
-public class ApplicationTests
+public class ShortlistStockInfoDataServiceTests
 {
-    [Fact]
-    public void GivenAnIndexCanHandleEmptyListOfStocks()
-    {
-        // construct mock repository
-        var repository = new Mock<IUnitOfWork>();
-        repository.Setup(r => 
-            r.StockRepository.Get(null, null, ""))
-            .Returns(new List<StockInfoDatumDTO>());
-        var service = new StockIndexService(repository.Object);
-        
-        // display the stocks from the service
-        var allStocks = service.DisplayAllStocks(1);
-        
-        // check the return value + that we got all the repository calls
-        Assert.Equal(new List<StocksAdapter>(), allStocks);
-        repository.Verify(r => 
-            r.StockRepository.Get(null, null, ""));
-        repository.VerifyNoOtherCalls();
-    }
-    [Fact]
-    public void GivenAnIndexCanHandleListOfStocks()
-    {
-        var repository = new Mock<IUnitOfWork>();
-        var stockInfoDatumDtos = new List<StockInfoDatumDTO>()
-        {
-            new()
-            {
-                Ticker = "DummySymbol",
-                PeRatio = new decimal(0.25),
-            }
-        };
-        repository.Setup(r => 
-                r.StockRepository.Get(null, null, ""))
-            .Returns(stockInfoDatumDtos);
-        var service = new StockIndexService(repository.Object);
-        
-        var allStocks = service.DisplayAllStocks(0).ToList();
-        
-        Assert.Single(allStocks);
-        repository.Verify(r => 
-            r.StockRepository.Get(null, null, ""));
-        repository.VerifyNoOtherCalls();
-        
-    }
     [Fact]
     public void GivenShortListedStocksCanHandleEmptyListOfStocks()
     {
@@ -145,64 +101,6 @@ public class ApplicationTests
         
     }
     [Fact]
-    public void CanAddToShortlistRepository()
-    {
-        var repository = new Mock<IUnitOfWork>();
-        ShortlistDto shortListDTO = new ShortlistDto()
-        {
-            Ticker = "new ticker"
-        };
-        repository.Setup(r => 
-                r.ShortListRepository.Add(shortListDTO));
-        repository.Setup(r => r.SaveChanges());
-        var service = new ShortlistService(repository.Object);
-
-        service.AddToShortlist(shortListDTO);
-
-        repository.Verify(r => 
-            r.ShortListRepository.Add(shortListDTO));
-        repository.Verify(r => 
-            r.SaveChanges());
-        repository.VerifyNoOtherCalls();
-        
-    }
-
-    [Fact]
-    public void CanDeleteFromShortlistRepository()
-    {
-        var repository = new Mock<IUnitOfWork>();
-        var shortlistStock = new List<ShortlistDto>()
-        {
-            new ()
-            {
-                Id = 1,
-                StockInfoDataId = 1,
-                Ticker = "AAPL"
-            }
-        };
-
-    repository.Setup(r => 
-            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()))
-            .Returns(shortlistStock);
-        repository.Setup(r => 
-            r.ShortListRepository
-                .Remove(shortlistStock.Single()));
-        repository.Setup(r => r.SaveChanges());
-        var service = new ShortlistService(repository.Object);
-
-        service.DeleteFromShortlist("AAPL", "");
-
-        repository.Verify(r => 
-            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()), Times.Once);
-        repository.Verify(r => 
-            r.ShortListRepository.Remove(shortlistStock.Single()), Times.Once);
-        repository.Verify(r => 
-            r.SaveChanges(), Times.Once);
-        repository.VerifyNoOtherCalls();
-        
-    }
-
-    [Fact]
     public void ShortListAdapterCanConvertToStocksAdapter()
     {
         var shortlistStockInfoDataViews = new List<ShortlistStockInfoDataView>()
@@ -237,36 +135,5 @@ public class ApplicationTests
         Assert.Equal(-0.04m,stocksAdapters.Single().stockAttribute?["PeRatio"]);
         Assert.Equal(-0.24m,stocksAdapters.Single().stockAttribute?["Eps"]);
         Assert.Equal(2.04m,stocksAdapters.Single().stockAttribute?["DivYield"]);
-    }
-    
-    [Fact]
-    public void GivenAListOfIncomeStatementsCanAddData()
-    {
-        var unitOfWork = new Mock<IUnitOfWork>();
-        List<IncomeStatementDto> incomeStatementDtos = new List<IncomeStatementDto>()
-        {
-            new()
-            {
-               Id = 1,
-               Symbol = "AAPL",
-            }
-        };  
-        unitOfWork.Setup(r => 
-                r.IncomeStatementRepository.AddRange(incomeStatementDtos));
-        unitOfWork.Setup(r => 
-                r.SaveChanges());
-        var service = new IncomeStatementService(unitOfWork.Object);
-        
-        service
-            .AddToIncomeStatements(incomeStatementDtos);
-        
-        unitOfWork.Verify(r => 
-            r.IncomeStatementRepository.AddRange(incomeStatementDtos),
-            Times.Once);
-        unitOfWork.Verify(r => 
-                r.SaveChanges(),
-            Times.Once);
-        unitOfWork.VerifyNoOtherCalls();
-        
     }
 }
