@@ -81,9 +81,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return View();
         }
         
-        [Route("/Settings/RetrieveStockData/{ticker}")]
+        [Route("/Settings/RetrieveIncomeStatement/{ticker}")]
         [HttpPost]
-        public IActionResult RetrieveStockData(
+        public IActionResult RetrieveIncomeStatementData(
             StockInfoRequest? stockInfoRequest, string ticker)
         {
 
