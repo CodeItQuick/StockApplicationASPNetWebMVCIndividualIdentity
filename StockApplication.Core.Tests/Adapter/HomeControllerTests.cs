@@ -55,11 +55,4 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
-    [Fact]
-    public async Task WhenRetrievingAllStockDataPageReturns200()
-    {
-        var response = await _client.PostAsync("/Settings/RetrieveStockData", new StringContent(""));
-        
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
 }
