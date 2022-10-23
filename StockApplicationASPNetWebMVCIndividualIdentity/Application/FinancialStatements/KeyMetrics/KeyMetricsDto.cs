@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 
 [Table("KeyMetrics")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]

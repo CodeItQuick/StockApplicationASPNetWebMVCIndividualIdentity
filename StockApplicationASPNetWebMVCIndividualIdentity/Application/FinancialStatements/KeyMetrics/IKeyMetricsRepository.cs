@@ -1,6 +1,6 @@
-using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 
 public interface IKeyMetricsRepository : IRepository<KeyMetricsDto>
 {

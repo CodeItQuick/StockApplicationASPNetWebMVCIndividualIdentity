@@ -1,3 +1,6 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
+
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 public interface IUnitOfWork : IDisposable  
@@ -8,4 +11,5 @@ public interface IUnitOfWork : IDisposable
     IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository { get; }
     IIncomeStatementRepository IncomeStatementRepository { get; }
     IKeyMetricsRepository KeyMetricsRepository { get; }
+    IRatiosTtmRepository RatiosTtmRepository { get; }
 }

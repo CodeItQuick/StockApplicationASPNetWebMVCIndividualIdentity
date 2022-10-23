@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -24,6 +26,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private static readonly HttpClient client = new HttpClient();
         private readonly IncomeStatementService _incomeStatementService;
         private readonly KeyMetricsService _keyMetricsService;
+        private readonly RatiosTtmService _ratiosTtmService;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -38,6 +41,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _shortlistService = new ShortlistService(new UnitOfWork());
             _incomeStatementService = new IncomeStatementService(new UnitOfWork());
             _keyMetricsService = new KeyMetricsService(new UnitOfWork());
+            _ratiosTtmService = new RatiosTtmService(new UnitOfWork());
         }
 
         public IActionResult Index(
@@ -87,8 +91,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         
         [Route("/Settings/RetrieveIncomeStatement/{ticker}")]
         [HttpPost]
-        public IActionResult RetrieveIncomeStatementData(
-            StockInfoRequest? stockInfoRequest, string ticker)
+        public IActionResult RetrieveIncomeStatementData(string ticker)
         {
 
             var response = client
@@ -111,8 +114,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
         [Route("/Settings/RetrieveKeyMetricData/{ticker}")]
         [HttpPost]
-        public IActionResult RetrieveKeyMetricData(
-            StockInfoRequest? stockInfoRequest, string ticker)
+        public IActionResult RetrieveKeyMetricData(string ticker)
         {
 
             var response = client
@@ -132,6 +134,27 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return RedirectToAction("Settings");
         }
         
+        [Route("/Settings/RetrieveRatiosTtm/{ticker}")]
+        [HttpPost]
+        public IActionResult RetrieveRatiosTtmData(string ticker)
+        {
+
+            var response = client
+                .GetAsync(
+                    $"https://financialmodelingprep.com/api/v3/ratios-ttm/{ticker}?limit=10&apikey={_config["FMP:ApiKey"]}")
+                .Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            
+            var jsonResponse = JsonConvert.DeserializeObject<List<RatiosTtmDto>>(responseString);
+
+            if (jsonResponse != null)
+            {
+                _ratiosTtmService.AddToRatiosTtm(jsonResponse);
+            }
+
+            return RedirectToAction("Settings");
+        }
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
         public IActionResult AddShortlist(string ticker, long stockid)

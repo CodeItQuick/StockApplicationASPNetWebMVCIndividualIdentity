@@ -1,6 +1,6 @@
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 
 public class KeyMetricsService
 {

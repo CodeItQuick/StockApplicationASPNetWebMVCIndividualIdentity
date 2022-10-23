@@ -1,3 +1,5 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -51,6 +53,9 @@ public class UnitOfWork : IUnitOfWork
     private KeyMetricsRepository? _keyMetricsRepository;
     public IKeyMetricsRepository KeyMetricsRepository => 
         _keyMetricsRepository ??= new KeyMetricsRepository(Context);
+    private RatiosTtmRepository? _ratiosTtmRepository;
+    public IRatiosTtmRepository RatiosTtmRepository => 
+        _ratiosTtmRepository ??= new RatiosTtmRepository(Context);
 
     #endregion
 

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
@@ -38,6 +40,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             {
                 entity.HasKey(e => e.Id);
                 entity.ToTable("KeyMetrics");
+            });
+            modelBuilder.Entity<RatiosTtmDto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("RatiosTTM");
             });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {
