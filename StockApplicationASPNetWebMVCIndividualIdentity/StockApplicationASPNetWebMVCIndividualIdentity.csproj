@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Adapters\Controllers" />
-    <Folder Include="Application\FinancialStatements\CashFlowStatement" />
     <Folder Include="obj" />
   </ItemGroup>
 
