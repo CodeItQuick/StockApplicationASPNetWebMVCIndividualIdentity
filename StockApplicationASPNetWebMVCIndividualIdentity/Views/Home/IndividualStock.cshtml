@@ -1,0 +1,80 @@
+@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndividualStockResponseModel<StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView.IndividualStockDto>
+
+<div class="text-center">
+    <h1 class="display-4">ALG Earnings Projections</h1>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Symbol</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">Date</th>
+        <th scope="col">Return On Equity</th>
+        <th scope="col">ShareholdersEquityPerShare</th>
+        <th scope="col">PerShareEarnings</th>
+        <th scope="col">Shares</th>
+        <th scope="col">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form method="POST">
+        <tr>
+            <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
+            <td>@Model.IndividualStockEarningsView.ToList()[0].MarketCap</td>
+            <td>@Model.IndividualStockEarningsView.ToList()[0].Date</td>
+            <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
+            <td>@Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare</td>
+            <td>@Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings</td>
+        </tr>@for(var i = 1; i <= 10; i++)
+             {
+                 <tr>
+                     <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
+                     <td>$@(1669017000 * Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                     <td>@Model.IndividualStockEarningsView.ToList()[0].Date</td>
+                     <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
+                     <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                     <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                 </tr>
+             }
+    </form>
+    </tbody>
+</table>
+
+<div class="text-center">
+    <h1 class="display-4">ALG Previous Earnings (Assumptions)</h1>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Symbol</th>
+        <th scope="col">Date</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">Return On Equity</th>
+        <th scope="col">ShareholdersEquityPerShare</th>
+        <th scope="col">PerShareEarnings</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form method="POST">
+        @for (var i = 0; i < Model.IndividualStockEarningsView.Count(); i++)
+        {
+            <tr>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].Symbol</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].Date</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].MarketCap</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].ReturnOnEquity</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].ShareholdersEquityPerShare</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].PerShareEarnings</td>
+            </tr>
+        }
+        <tr>
+            <th scope="col">Averages</th>
+            <th></th>
+            <th></th>
+            <th>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</th>
+        </tr>
+    </form>
+    </tbody>
+</table>

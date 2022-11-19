@@ -4,6 +4,7 @@ using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
@@ -32,6 +33,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IndividualStockDto>(entity =>
+            {
+                entity.ToView("IndividualStock");
+            });
             modelBuilder.Entity<IncomeStatementDto>(entity =>
             {
                 entity.HasKey(e => e.Id);

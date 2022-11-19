@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
@@ -29,6 +30,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly KeyMetricsService _keyMetricsService;
         private readonly RatiosTtmService _ratiosTtmService;
         private readonly CashFlowStatementService _cashFlowStatementService;
+        private readonly IndividualStockService _individualStockService;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -45,6 +47,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _keyMetricsService = new KeyMetricsService(new UnitOfWork());
             _ratiosTtmService = new RatiosTtmService(new UnitOfWork());
             _cashFlowStatementService = new CashFlowStatementService(new UnitOfWork());
+            _individualStockService = new IndividualStockService(new UnitOfWork());
         }
 
         public IActionResult Index(
@@ -80,6 +83,21 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 HasNextPage = (stockInfoRequest?.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
                 StockInfoDatums = stockInfoDatums,
                 PageIndex = stockInfoRequest?.pageNumber ?? 0
+            };
+            return View(model);
+        }
+        [Route("/IndividualStock/{ticker}")]
+        [HttpGet]
+        public IActionResult IndividualStock(
+            string ticker,
+            StockInfoRequest? stockInfoRequest)
+        {
+            // DB/Application
+            var stockInfoDatums = _individualStockService.RetrieveIndividualStocks(ticker);
+            // Display/Adapter
+            var model = new IndividualStockResponseModel<IndividualStockDto>()
+            {
+                IndividualStockEarningsView = stockInfoDatums
             };
             return View(model);
         }
