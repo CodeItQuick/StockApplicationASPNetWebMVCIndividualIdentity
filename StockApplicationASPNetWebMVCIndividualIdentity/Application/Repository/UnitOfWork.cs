@@ -1,3 +1,4 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
@@ -56,6 +57,9 @@ public class UnitOfWork : IUnitOfWork
     private RatiosTtmRepository? _ratiosTtmRepository;
     public IRatiosTtmRepository RatiosTtmRepository => 
         _ratiosTtmRepository ??= new RatiosTtmRepository(Context);
+    private CashFlowStatementRepository? _cashFlowStatementRepository;
+    public ICashFlowStatementRepository CashFlowStatementRepository => 
+        _cashFlowStatementRepository ??= new CashFlowStatementRepository(Context);
 
     #endregion
 

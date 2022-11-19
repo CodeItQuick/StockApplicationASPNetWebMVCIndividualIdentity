@@ -57,6 +57,16 @@
                         value="Retrieve Ratios TTM" 
                     />
                 </form>
+                <form method="post">
+                    <input 
+                        type="submit" 
+                        asp-controller="Home"
+                        asp-action="RetrieveCashFlowStatementData"
+                        asp-route-ticker="@item.Ticker"
+                        class="btn btn-success" 
+                        value="Retrieve Cash Flow Statements" 
+                    />
+                </form>
                 <form 
                     asp-action="DeleteShortlist" 
                     asp-controller="Home" 

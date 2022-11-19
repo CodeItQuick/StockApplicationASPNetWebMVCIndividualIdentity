@@ -1,3 +1,4 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 
@@ -12,4 +13,5 @@ public interface IUnitOfWork : IDisposable
     IIncomeStatementRepository IncomeStatementRepository { get; }
     IKeyMetricsRepository KeyMetricsRepository { get; }
     IRatiosTtmRepository RatiosTtmRepository { get; }
+    ICashFlowStatementRepository CashFlowStatementRepository { get; }
 }

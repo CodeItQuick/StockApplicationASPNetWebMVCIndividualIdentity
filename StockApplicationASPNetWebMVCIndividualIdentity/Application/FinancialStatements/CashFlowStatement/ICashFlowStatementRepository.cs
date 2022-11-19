@@ -1,0 +1,8 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
+
+public interface ICashFlowStatementRepository : IRepository<CashFlowStatementDto>
+{
+}

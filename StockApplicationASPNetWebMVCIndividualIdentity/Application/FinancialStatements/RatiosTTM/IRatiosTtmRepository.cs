@@ -3,6 +3,6 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 
-public interface IRatiosTtmRepository : IRepository<RatiosTtmDto>
+public interface IRatiosTtmRepository : IRepository<RatiosDto>
 {
 }

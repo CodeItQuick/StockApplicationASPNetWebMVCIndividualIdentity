@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
@@ -27,6 +28,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly IncomeStatementService _incomeStatementService;
         private readonly KeyMetricsService _keyMetricsService;
         private readonly RatiosTtmService _ratiosTtmService;
+        private readonly CashFlowStatementService _cashFlowStatementService;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -42,6 +44,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _incomeStatementService = new IncomeStatementService(new UnitOfWork());
             _keyMetricsService = new KeyMetricsService(new UnitOfWork());
             _ratiosTtmService = new RatiosTtmService(new UnitOfWork());
+            _cashFlowStatementService = new CashFlowStatementService(new UnitOfWork());
         }
 
         public IActionResult Index(
@@ -108,7 +111,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                     _incomeStatementService.AddToIncomeStatements(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Index");
         }
         
 
@@ -131,7 +134,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 _keyMetricsService.AddToKeyMetrics(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Index");
         }
         
         [Route("/Settings/RetrieveRatiosTtm/{ticker}")]
@@ -141,20 +144,41 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             var response = client
                 .GetAsync(
-                    $"https://financialmodelingprep.com/api/v3/ratios-ttm/{ticker}?limit=10&apikey={_config["FMP:ApiKey"]}")
+                    $"https://financialmodelingprep.com/api/v3/ratios/{ticker}?limit=9&apikey={_config["FMP:ApiKey"]}")
                 .Result;
 
             var responseString = response.Content.ReadAsStringAsync().Result;
             
-            var jsonResponse = JsonConvert.DeserializeObject<List<RatiosTtmDto>>(responseString);
+            var jsonResponse = JsonConvert.DeserializeObject<List<RatiosDto>>(responseString);
+            if (jsonResponse == null) return RedirectToAction("Index");
+            jsonResponse?.ForEach(ratios => ratios.Symbol = ticker);
+            _ratiosTtmService.AddToRatiosTtm(jsonResponse);
+
+            return RedirectToAction("Index");
+        }
+        
+        [Route("/Settings/RetrieveCashFlowStatement/{ticker}")]
+        [HttpPost]
+        public IActionResult RetrieveCashFlowStatementData(string ticker)
+        {
+
+            var response = client
+                .GetAsync(
+                    $"https://financialmodelingprep.com/api/v3/cash-flow-statement/{ticker}?limit=10&apikey={_config["FMP:ApiKey"]}")
+                .Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            
+            var jsonResponse = JsonConvert.DeserializeObject<List<CashFlowStatementDto>>(responseString);
 
             if (jsonResponse != null)
             {
-                _ratiosTtmService.AddToRatiosTtm(jsonResponse);
+                _cashFlowStatementService.AddToCashFlowStatement(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Index");
         }
+        
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
         public IActionResult AddShortlist(string ticker, long stockid)

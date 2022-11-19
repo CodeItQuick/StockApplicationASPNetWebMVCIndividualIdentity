@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
@@ -11,9 +12,10 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
     [DbContext(typeof(StockContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221023161949_CreateCashFlowStatementTable")]
+    partial class CreateCashFlowStatementTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -628,7 +630,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     b.ToTable("KeyMetrics", (string)null);
                 });
 
-            modelBuilder.Entity("StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM.RatiosDto", b =>
+            modelBuilder.Entity("StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM.RatiosTtmDto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -636,177 +638,178 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("AssetTurnover")
+                    b.Property<decimal?>("AssetTurnoverTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CapitalExpenditureCoverageRatio")
+                    b.Property<decimal?>("CapitalExpenditureCoverageRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CashConversionCycle")
+                    b.Property<decimal?>("CashConversionCycleTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CashFlowCoverageRatios")
+                    b.Property<decimal?>("CashFlowCoverageRatiosTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CashFlowToDebtRatio")
+                    b.Property<decimal?>("CashFlowToDebtRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CashPerShare")
+                    b.Property<decimal?>("CashPerShareTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CashRatio")
+                    b.Property<decimal?>("CashRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CompanyEquityMultiplier")
+                    b.Property<decimal?>("CompanyEquityMultiplierTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("CurrentRatio")
+                    b.Property<decimal?>("CurrentRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTimeOffset>("Date")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("DaysOfInventoryOutstanding")
+                    b.Property<decimal?>("DaysOfInventoryOutstandingTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DaysOfPayablesOutstanding")
+                    b.Property<decimal?>("DaysOfPayablesOutstandingTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DaysOfSalesOutstanding")
+                    b.Property<decimal?>("DaysOfSalesOutstandingTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DebtEquityRatio")
+                    b.Property<decimal?>("DebtEquityRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DebtRatio")
+                    b.Property<decimal?>("DebtRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DividendPaidAndCapexCoverageRatio")
+                    b.Property<decimal?>("DividendPaidAndCapexCoverageRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DividendPayoutRatio")
+                    b.Property<decimal?>("DividendPerShareTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DividendYield")
+                    b.Property<decimal?>("DividendYielPercentageTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("EbitPerRevenue")
+                    b.Property<decimal?>("DividendYielTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("EbtPerEbit")
+                    b.Property<decimal?>("DividendYieldTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("EffectiveTaxRate")
+                    b.Property<decimal?>("EbitPerRevenueTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("EnterpriseValueMultiple")
+                    b.Property<decimal?>("EbtPerEbitTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("FixedAssetTurnover")
+                    b.Property<decimal?>("EffectiveTaxRateTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("FreeCashFlowOperatingCashFlowRatio")
+                    b.Property<decimal?>("EnterpriseValueMultipleTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("FreeCashFlowPerShare")
+                    b.Property<decimal?>("FixedAssetTurnoverTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("GrossProfitMargin")
+                    b.Property<decimal?>("FreeCashFlowOperatingCashFlowRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("InterestCoverage")
+                    b.Property<decimal?>("FreeCashFlowPerShareTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("InventoryTurnover")
+                    b.Property<decimal?>("GrossProfitMarginTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("LongTermDebtToCapitalization")
+                    b.Property<decimal?>("InterestCoverageTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("NetIncomePerEbt")
+                    b.Property<decimal?>("InventoryTurnoverTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("NetProfitMargin")
+                    b.Property<decimal?>("LongTermDebtToCapitalizationTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("OperatingCashFlowPerShare")
+                    b.Property<decimal?>("NetIncomePerEbtttm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("OperatingCashFlowSalesRatio")
+                    b.Property<decimal?>("NetProfitMarginTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("OperatingCycle")
+                    b.Property<decimal?>("OperatingCashFlowPerShareTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("OperatingProfitMargin")
+                    b.Property<decimal?>("OperatingCashFlowSalesRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PayablesTurnover")
+                    b.Property<decimal?>("OperatingCycleTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PayoutRatio")
+                    b.Property<decimal?>("OperatingProfitMarginTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Period")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PretaxProfitMargin")
+                    b.Property<decimal?>("PayablesTurnoverTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceBookValueRatio")
+                    b.Property<decimal?>("PayoutRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceCashFlowRatio")
+                    b.Property<decimal?>("PeRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceEarningsRatio")
+                    b.Property<decimal?>("PegRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceEarningsToGrowthRatio")
+                    b.Property<decimal?>("PretaxProfitMarginTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceFairValue")
+                    b.Property<decimal?>("PriceBookValueRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceSalesRatio")
+                    b.Property<decimal?>("PriceCashFlowRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceToBookRatio")
+                    b.Property<decimal?>("PriceEarningsRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceToFreeCashFlowsRatio")
+                    b.Property<decimal?>("PriceEarningsToGrowthRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceToOperatingCashFlowsRatio")
+                    b.Property<decimal?>("PriceFairValueTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PriceToSalesRatio")
+                    b.Property<decimal?>("PriceSalesRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("QuickRatio")
+                    b.Property<decimal?>("PriceToBookRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ReceivablesTurnover")
+                    b.Property<decimal?>("PriceToFreeCashFlowsRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ReturnOnAssets")
+                    b.Property<decimal?>("PriceToOperatingCashFlowsRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ReturnOnCapitalEmployed")
+                    b.Property<decimal?>("PriceToSalesRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ReturnOnEquity")
+                    b.Property<decimal?>("QuickRatioTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ShortTermCoverageRatios")
+                    b.Property<decimal?>("ReceivablesTurnoverTtm")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("ReturnOnAssetsTtm")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TotalDebtToCapitalization")
+                    b.Property<decimal?>("ReturnOnCapitalEmployedTtm")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ReturnOnEquityTtm")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ShortTermCoverageRatiosTtm")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TotalDebtToCapitalizationTtm")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

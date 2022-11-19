@@ -2,10 +2,10 @@ version: "3.8"
 
 services:
   sqlserverstocks:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2019-CU18-ubuntu-20.04
     environment:
       - SA_PASSWORD=Sqlserver0!
       - ACCEPT_EULA=Y
-      - MSSQL_PID=Express
+      - MSSQL_PID=Developer
     ports:
       - "1433:1433"
