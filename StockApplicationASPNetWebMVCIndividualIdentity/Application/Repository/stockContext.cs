@@ -143,7 +143,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                     .HasColumnName(nameof(StockInfoDatumDTO.Eps));
             
                 entity.Property(e => e.MarketCap)
-                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnType("long")
                     .HasColumnName(nameof(StockInfoDatumDTO.MarketCap));
             
                 entity.Property(e => e.OneDay)

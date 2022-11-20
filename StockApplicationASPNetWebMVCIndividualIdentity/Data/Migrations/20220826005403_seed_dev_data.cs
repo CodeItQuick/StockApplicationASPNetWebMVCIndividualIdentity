@@ -14,7 +14,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
             migrationBuilder.CreateTable(
                 name: "StockInfoData",
                 columns: table => new {
-                    Id = table.Column<long>().Annotation("SqlServer:ValueGenerationStrategy", 
+                    Id = table.Column<long>().Annotation(
+                        "SqlServer:ValueGenerationStrategy", 
                         SqlServerValueGenerationStrategy.IdentityColumn),
                     Ticker = table.Column<string>(nullable: true),
                     YoySuccess = table.Column<decimal>(nullable: true),

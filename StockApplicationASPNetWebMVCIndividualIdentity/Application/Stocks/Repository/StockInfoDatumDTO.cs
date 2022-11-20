@@ -14,7 +14,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
         public decimal? PbRatio { get; set; }
         public decimal? Eps { get; set; }
         public decimal? PeRatio { get; set; }
-        public double? MarketCap { get; set; }
+        public decimal? MarketCap { get; set; }
         public decimal? OneDay { get; set; }
         public decimal? SixMonths { get; set; }
         public decimal? CashFlowToSales { get; set; }

@@ -30,8 +30,8 @@
              {
                  <tr>
                      <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
-                     <td>$@(1669017000 * Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                     <td>@Model.IndividualStockEarningsView.ToList()[0].Date</td>
+                     <td>$@(Model.IndividualStockEarningsView.ToList()[0].MarketCap * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                     <td>@Model.IndividualStockEarningsView.ToList()[0].Date.AddYears(i)</td>
                      <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
                      <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
                      <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
