@@ -38,7 +38,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
                     r.Value.AttributeName.Equals(attrib)).Value.AttributeValue;
         }
 
-        public void AddDefaultAttributes(decimal PbRatio, decimal peRatio, decimal DivYield, decimal eps)
+        public void AddDefaultAttributes(decimal PbRatio, decimal peRatio, decimal DivYield, decimal eps,
+            decimal? AvgRoe)
         {
             // Investment Value Metrics
             _allStockAttributes.Add("PbRatio", new StockAttributeDecimal("PbRatio", PbRatio));
@@ -46,6 +47,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
             _allStockAttributes.Add("Eps", new StockAttributeDecimal("Eps", eps));
             // Overall good thing to know
             _allStockAttributes.Add("DivYield", new StockAttributeDecimal("DivYield", DivYield));
+            _allStockAttributes.Add("AvgRoe", new StockAttributeDecimal("AvgRoe", AvgRoe));
         }
 
         public Dictionary<string, decimal> Attributes()

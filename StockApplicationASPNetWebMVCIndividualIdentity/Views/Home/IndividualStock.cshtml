@@ -26,17 +26,18 @@
             <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
             <td>@Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare</td>
             <td>@Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings</td>
-        </tr>@for(var i = 1; i <= 10; i++)
-             {
-                 <tr>
-                     <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
-                     <td>$@(Model.IndividualStockEarningsView.ToList()[0].MarketCap * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                     <td>@Model.IndividualStockEarningsView.ToList()[0].Date.AddYears(i)</td>
-                     <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
-                     <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                     <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                 </tr>
-             }
+        </tr>
+        @for(var i = 1; i <= 10; i++)
+         {
+             <tr>
+                 <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
+                 <td>$@(Model.IndividualStockEarningsView.ToList()[0].MarketCap * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                 <td>@Model.IndividualStockEarningsView.ToList()[0].Date.AddYears(i)</td>
+                 <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
+                 <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+                 <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+             </tr>
+         }
     </form>
     </tbody>
 </table>

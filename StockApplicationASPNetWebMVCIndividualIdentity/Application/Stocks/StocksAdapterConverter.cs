@@ -14,7 +14,8 @@ public class StocksAdapterConverter
                 r.PbRatio ?? Decimal.Zero,
                 r.PeRatio ?? Decimal.Zero,
                 r.DivYield ?? Decimal.Zero,
-                r.Eps ?? Decimal.Zero
+                r.Eps ?? Decimal.Zero,
+                (r.Roe + r.Roe1 + r.Roe2 + r.Roe3) / 4
             );
 
             StocksAdapter stockAdapterData = new StocksAdapter();
