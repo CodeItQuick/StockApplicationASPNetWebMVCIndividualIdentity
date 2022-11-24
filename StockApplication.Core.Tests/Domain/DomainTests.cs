@@ -106,6 +106,6 @@ public class AcceptanceTests
             new decimal(0.4), 
             new decimal(0.5));
         
-        Assert.Equal(stock.Attributes().Count, 4);
+        Assert.Equal(stock.Attributes().Count, 5);
     }
 }

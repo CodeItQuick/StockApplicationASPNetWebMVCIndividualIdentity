@@ -57,15 +57,27 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             // DB/Application
             var stockInfoDatums = _stockIndexService.DisplayAllStocks(
                 stockInfoRequest.pageNumber ?? pageNumber ?? 0);
+            var numPages = _stockIndexService.DisplayAllStocksCount();
             // Display/Adapter
             var model = new IndexResponseModel<StocksAdapter>()
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
-                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < numPages, // FIXME: pretending there are 10 pages for now
                 StockInfoDatums = stockInfoDatums,
-                PageIndex = stockInfoRequest.pageNumber ?? 0
+                PageIndex = stockInfoRequest.pageNumber ?? 0,
+                NumPages = numPages
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult FindPage( 
+            string letter,
+            int? pageNumber)
+        {
+            // DB/Application
+            var stockInfoDatums = _stockIndexService.DisplayAllStocksToPage(letter);
+            return Redirect($"Index/?pageNumber={stockInfoDatums.Page}");
         }
 
         [Route("/Shortlist")]
@@ -86,6 +98,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
+
         [Route("/IndividualStock/{ticker}")]
         [HttpGet]
         public IActionResult IndividualStock(
@@ -101,7 +114,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             };
             return View(model);
         }
-        
+
         [Route("/Settings")]
         [HttpGet]
         public IActionResult Settings(
@@ -109,7 +122,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         {
             return View();
         }
-        
+
         [Route("/Settings/RetrieveIncomeStatement/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveIncomeStatementData(string ticker)
@@ -129,9 +142,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                     _incomeStatementService.AddToIncomeStatements(jsonResponse);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Settings");
         }
-        
+
 
         [Route("/Settings/RetrieveKeyMetricData/{ticker}")]
         [HttpPost]
@@ -152,9 +165,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 _keyMetricsService.AddToKeyMetrics(jsonResponse);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Settings");
         }
-        
+
         [Route("/Settings/RetrieveRatiosTtm/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveRatiosTtmData(string ticker)
@@ -172,9 +185,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             jsonResponse?.ForEach(ratios => ratios.Symbol = ticker);
             _ratiosTtmService.AddToRatiosTtm(jsonResponse);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Settings");
         }
-        
+
         [Route("/Settings/RetrieveCashFlowStatement/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveCashFlowStatementData(string ticker)
@@ -194,9 +207,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 _cashFlowStatementService.AddToCashFlowStatement(jsonResponse);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Settings");
         }
-        
+
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
         [HttpPost]
         public IActionResult AddShortlist(string ticker, long stockid)
@@ -226,7 +239,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return Redirect("/Shortlist");
         }
 
-    public IActionResult Privacy()
+        public IActionResult Privacy()
         {
             return View();
         }

@@ -10,4 +10,5 @@ public class IndexResponseModel<TEntity>
     public bool HasNextPage { get; set; } = true;
     public List<TEntity> StockInfoDatums { get; set; }
     public int PageIndex { get; set; } = 0;
+    public int NumPages { get; set; } = 1;
 }
