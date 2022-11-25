@@ -1,7 +1,7 @@
 @model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.IndividualStockResponseModel<StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView.IndividualStockDto>
 
 <div class="text-center">
-    <h1 class="display-4">ALG Earnings Projections</h1>
+    <h1 class="display-4">@Model.IndividualStockEarningsView.ToList()[0].Symbol Earnings Projections</h1>
 </div>
 
 <table class="table">
@@ -43,7 +43,7 @@
 </table>
 
 <div class="text-center">
-    <h1 class="display-4">ALG Previous Earnings (Assumptions)</h1>
+    <h1 class="display-4">@Model.IndividualStockEarningsView.ToList()[0].Symbol Previous Earnings (Assumptions)</h1>
 </div>
 
 <table class="table">

@@ -17,60 +17,66 @@
     @foreach (var item in Model.StockInfoDatums.GetRange(0, Model.StockInfoDatums.Count))
     {
         <tr>
-            <th scope="row">@item.Ticker</th>
-            <td>Pb Ratio: @item.stockAttribute?["PbRatio"]<br />
-                Pe Ratio: @item.stockAttribute?["PeRatio"] <br />
-                Eps: @item.stockAttribute?["Eps"] <br />
-                Avg. DivYield: @item.stockAttribute?["DivYield"] </td>
-            <td>Sales Growth: <br />
-                Earnings Growth: <br />
-                Free Cash Flow Growth: <br />
-                Net Profit Margin: </td>
+            <th scope="row">
+                <a asp-action="IndividualStock"
+                   asp-route-ticker="@item.Ticker"
+                   class="btn btn-default">
+                    @item.Ticker (Details)
+                </a>
+            </th>
+            <td>
+                Pb Ratio: @item.stockAttribute?["PbRatio"]<br/>
+                Pe Ratio: @item.stockAttribute?["PeRatio"] <br/>
+                Eps: @item.stockAttribute?["Eps"] <br/>
+                Avg. DivYield: @item.stockAttribute?["DivYield"]
+            </td>
+            <td>
+                Sales Growth: <br/>
+                Earnings Growth: <br/>
+                Free Cash Flow Growth: <br/>
+                Net Profit Margin:
+            </td>
             <td>
                 <form method="post">
-                    <input 
-                        type="submit" 
+                    <input
+                        type="submit"
                         asp-controller="Home"
                         asp-action="RetrieveIncomeStatementData"
                         asp-route-ticker="@item.Ticker"
-                        class="btn btn-success" 
-                        value="Retrieve Income Statements" 
-                    />
+                        class="btn btn-success"
+                        value="Retrieve Income Statements"/>
                 </form>
                 <form method="post">
-                    <input 
-                        type="submit" 
+                    <input
+                        type="submit"
                         asp-controller="Home"
                         asp-action="RetrieveKeyMetricData"
                         asp-route-ticker="@item.Ticker"
-                        class="btn btn-success" 
-                        value="Retrieve Key Metrics" 
-                    />
+                        class="btn btn-success"
+                        value="Retrieve Key Metrics"/>
                 </form>
                 <form method="post">
-                    <input 
-                        type="submit" 
+                    <input
+                        type="submit"
                         asp-controller="Home"
                         asp-action="RetrieveRatiosTtmData"
                         asp-route-ticker="@item.Ticker"
-                        class="btn btn-success" 
-                        value="Retrieve Ratios TTM" 
-                    />
+                        class="btn btn-success"
+                        value="Retrieve Ratios TTM"/>
                 </form>
                 <form method="post">
-                    <input 
-                        type="submit" 
+                    <input
+                        type="submit"
                         asp-controller="Home"
                         asp-action="RetrieveCashFlowStatementData"
                         asp-route-ticker="@item.Ticker"
-                        class="btn btn-success" 
-                        value="Retrieve Cash Flow Statements" 
-                    />
+                        class="btn btn-success"
+                        value="Retrieve Cash Flow Statements"/>
                 </form>
-                <form 
-                    asp-action="DeleteShortlist" 
-                    asp-controller="Home" 
-                    asp-route-ticker="@item.Ticker" 
+                <form
+                    asp-action="DeleteShortlist"
+                    asp-controller="Home"
+                    asp-route-ticker="@item.Ticker"
                     method="post">
                     <button type="submit" class="btn btn-danger">
                         Delete
