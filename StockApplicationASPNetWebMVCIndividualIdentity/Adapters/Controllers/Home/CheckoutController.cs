@@ -126,7 +126,70 @@ public class CheckoutController : Controller
             
             return Redirect("/");
         }
-}
+
+        public IActionResult CreateCheckoutIndividualStockReq(string subscriptionType, string stockDescription)
+        {
+            
+            var domain = "https://localhost:7006";
+            var userIdentity = _userManager.GetUserAsync(User).Result;
+            var customerId = userIdentity.StripeCustomerId;
+
+            var subscriptionsAttached = new List<SessionLineItemOptions>();
+            
+            if (subscriptionType.Equals("Gold"))
+            {
+                subscriptionsAttached.Add(
+                    new SessionLineItemOptions
+                {
+                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
+                    Quantity = 1,
+                });
+            } else if (subscriptionType.Equals("Silver"))
+            {
+                subscriptionsAttached.Add(
+                new SessionLineItemOptions
+                {
+                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
+                    Quantity = 1,
+                    // TaxRates =
+                    // Currency = 
+                    // Specify the PriceData instead of above
+                    // PriceData = new SessionLineItemPriceDataOptions()
+                    // {
+                    //     Product = "prod_MSJuHWVPzcmaaf",
+                    //     Currency = "USD",
+                    //     Recurring = new SessionLineItemPriceDataRecurringOptions()
+                    //     {
+                    //         Interval = "month"
+                    //     },
+                    //     TaxBehavior = "inclusive",
+                    //     UnitAmount = 1200L
+                    // },
+                    // Quantity = 2
+                });
+            }
+            var options = new SessionCreateOptions
+            {
+                AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
+                LineItems = subscriptionsAttached,
+                Mode = "subscription",
+                SuccessUrl = domain + "/success",
+                CancelUrl = domain + "/cancel",
+                Customer = customerId,
+                SubscriptionData = new ()
+                {
+                    Description = stockDescription
+                }
+            };
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+    }
 
 public class CheckoutResponseModel
 {

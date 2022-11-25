@@ -23,6 +23,19 @@
                    class="btn btn-default">
                     @item.Ticker (Details)
                 </a>
+                <form
+                    asp-action="CreateCheckoutIndividualStockReq"
+                    asp-controller="Checkout"
+                    method="POST">
+                    <input id="Gold" type="radio" name="subscriptionType" value="Gold" /><label for="Gold">Gold Tier</label><br>
+                    <input id="Silver" type="radio" name="subscriptionType" value="Silver" /><label for="Silver">Silver Tier</label><br>
+                    <input type="hidden" name="stockDescription" value="@item.Ticker" />
+                    <button
+                        type="submit"
+                        id="checkout-button">
+                        Checkout
+                    </button>
+                </form>
             </th>
             <td>
                 Pb Ratio: @item.stockAttribute?["PbRatio"]<br/>
