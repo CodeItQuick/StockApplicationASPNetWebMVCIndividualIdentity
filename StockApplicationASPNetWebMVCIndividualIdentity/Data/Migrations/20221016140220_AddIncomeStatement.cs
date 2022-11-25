@@ -16,7 +16,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     Id = table.Column<long>().Annotation("SqlServer:ValueGenerationStrategy", 
                         SqlServerValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTimeOffset>(),
-                    Symbol = table.Column<string>(),
+                    Symbol = table.Column<string>(type: "nvarchar(8)", nullable: false),
                     ReportedCurrency = table.Column<string>(),
                     Cik = table.Column<string>(),
                     FillingDate = table.Column<DateTimeOffset>(),
@@ -57,6 +57,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IncomeStatements_ids", x => x.Id);
+                    table.UniqueConstraint("UK_IncomeStatement_Symbol_Date", x => new {x.Symbol, x.Date});
                 });
         }
 

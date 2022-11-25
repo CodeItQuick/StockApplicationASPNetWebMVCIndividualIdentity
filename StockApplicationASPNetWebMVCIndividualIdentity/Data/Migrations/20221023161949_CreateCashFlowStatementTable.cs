@@ -16,7 +16,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Symbol = table.Column<string>(type: "nvarchar(8)", nullable: false),
                     ReportedCurrency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cik = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FillingDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -59,6 +59,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CashFlowStatement", x => x.Id);
+                    table.UniqueConstraint("UK_CashFlowStatement_Symbol_Date", x => new {x.Symbol, x.Date});
                 });
         }
 

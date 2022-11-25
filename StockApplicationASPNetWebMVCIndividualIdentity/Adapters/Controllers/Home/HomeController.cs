@@ -142,7 +142,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                     _incomeStatementService.AddToIncomeStatements(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Shortlist");
         }
 
 
@@ -165,7 +165,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 _keyMetricsService.AddToKeyMetrics(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Shortlist");
         }
 
         [Route("/Settings/RetrieveRatiosTtm/{ticker}")]
@@ -185,7 +185,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             jsonResponse?.ForEach(ratios => ratios.Symbol = ticker);
             _ratiosTtmService.AddToRatiosTtm(jsonResponse);
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Shortlist");
         }
 
         [Route("/Settings/RetrieveCashFlowStatement/{ticker}")]
@@ -207,7 +207,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 _cashFlowStatementService.AddToCashFlowStatement(jsonResponse);
             }
 
-            return RedirectToAction("Settings");
+            return RedirectToAction("Shortlist");
         }
 
         [Route("/Shortlist/Add/{ticker}/{stockid:long}")]

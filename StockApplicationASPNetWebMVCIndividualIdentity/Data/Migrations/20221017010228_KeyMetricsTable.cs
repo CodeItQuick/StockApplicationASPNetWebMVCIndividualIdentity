@@ -15,7 +15,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Symbol = table.Column<string>(type: "nvarchar(8)", nullable: false),
                     Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Period = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RevenuePerShare = table.Column<decimal>(type: "decimal(18,5)", nullable: true),
@@ -79,6 +79,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_KeyMetrics", x => x.Id);
+                    table.UniqueConstraint("UK_KeyMetrics_Symbol_Date", x => new {x.Symbol, x.Date});
                 });
         }
 

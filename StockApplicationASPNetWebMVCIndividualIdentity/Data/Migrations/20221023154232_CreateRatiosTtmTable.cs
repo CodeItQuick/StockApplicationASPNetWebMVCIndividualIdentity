@@ -423,7 +423,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DividendYielTtm = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symbol = table.Column<string>(type: "nvarchar(8)", nullable: true),
                     DividendYielPercentageTtm = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
                     PeRatioTtm = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
                     PegRatioTtm = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
@@ -485,6 +485,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RatiosTTM", x => x.Id);
+                    // table.UniqueConstraint("UK_RatiosTTM_Symbol", x => x.Symbol);
                 });
         }
 
