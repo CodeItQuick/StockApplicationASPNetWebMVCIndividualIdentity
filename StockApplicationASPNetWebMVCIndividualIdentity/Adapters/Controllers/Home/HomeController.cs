@@ -13,6 +13,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatem
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+using Stripe;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home
 {
@@ -48,6 +49,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _ratiosTtmService = new RatiosTtmService(new UnitOfWork());
             _cashFlowStatementService = new CashFlowStatementService(new UnitOfWork());
             _individualStockService = new IndividualStockService(new UnitOfWork());
+            
+            StripeConfiguration.ApiKey = config["StripeAPIKey"];
         }
 
         public IActionResult Index(
@@ -88,6 +91,21 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             // DB/Application
             var stockInfoDatums = _shortlistStockInfoDataService.ShortlistedStocks(
                 stockInfoRequest?.pageNumber ?? 0);
+            
+            // Stripe check subscriptions
+            
+            var service = new SubscriptionService();
+            StripeList<Subscription> subscriptions = service.List(new SubscriptionListOptions());
+            stockInfoDatums.ForEach(stock =>
+            {
+                var subscriptionRecord = subscriptions.FirstOrDefault(subscription => subscriptions != null &&
+                    subscription.Description != null && subscription.Description.Equals(stock.Ticker));
+                string? subscriptionType = null;
+                subscriptionRecord?.Items.Data[0].Plan.Metadata
+                    .TryGetValue("SubscriptionName", out subscriptionType);
+                stock.SubscriptionType = subscriptionType ?? "None";
+            });
+            
             // Display/Adapter
             var model = new IndexResponseModel<StocksAdapter>
             {
