@@ -124,10 +124,10 @@ public class CheckoutController : Controller
             var service = new SubscriptionService();
             var subscription = service.Cancel(req.subscriptionid);
             
-            return Redirect("/");
+            return Redirect("/manage-subscriptions");
         }
 
-        public IActionResult CreateCheckoutIndividualStockReq(string subscriptionType, string stockDescription)
+        public IActionResult CreateCheckoutIndividualStockReq(string subscriptionType)
         {
             
             var domain = "https://localhost:7006";
@@ -136,7 +136,7 @@ public class CheckoutController : Controller
 
             var subscriptionsAttached = new List<SessionLineItemOptions>();
             
-            if (subscriptionType.Equals("Gold"))
+            if (subscriptionType.Contains("Gold"))
             {
                 subscriptionsAttached.Add(
                     new SessionLineItemOptions
@@ -145,7 +145,7 @@ public class CheckoutController : Controller
                     Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
                     Quantity = 1,
                 });
-            } else if (subscriptionType.Equals("Silver"))
+            } else if (subscriptionType.Contains("Silver"))
             {
                 subscriptionsAttached.Add(
                 new SessionLineItemOptions
@@ -180,7 +180,7 @@ public class CheckoutController : Controller
                 Customer = customerId,
                 SubscriptionData = new ()
                 {
-                    Description = stockDescription
+                    Description = subscriptionType
                 }
             };
             var service = new SessionService();

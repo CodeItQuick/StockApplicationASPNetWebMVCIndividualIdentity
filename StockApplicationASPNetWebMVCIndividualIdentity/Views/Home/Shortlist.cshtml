@@ -23,15 +23,24 @@
                    class="btn btn-default">
                     @item.Ticker (Details)
                 </a>
-                @if (item.SubscriptionType.Equals("None"))
+                @if (item.SubscriptionType != null && item.SubscriptionType.Contains("None"))
                 {
                     <form
                         asp-action="CreateCheckoutIndividualStockReq"
                         asp-controller="Checkout"
                         method="POST">
-                        <input id="Gold" type="radio" name="subscriptionType" value="Gold" /><label for="Gold">Gold Tier</label><br>
-                        <input id="Silver" type="radio" name="subscriptionType" value="Silver" /><label for="Silver">Silver Tier</label><br>
-                        <input type="hidden" name="stockDescription" value="@item.Ticker" />
+                        <input 
+                            id="Gold-@item.Ticker" 
+                            type="radio" 
+                            name="subscriptionType" 
+                            value="Gold Tier @item.Ticker" />
+                        <label for="Gold-@item.Ticker">Gold Tier</label><br>
+                        <input 
+                            id="Silver-@item.Ticker" 
+                            type="radio" 
+                            name="subscriptionType" 
+                            value="Silver Tier @item.Ticker" />
+                        <label for="Silver-@item.Ticker">Silver Tier</label><br>
                         <button
                             type="submit"
                             id="checkout-button">
@@ -41,11 +50,11 @@
                 }
                 else 
                 {
-                    if(item.SubscriptionType.Contains("Gold"))
+                    if(item.SubscriptionType != null && item.SubscriptionType.Contains("Gold"))
                     {
                         <div>Gold Tier</div>
                     }
-                    if(item.SubscriptionType.Contains("Silver"))
+                    if(item.SubscriptionType != null && item.SubscriptionType.Contains("Silver"))
                     {
                         <div>Silver Tier</div>
                     }

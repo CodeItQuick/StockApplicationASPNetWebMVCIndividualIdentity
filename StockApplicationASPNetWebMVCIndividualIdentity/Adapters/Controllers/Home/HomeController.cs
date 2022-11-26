@@ -99,7 +99,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             stockInfoDatums.ForEach(stock =>
             {
                 var subscriptionRecord = subscriptions.FirstOrDefault(subscription => subscriptions != null &&
-                    subscription.Description != null && subscription.Description.Equals(stock.Ticker));
+                    subscription.Description != null && subscription.Description.Contains(stock.Ticker));
                 string? subscriptionType = null;
                 subscriptionRecord?.Items.Data[0].Plan.Metadata
                     .TryGetValue("SubscriptionName", out subscriptionType);
@@ -110,7 +110,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var model = new IndexResponseModel<StocksAdapter>
             {
                 HasPreviousPage = stockInfoRequest?.pageNumber >= 1,
-                HasNextPage = (stockInfoRequest?.pageNumber ?? 0) < 10, // FIXME: pretending there are 10 pages for now
+                HasNextPage = (stockInfoRequest?.pageNumber ?? 0) < stockInfoDatums.Count / 10,
                 StockInfoDatums = stockInfoDatums,
                 PageIndex = stockInfoRequest?.pageNumber ?? 0
             };
