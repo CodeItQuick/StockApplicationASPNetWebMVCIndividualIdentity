@@ -228,9 +228,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return RedirectToAction("Shortlist");
         }
 
-        [Route("/Shortlist/Add/{ticker}/{stockid:long}")]
+        [Route("/Shortlist/Add/{ticker}/{stockId:long}")]
         [HttpPost]
-        public IActionResult AddShortlist(string ticker, long stockid)
+        public IActionResult AddShortlist(string ticker, long stockId)
         {
             if (User.Identity == null)
             {
@@ -241,7 +241,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _shortlistService.AddToShortlist(new ShortlistDto()
             {
                 Ticker = ticker,
-                StockInfoDataId = stockid,
+                StockInfoDataId = stockId,
                 UserId = findFirstValue
             });
             //FIXME: Should display shortlist

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -15,6 +16,7 @@ public class CheckoutController : Controller
     {
         private readonly ILogger<CheckoutController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CustomerRetrievalService<CheckoutController> _customerRetrievalService;
 
         public CheckoutController(
             ILogger<CheckoutController> logger, 
@@ -24,6 +26,7 @@ public class CheckoutController : Controller
             _logger = logger;
             _userManager = userManager;
             StripeConfiguration.ApiKey = configuration["StripeAPIKey"];
+            _customerRetrievalService = new CustomerRetrievalService<CheckoutController>(logger, userManager, configuration);
         }
 
         [Route("/create-checkout")]
@@ -61,8 +64,7 @@ public class CheckoutController : Controller
         public IActionResult CreateCheckoutReq(string subscriptionType)
         {
             var domain = "https://localhost:7006";
-            var userIdentity = _userManager.GetUserAsync(User).Result;
-            var customerId = userIdentity.StripeCustomerId;
+            var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
 
             var subscriptionsAttached = new List<SessionLineItemOptions>();
             var subscriptionDescription = "unknown";
@@ -131,8 +133,7 @@ public class CheckoutController : Controller
         {
             
             var domain = "https://localhost:7006";
-            var userIdentity = _userManager.GetUserAsync(User).Result;
-            var customerId = userIdentity.StripeCustomerId;
+            var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
 
             var subscriptionsAttached = new List<SessionLineItemOptions>();
             
@@ -189,6 +190,7 @@ public class CheckoutController : Controller
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
+
     }
 
 public class CheckoutResponseModel
