@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StockApplication.Core.Tests.Application;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
@@ -32,6 +33,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly RatiosTtmService _ratiosTtmService;
         private readonly CashFlowStatementService _cashFlowStatementService;
         private readonly IndividualStockService _individualStockService;
+        private readonly SubscriptionsService _subscriptionsService;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -41,6 +43,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _logger = logger;
             _userManager = userManager;
             _config = config;
+            _subscriptionsService = new SubscriptionsService(new UnitOfWork());
             _stockIndexService = new StockIndexService(new UnitOfWork());
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService(new UnitOfWork());
             _shortlistService = new ShortlistService(new UnitOfWork());
@@ -125,10 +128,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         {
             // DB/Application
             var stockInfoDatums = _individualStockService.RetrieveIndividualStocks(ticker);
+            var stockSubscriptions = _subscriptionsService.Retrieve();
             // Display/Adapter
             var model = new IndividualStockResponseModel<IndividualStockDto>()
             {
-                IndividualStockEarningsView = stockInfoDatums
+                IndividualStockEarningsView = stockInfoDatums,
+                StockSubscriptions = stockSubscriptions.Where(x => x.Description != null && x.Description.Contains(ticker))
             };
             return View(model);
         }

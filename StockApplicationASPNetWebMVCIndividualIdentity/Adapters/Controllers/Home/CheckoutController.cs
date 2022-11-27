@@ -239,42 +239,25 @@ public class CheckoutController : Controller
                         HostedInvoiceUrl = stripeInvoice?.HostedInvoiceUrl
                     });
             } 
-            else if (stripeEvent.Type == Events.InvoiceCreated)
-            {
-                var stripeInvoice = stripeEvent.Data.Object as Invoice;
-                var dbSucceed = _invoices.AddToInvoicePaymentSucceeded(
-                    new InvoicesDto()
-                    {
-                        CreatedDate = stripeEvent.Created,
-                        Customer = stripeInvoice?.CustomerId,
-                        Subscription = stripeInvoice?.Lines.Data[0].Subscription,
-                        CustomerName = stripeInvoice?.CustomerName,
-                        Paid = stripeInvoice?.Paid ?? false,
-                        AmountDue = stripeInvoice?.AmountDue ?? 0L, // TODO: fill in the remainder of the table  columns
-                        AmountPaid = stripeInvoice?.AmountPaid ?? 0L,
-                        AmountRemaining = stripeInvoice?.AmountRemaining ?? 0L,
-                        CollectionMethod = stripeInvoice?.CollectionMethod,
-                        CustomerEmail = stripeInvoice?.CustomerEmail,
-                        LineItemPriceId = stripeInvoice?.Lines.Data[0].Price.Id, // only one line item with a price id
-                        HostedInvoiceUrl = stripeInvoice?.HostedInvoiceUrl
-                    });
-            }
-            else if (stripeEvent.Type is Events.CustomerSubscriptionCreated or Events.CustomerSubscriptionDeleted or Events.CustomerSubscriptionUpdated)
+            else if (stripeEvent.Type is 
+                     Events.CustomerSubscriptionCreated or 
+                     Events.CustomerSubscriptionDeleted or 
+                     Events.CustomerSubscriptionUpdated)
             {
                 var stripeSubscription = stripeEvent.Data.Object as Subscription;
                 var dbSucceed = _subscriptions.AddToInvoicePaymentSucceeded(
                     new SubscriptionsDto()
                     {
-                        SubscriptionId = stripeSubscription.Id,
+                        SubscriptionId = stripeSubscription?.Id,
                         CreatedDate = stripeEvent.Created,
                         Customer = stripeSubscription?.CustomerId,
-                        Description = stripeSubscription.Description,
-                        Status = stripeSubscription.Status,
-                        CancelAt = stripeSubscription.CancelAt,
-                        CanceledAt = stripeSubscription.CanceledAt,
-                        CreatedAt = stripeSubscription.Created,
-                        CurrentPeriodEnd = stripeSubscription.CurrentPeriodEnd,
-                        CurrentPeriodStart = stripeSubscription.CurrentPeriodStart
+                        Description = stripeSubscription?.Description,
+                        Status = stripeSubscription?.Status,
+                        CancelAt = stripeSubscription?.CancelAt,
+                        CanceledAt = stripeSubscription?.CanceledAt,
+                        CreatedAt = stripeSubscription?.Created,
+                        CurrentPeriodEnd = stripeSubscription?.CurrentPeriodEnd,
+                        CurrentPeriodStart = stripeSubscription?.CurrentPeriodStart
                     });
             }
             // ... handle other event types

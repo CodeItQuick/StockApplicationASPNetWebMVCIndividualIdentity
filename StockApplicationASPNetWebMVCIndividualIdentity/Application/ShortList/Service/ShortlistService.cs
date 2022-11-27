@@ -21,7 +21,9 @@ public class ShortlistService
 
     public void DeleteFromShortlist(string ticker, string userId)
     {
-        var stockEntity = _unitOfWork.ShortListRepository.Find(dto => dto.Ticker == ticker && dto.UserId == userId).Single();
+        var stockEntity = _unitOfWork.ShortListRepository
+            .Find(dto => dto.Ticker == ticker && dto.UserId == userId)
+            .First();
         _unitOfWork.ShortListRepository.Remove(stockEntity);
         _unitOfWork.SaveChanges();
     }

@@ -79,3 +79,40 @@
     </form>
     </tbody>
 </table>
+
+<div class="text-center">
+    <h1 class="display-4">@Model.IndividualStockEarningsView.ToList()[0].Symbol Subscription Activity</h1>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Customer</th>
+        <th scope="col">Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Created At</th>
+        <th scope="col">Current Period Start</th>
+        <th scope="col">Current Period End</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form method="POST">
+        @for (var i = 0; i < Model.StockSubscriptions.Count(); i++)
+        {
+            <tr>
+                <td>@Model.StockSubscriptions.ToList()[i].Customer</td>
+                <td>@Model.StockSubscriptions.ToList()[i].Description</td>
+                <td>@Model.StockSubscriptions.ToList()[i].Status</td>
+                <td>@Model.StockSubscriptions.ToList()[i].CreatedAt</td>
+                <td>@Model.StockSubscriptions.ToList()[i].CurrentPeriodStart</td>
+                <td>@Model.StockSubscriptions.ToList()[i].CurrentPeriodEnd</td>
+            </tr>
+        }
+        <tr>
+            <th scope="col">Averages</th>
+            <th></th>
+            <th></th>
+            <th>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</th>
+        </tr>
+    </form>
+    </tbody>
+</table>

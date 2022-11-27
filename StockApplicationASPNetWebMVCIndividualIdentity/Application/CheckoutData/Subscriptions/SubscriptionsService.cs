@@ -25,4 +25,17 @@ public class SubscriptionsService
             return false;
         }
     }
+
+    public IEnumerable<SubscriptionsDto> Retrieve()
+    {
+        try
+        {
+            var subscriptionsDtos = _unitOfWork.SubscriptionsRepository.Get(null,null);
+            return subscriptionsDtos;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }

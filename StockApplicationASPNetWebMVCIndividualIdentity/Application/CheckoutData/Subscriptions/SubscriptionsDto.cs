@@ -12,7 +12,7 @@ public class SubscriptionsDto
     [JsonProperty(PropertyName = "Id")]
     public int Id { get; set; }
     [JsonProperty(PropertyName = "SubscriptionId")]
-    public string SubscriptionId { get; set; }
+    public string? SubscriptionId { get; set; }
     [JsonProperty(PropertyName = "CreatedDate")]
     public DateTimeOffset CreatedDate { get; set; }
     [JsonProperty(PropertyName = "Description")]
@@ -22,14 +22,14 @@ public class SubscriptionsDto
     [JsonProperty(PropertyName = "CanceledAt")]
     public DateTimeOffset? CanceledAt { get; set; }
     [JsonProperty(PropertyName = "CreatedAt")]
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
     [JsonProperty(PropertyName = "CurrentPeriodStart")]
-    public DateTimeOffset CurrentPeriodStart { get; set; }
+    public DateTimeOffset? CurrentPeriodStart { get; set; }
     [JsonProperty(PropertyName = "CurrentPeriodEnd")]
-    public DateTimeOffset CurrentPeriodEnd { get; set; }
+    public DateTimeOffset? CurrentPeriodEnd { get; set; }
     [JsonProperty(PropertyName = "Status")]
-    public string Status { get; set; }
+    public string? Status { get; set; }
     [JsonProperty(PropertyName = "Customer")]
-    public string Customer { get; set; }
+    public string? Customer { get; set; }
     
 }
