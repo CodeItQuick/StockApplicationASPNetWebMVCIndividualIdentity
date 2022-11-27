@@ -232,8 +232,8 @@ public class CheckoutController : Controller
                         LineItemPriceId = stripeInvoice?.Lines.Data[0].Price.Id, // only one line item with a price id
                         HostedInvoiceUrl = stripeInvoice?.HostedInvoiceUrl
                     });
-                
-            } else if (stripeEvent.Type == Events.InvoiceCreated)
+            } 
+            else if (stripeEvent.Type == Events.InvoiceCreated)
             {
                 var stripeInvoice = stripeEvent.Data.Object as Invoice;
                 var dbSucceed = _invoicePaymentSucceeded.AddToInvoicePaymentSucceeded(
