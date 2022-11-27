@@ -65,9 +65,9 @@ public class UnitOfWork : IUnitOfWork
     private IndividualStockRepository? _individualStockRepository;
     public IIndividualStockRepository IndividualStockRepository => 
         _individualStockRepository ??= new IndividualStockRepository(Context);
-    private InvoicePaymentSucceededRepository? _invoicePaymentSucceededRepository;
-    public IInvoicePaymentSucceededRepository InvoicePaymentSucceededRepository => 
-        _invoicePaymentSucceededRepository ??= new InvoicePaymentSucceededRepository(Context);
+    private InvoicesRepository? _invoicePaymentSucceededRepository;
+    public IInvoicesRepository InvoicesRepository => 
+        _invoicePaymentSucceededRepository ??= new InvoicesRepository(Context);
 
     #endregion
 

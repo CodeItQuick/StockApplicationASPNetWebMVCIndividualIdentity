@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 
-[Table("InvoicePaymentSucceeded")]
+[Table("Invoices")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class InvoicePaymentSucceededDto
+public class InvoicesDto
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]

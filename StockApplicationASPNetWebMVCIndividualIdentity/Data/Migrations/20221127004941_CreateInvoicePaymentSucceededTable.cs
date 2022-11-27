@@ -9,7 +9,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "InvoicePaymentSucceeded",
+                name: "Invoices",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -29,13 +29,14 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InvoicePaymentSucceeded", x => x.Id);
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(name: "InvoicePaymentSucceeded");
+            migrationBuilder.DropTable(name: "Invoices");
         }
     }
 }

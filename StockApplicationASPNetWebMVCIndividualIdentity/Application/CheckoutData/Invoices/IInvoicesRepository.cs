@@ -3,6 +3,6 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 
-public interface IInvoicePaymentSucceededRepository : IRepository<InvoicePaymentSucceededDto>
+public interface IInvoicesRepository : IRepository<InvoicesDto>
 {
 }

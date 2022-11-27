@@ -58,10 +58,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                 entity.HasKey(e => e.Id);
                 entity.ToTable("CashFlowStatement");
             });
-            modelBuilder.Entity<InvoicePaymentSucceededDto>(entity =>
+            modelBuilder.Entity<InvoicesDto>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.ToTable("InvoicePaymentSucceeded");
+                entity.ToTable("Invoices");
             });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {

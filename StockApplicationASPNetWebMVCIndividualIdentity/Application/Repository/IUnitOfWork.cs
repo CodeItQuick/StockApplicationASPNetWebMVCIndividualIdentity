@@ -17,5 +17,5 @@ public interface IUnitOfWork : IDisposable
     IRatiosTtmRepository RatiosTtmRepository { get; }
     ICashFlowStatementRepository CashFlowStatementRepository { get; }
     IIndividualStockRepository IndividualStockRepository { get; }
-    IInvoicePaymentSucceededRepository InvoicePaymentSucceededRepository { get; }
+    IInvoicesRepository InvoicesRepository { get; }
 }

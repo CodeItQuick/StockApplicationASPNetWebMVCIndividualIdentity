@@ -18,7 +18,7 @@ public class CheckoutController : Controller
     private readonly ILogger<CheckoutController> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly CustomerRetrievalService<CheckoutController> _customerRetrievalService;
-    private readonly InvoicePaymentSucceededService _invoicePaymentSucceeded;
+    private readonly InvoicesService _invoices;
     const string endpointSecret = "whsec_9886e456919af0c3ad92ba5d093d585d1d9ebf6e7d4140d62690afc7939d7828";
 
     public CheckoutController(
@@ -31,7 +31,7 @@ public class CheckoutController : Controller
         StripeConfiguration.ApiKey = configuration["StripeAPIKey"];
         _customerRetrievalService =
             new CustomerRetrievalService<CheckoutController>(logger, userManager, configuration);
-        _invoicePaymentSucceeded = new InvoicePaymentSucceededService(new UnitOfWork());
+        _invoices = new InvoicesService(new UnitOfWork());
     }
 
     [Route("/create-checkout")]
@@ -216,8 +216,8 @@ public class CheckoutController : Controller
             if (stripeEvent.Type == Events.InvoicePaid)
             {
                 var stripeInvoice = stripeEvent.Data.Object as Invoice;
-                var dbSucceed = _invoicePaymentSucceeded.AddToInvoicePaymentSucceeded(
-                    new InvoicePaymentSucceededDto()
+                var dbSucceed = _invoices.AddToInvoicePaymentSucceeded(
+                    new InvoicesDto()
                     {
                         CreatedDate = stripeEvent.Created,
                         Customer = stripeInvoice?.CustomerId,
@@ -236,8 +236,8 @@ public class CheckoutController : Controller
             else if (stripeEvent.Type == Events.InvoiceCreated)
             {
                 var stripeInvoice = stripeEvent.Data.Object as Invoice;
-                var dbSucceed = _invoicePaymentSucceeded.AddToInvoicePaymentSucceeded(
-                    new InvoicePaymentSucceededDto()
+                var dbSucceed = _invoices.AddToInvoicePaymentSucceeded(
+                    new InvoicesDto()
                     {
                         CreatedDate = stripeEvent.Created,
                         Customer = stripeInvoice?.CustomerId,

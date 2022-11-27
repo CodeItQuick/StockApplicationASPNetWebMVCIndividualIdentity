@@ -3,20 +3,20 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 
-public class InvoicePaymentSucceededService
+public class InvoicesService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public InvoicePaymentSucceededService(IUnitOfWork unitOfWork)
+    public InvoicesService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public bool AddToInvoicePaymentSucceeded(InvoicePaymentSucceededDto invoicePaymentSucceededDto)
+    public bool AddToInvoicePaymentSucceeded(InvoicesDto invoicesDto)
     {   
         try
         {
-            _unitOfWork.InvoicePaymentSucceededRepository.Add(invoicePaymentSucceededDto);
+            _unitOfWork.InvoicesRepository.Add(invoicesDto);
             var saveChanges = _unitOfWork.SaveChanges();
             return saveChanges;
         }
