@@ -1,3 +1,7 @@
+Starting Stripe hook:
+
+
+
 TODO List:
 
 1. Add shortlist was failing on live site and I had to go outside testing to fix it, figure out why

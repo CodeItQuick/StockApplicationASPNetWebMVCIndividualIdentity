@@ -1,3 +1,4 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
@@ -64,6 +65,9 @@ public class UnitOfWork : IUnitOfWork
     private IndividualStockRepository? _individualStockRepository;
     public IIndividualStockRepository IndividualStockRepository => 
         _individualStockRepository ??= new IndividualStockRepository(Context);
+    private InvoicePaymentSucceededRepository? _invoicePaymentSucceededRepository;
+    public IInvoicePaymentSucceededRepository InvoicePaymentSucceededRepository => 
+        _invoicePaymentSucceededRepository ??= new InvoicePaymentSucceededRepository(Context);
 
     #endregion
 

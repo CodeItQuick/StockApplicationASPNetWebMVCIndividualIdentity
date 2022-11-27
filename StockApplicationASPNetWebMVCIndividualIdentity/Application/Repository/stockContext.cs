@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
@@ -56,6 +57,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             {
                 entity.HasKey(e => e.Id);
                 entity.ToTable("CashFlowStatement");
+            });
+            modelBuilder.Entity<InvoicePaymentSucceededDto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("InvoicePaymentSucceeded");
             });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {

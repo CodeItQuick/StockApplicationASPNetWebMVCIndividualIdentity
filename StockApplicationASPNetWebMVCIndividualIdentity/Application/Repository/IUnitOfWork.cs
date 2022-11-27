@@ -1,3 +1,4 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
@@ -16,4 +17,5 @@ public interface IUnitOfWork : IDisposable
     IRatiosTtmRepository RatiosTtmRepository { get; }
     ICashFlowStatementRepository CashFlowStatementRepository { get; }
     IIndividualStockRepository IndividualStockRepository { get; }
+    IInvoicePaymentSucceededRepository InvoicePaymentSucceededRepository { get; }
 }
