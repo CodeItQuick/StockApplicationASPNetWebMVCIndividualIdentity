@@ -215,7 +215,11 @@ public class CheckoutController : Controller
                 Request.Headers["Stripe-Signature"], endpointSecret);
 
             // Handle the event
-            if (stripeEvent.Type == Events.InvoicePaid)
+            if (stripeEvent.Type is 
+                Events.InvoicePaid or 
+                Events.InvoiceCreated or 
+                Events.InvoiceFinalized or 
+                Events.InvoiceUpdated )
             {
                 var stripeInvoice = stripeEvent.Data.Object as Invoice;
                 var dbSucceed = _invoices.AddToInvoicePaymentSucceeded(
@@ -261,10 +265,10 @@ public class CheckoutController : Controller
                 var dbSucceed = _subscriptions.AddToInvoicePaymentSucceeded(
                     new SubscriptionsDto()
                     {
+                        SubscriptionId = stripeSubscription.Id,
                         CreatedDate = stripeEvent.Created,
                         Customer = stripeSubscription?.CustomerId,
                         Description = stripeSubscription.Description,
-                        SubscriptionId = stripeSubscription.Id,
                         Status = stripeSubscription.Status,
                         CancelAt = stripeSubscription.CancelAt,
                         CanceledAt = stripeSubscription.CanceledAt,
