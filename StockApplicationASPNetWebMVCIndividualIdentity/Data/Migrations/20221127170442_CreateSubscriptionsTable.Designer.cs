@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
@@ -11,9 +12,10 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
     [DbContext(typeof(StockContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221127170442_CreateSubscriptionsTable")]
+    partial class CreateSubscriptionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,11 +324,20 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("AmountDue")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AmountRemaining")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTimeOffset>("CancelAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset>("CanceledAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CollectionMethod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -341,15 +352,32 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Customer")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("HostedInvoiceUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LineItemPriceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subscription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

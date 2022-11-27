@@ -18,4 +18,5 @@ public interface IUnitOfWork : IDisposable
     ICashFlowStatementRepository CashFlowStatementRepository { get; }
     IIndividualStockRepository IndividualStockRepository { get; }
     IInvoicesRepository InvoicesRepository { get; }
+    ISubscriptionsRepository SubscriptionsRepository { get; }
 }

@@ -68,6 +68,9 @@ public class UnitOfWork : IUnitOfWork
     private InvoicesRepository? _invoicePaymentSucceededRepository;
     public IInvoicesRepository InvoicesRepository => 
         _invoicePaymentSucceededRepository ??= new InvoicesRepository(Context);
+    private SubscriptionsRepository? _subscriptionsRepository;
+    public ISubscriptionsRepository SubscriptionsRepository => 
+        _subscriptionsRepository ??= new SubscriptionsRepository(Context);
 
     #endregion
 

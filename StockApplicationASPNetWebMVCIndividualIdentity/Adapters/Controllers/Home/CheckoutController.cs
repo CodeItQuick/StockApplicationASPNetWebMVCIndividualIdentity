@@ -19,6 +19,7 @@ public class CheckoutController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly CustomerRetrievalService<CheckoutController> _customerRetrievalService;
     private readonly InvoicesService _invoices;
+    private readonly SubscriptionsService _subscriptions;
     const string endpointSecret = "whsec_9886e456919af0c3ad92ba5d093d585d1d9ebf6e7d4140d62690afc7939d7828";
 
     public CheckoutController(
@@ -32,6 +33,7 @@ public class CheckoutController : Controller
         _customerRetrievalService =
             new CustomerRetrievalService<CheckoutController>(logger, userManager, configuration);
         _invoices = new InvoicesService(new UnitOfWork());
+        _subscriptions = new SubscriptionsService(new UnitOfWork());
     }
 
     [Route("/create-checkout")]
@@ -251,6 +253,24 @@ public class CheckoutController : Controller
                         CustomerEmail = stripeInvoice?.CustomerEmail,
                         LineItemPriceId = stripeInvoice?.Lines.Data[0].Price.Id, // only one line item with a price id
                         HostedInvoiceUrl = stripeInvoice?.HostedInvoiceUrl
+                    });
+            }
+            else if (stripeEvent.Type is Events.CustomerSubscriptionCreated or Events.CustomerSubscriptionDeleted or Events.CustomerSubscriptionUpdated)
+            {
+                var stripeSubscription = stripeEvent.Data.Object as Subscription;
+                var dbSucceed = _subscriptions.AddToInvoicePaymentSucceeded(
+                    new SubscriptionsDto()
+                    {
+                        CreatedDate = stripeEvent.Created,
+                        Customer = stripeSubscription?.CustomerId,
+                        Description = stripeSubscription.Description,
+                        SubscriptionId = stripeSubscription.Id,
+                        Status = stripeSubscription.Status,
+                        CancelAt = stripeSubscription.CancelAt,
+                        CanceledAt = stripeSubscription.CanceledAt,
+                        CreatedAt = stripeSubscription.Created,
+                        CurrentPeriodEnd = stripeSubscription.CurrentPeriodEnd,
+                        CurrentPeriodStart = stripeSubscription.CurrentPeriodStart
                     });
             }
             // ... handle other event types

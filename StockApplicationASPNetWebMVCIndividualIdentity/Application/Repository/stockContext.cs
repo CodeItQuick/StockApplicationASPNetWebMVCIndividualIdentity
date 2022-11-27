@@ -63,6 +63,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
                 entity.HasKey(e => e.Id);
                 entity.ToTable("Invoices");
             });
+            modelBuilder.Entity<SubscriptionsDto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("Subscriptions");
+            });
             modelBuilder.Entity<ShortlistDto>(entity =>
             {
                 entity.Property(e => e.Ticker)
