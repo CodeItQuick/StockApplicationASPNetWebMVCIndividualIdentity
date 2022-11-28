@@ -1,0 +1,37 @@
+@model StockApplicationASPNetWebMVCIndividualIdentity.Views.Checkout.InvoiceTransactions
+
+<div class="text-center">
+    <h1 class="display-4">Invoice Activity</h1>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Customer Name</th>
+        <th scope="col">Customer Email</th>
+        <th scope="col">Created Date</th>
+        <th scope="col">Amount Due</th>
+        <th scope="col">Amount Paid</th>
+        <th scope="col">Amount Remaining</th>
+        <th scope="col">More Info Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Invoices != null)
+    {
+        for (var i = 0; i < Model.Invoices.Count(); i++)
+        {
+            <tr>
+                <td>@Model.Invoices.ToList()[i].CustomerName</td>
+                <td>@Model.Invoices.ToList()[i].CustomerEmail</td>
+                <td>@Model.Invoices.ToList()[i].CreatedDate</td>
+                <td>@Model.Invoices.ToList()[i].AmountDue</td>
+                <td>@Model.Invoices.ToList()[i].AmountPaid</td>
+                <td>@Model.Invoices.ToList()[i].AmountRemaining</td>
+                <td>
+                    <a href="@Model.Invoices.ToList()[i].HostedInvoiceUrl">More Info</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

@@ -7,6 +7,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.In
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+using StockApplicationASPNetWebMVCIndividualIdentity.Views.Checkout;
 using Stripe;
 using Stripe.Checkout;
 
@@ -272,6 +273,17 @@ public class CheckoutController : Controller
         {
             return BadRequest();
         }
+    }
+
+    public IActionResult InvoiceTransactions()
+    {
+        var invoices = _invoices.Retrieve();
+        // Display/Adapter
+        var model = new InvoiceTransactions()
+        {
+            Invoices = invoices
+        };
+        return View(model);
     }
 }
 

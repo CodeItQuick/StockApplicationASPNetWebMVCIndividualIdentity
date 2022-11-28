@@ -25,4 +25,9 @@ public class InvoicesService
             return false;
         }
     }
+
+    public IEnumerable<InvoicesDto> Retrieve()
+    {
+        return _unitOfWork.InvoicesRepository.GetAll();
+    }
 }

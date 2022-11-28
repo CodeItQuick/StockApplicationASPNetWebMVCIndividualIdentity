@@ -107,12 +107,6 @@
                 <td>@Model.StockSubscriptions.ToList()[i].CurrentPeriodEnd</td>
             </tr>
         }
-        <tr>
-            <th scope="col">Averages</th>
-            <th></th>
-            <th></th>
-            <th>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</th>
-        </tr>
     </form>
     </tbody>
 </table>
