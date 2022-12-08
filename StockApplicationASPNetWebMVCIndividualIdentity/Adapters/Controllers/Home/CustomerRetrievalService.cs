@@ -29,7 +29,7 @@ public class CustomerRetrievalService<TController> // TODO: in the future do thi
 
         // Chain of responsibility would make sense here, keep calling "handlers" until something can handle the
         // request
-        if (customerId != null)
+        if (customerId != null && customerId?.Length > 0)
         {
             return customerId;
         };

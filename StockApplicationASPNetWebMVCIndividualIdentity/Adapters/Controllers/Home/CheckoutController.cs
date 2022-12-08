@@ -81,7 +81,7 @@ public class CheckoutController : Controller
         {
             Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
             Customer = customerId,
-            Description = subscriptionType
+            Description = subscriptionType,
         };
         var service = new InvoiceItemService();
         var invoiceItem = service.Create(options);
@@ -108,15 +108,21 @@ public class CheckoutController : Controller
         var customerService = new CustomerService();
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
 
-        var customer = customerService.Get(customerId).Address;
-        return View(customer);
+        var customerAddress = customerService.Get(customerId);
+        return View(new UpdateAddressResponse()
+        {
+            Address = customerAddress.Address,
+            Name = customerAddress.Shipping.Name
+        });
     }
     [HttpPost]
     public IActionResult PerformUpdateShippingAddress(
+        string name,
         string line1, 
         string city, 
         string state, 
-        string country)
+        string country,
+        string postalcode)
     {
         var customerService = new CustomerService();
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
@@ -127,8 +133,23 @@ public class CheckoutController : Controller
             {
                 City = city,
                 Line1 = line1,
+                Line2 = null,
                 Country = country,
-                State = state
+                State = state,
+                PostalCode = postalcode
+            },
+            Shipping = new ShippingOptions()
+            {
+                Address = new AddressOptions()
+                {
+                    City = city,
+                    Line1 = line1,
+                    Country = country,
+                    State = state,
+                    PostalCode = postalcode
+                },
+                Name = name,
+                Phone = "1-902-569-3246"
             }
         });
         
@@ -139,86 +160,47 @@ public class CheckoutController : Controller
     {
         var domain = "https://localhost:7006";
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-        //
-        // var subscriptionsAttached = new List<SessionLineItemOptions>();
-        //
-        // if (subscriptionType.Contains("Gold"))
-        // {
-        //     subscriptionsAttached.Add(
-        //         new SessionLineItemOptions
-        //         {
-        //             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        //             Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
-        //             Quantity = 1,
-        //         });
-        // }
-        // else if (subscriptionType.Contains("Silver"))
-        // {
-        //     subscriptionsAttached.Add(
-        //         new SessionLineItemOptions
-        //         {
-        //             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        //             Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
-        //             Quantity = 1,
-        //             // TaxRates =
-        //             // Currency = 
-        //             // Specify the PriceData instead of above
-        //             // PriceData = new SessionLineItemPriceDataOptions()
-        //             // {
-        //             //     Product = "prod_MSJuHWVPzcmaaf",
-        //             //     Currency = "USD",
-        //             //     Recurring = new SessionLineItemPriceDataRecurringOptions()
-        //             //     {
-        //             //         Interval = "month"
-        //             //     },
-        //             //     TaxBehavior = "inclusive",
-        //             //     UnitAmount = 1200L
-        //             // },
-        //             // Quantity = 2
-        //         });
-        // }
-        //
-        // var options = new SessionCreateOptions
-        // {
-        //     AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
-        //     LineItems = subscriptionsAttached,
-        //     Mode = "subscription",
-        //     SuccessUrl = domain + "/success",
-        //     CancelUrl = domain + "/cancel",
-        //     Customer = customerId,
-        //     SubscriptionData = new()
-        //     {
-        //         Description = subscriptionType
-        //     }
-        // };
-        // var service = new SessionService();
-        // Session session = service.Create(options);
-        //
-        // Response.Headers.Add("Location", session.Url);
-        
-        var options = new SubscriptionCreateOptions()
+
+        var customerService = new CustomerService();
+        var customer = customerService.Get(customerId);
+
+        string findPrice = "";
+
+        if (subscriptionType.Contains("Gold"))
         {
-            Customer = customerId,
-            Items = new List<SubscriptionItemOptions>
+            findPrice = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ";
+        }
+        else
+        {
+            findPrice = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ";
+        }
+        
+        var options = new SessionCreateOptions
+        {
+            AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
+            LineItems = new List<SessionLineItemOptions>()
             {
-                new() { Price = subscriptionType.Contains("Gold") ? "price_1LjkmDHVaJrn1f0G9Cu2gJyJ" : "price_1LjkmDHVaJrn1f0G9Cu2gJyJ", },
-            },
-            Description = subscriptionType,
-            BillingCycleAnchor = DateTime.Now.AddDays(30 - DateTime.Now.Day),
-            PaymentSettings = new SubscriptionPaymentSettingsOptions
-            {
-                PaymentMethodTypes = new List<string>
+                new()
                 {
-                    "card",
+                    Price = findPrice, 
+                    Quantity = 1,
                 },
             },
-            CollectionMethod = "send_invoice",
-            DaysUntilDue = 30 - DateTime.Now.Day
+            Mode = "subscription",
+            SuccessUrl = domain + "/success",
+            CancelUrl = domain + "/cancel",
+            Customer = customerId,
+            SubscriptionData = new()
+            {
+                Description = subscriptionType
+            }
         };
-        var service = new SubscriptionService();
-        var subscription = service.Create(options);
+        var service = new SessionService();
+        Session session = service.Create(options);
         
-        return Redirect("/Shortlist");
+        Response.Headers.Add("Location", session.Url);
+        
+        return new StatusCodeResult(303);
     }
     // This is your Stripe CLI webhook secret for testing your endpoint locally.
 

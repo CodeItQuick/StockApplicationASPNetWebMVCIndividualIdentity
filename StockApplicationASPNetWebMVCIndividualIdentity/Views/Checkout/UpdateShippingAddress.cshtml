@@ -1,20 +1,29 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Stripe.Address
+@using Stripe
+@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.UpdateAddressResponse
 
 <h2>Shipping Address</h2>
 <p>Please update your shipping address for purchasing</p>
 <form method="POST">
+    Name
+    <input type="text" name="name" value="@Model.Name" />
     Street
-    <input type="text" name="line1" value="@Model.Line1"/>
+    <input type="text" name="line1" value="@Model.Address.Line1"/>
     City
-    <input type="text" name="city" value="@Model.City"/>
-    State/Province
-    <input type="text" name="state" value="@Model.State"/>
+    <input type="text" name="city" value="@Model.Address.City"/>
+    Postal Code
+    <input type="text" name="postalcode" value="@Model.Address.PostalCode"/>
     <label for="country">Country</label>
-    <select name="country" id="country" value="@Model.Country">
-        <option value="CAN">Canada</option>
-        <option value="USA">USA</option>
+    <select
+        name="country"
+        id="country" 
+    >
+        <option value="CA">Canada</option>
+        <option value="US">USA</option>
+        <option value="GB-ENG">England</option>
     </select>
+    <label for="state">State</label>
+    <input type="text" name="state" value="@Model.Address.State"/>
     <input
         type="submit"
         asp-controller="Checkout"
