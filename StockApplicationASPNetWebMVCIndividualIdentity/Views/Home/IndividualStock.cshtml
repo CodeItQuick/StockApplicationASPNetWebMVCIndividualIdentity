@@ -12,33 +12,31 @@
         <th scope="col">Date</th>
         <th scope="col">Return On Equity</th>
         <th scope="col">ShareholdersEquityPerShare</th>
-        <th scope="col">PerShareEarnings</th>
+        <th scope="col">EarningsPerShare</th>
         <th scope="col">Shares</th>
         <th scope="col">Value</th>
     </tr>
     </thead>
     <tbody>
-    <form method="POST">
+    <tr>
+        <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
+        <td>@Model.IndividualStockEarningsView.ToList()[0].MarketCap?.ToString("#,##0.###")</td>
+        <td>@Model.IndividualStockEarningsView.ToList()[0].Date</td>
+        <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)?.ToString("#,##0.###")</td>
+        <td>@Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare?.ToString("#,##0.###")</td>
+        <td>@Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings?.ToString("#,##0.###")</td>
+    </tr>
+    @for (var i = 1; i <= 10; i++)
+    {
         <tr>
             <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
-            <td>@Model.IndividualStockEarningsView.ToList()[0].MarketCap</td>
-            <td>@Model.IndividualStockEarningsView.ToList()[0].Date</td>
+            <td>$@(Model.IndividualStockEarningsView.ToList()[0].MarketCap * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+            <td>@Model.IndividualStockEarningsView.ToList()[0].Date.AddYears(i)</td>
             <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
-            <td>@Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare</td>
-            <td>@Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings</td>
+            <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
+            <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
         </tr>
-        @for(var i = 1; i <= 10; i++)
-         {
-             <tr>
-                 <th scope="row">@Model.IndividualStockEarningsView.ToList()[0].Symbol</th>
-                 <td>$@(Model.IndividualStockEarningsView.ToList()[0].MarketCap * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                 <td>@Model.IndividualStockEarningsView.ToList()[0].Date.AddYears(i)</td>
-                 <td>@Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)</td>
-                 <td>@(Model.IndividualStockEarningsView.ToList()[0].ShareholdersEquityPerShare * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-                 <td>@(Model.IndividualStockEarningsView.ToList()[0].PerShareEarnings * (decimal?)Math.Pow((double)(1 + Model.IndividualStockEarningsView.Average(x => x.ReturnOnEquity)), i))</td>
-             </tr>
-         }
-    </form>
+    }
     </tbody>
 </table>
 
@@ -64,7 +62,7 @@
             <tr>
                 <td>@Model.IndividualStockEarningsView.ToList()[i].Symbol</td>
                 <td>@Model.IndividualStockEarningsView.ToList()[i].Date</td>
-                <td>@Model.IndividualStockEarningsView.ToList()[i].MarketCap</td>
+                <td>@Model.IndividualStockEarningsView.ToList()[i].MarketCap?.ToString("#,##0.###")</td>
                 <td>@Model.IndividualStockEarningsView.ToList()[i].ReturnOnEquity</td>
                 <td>@Model.IndividualStockEarningsView.ToList()[i].ShareholdersEquityPerShare</td>
                 <td>@Model.IndividualStockEarningsView.ToList()[i].PerShareEarnings</td>
@@ -80,6 +78,37 @@
     </tbody>
 </table>
 
+<div class="text-center">
+    <h1 class="display-4">@Model.IndividualStockEarningsView.ToList()[0].Symbol Free Cash Flow (Assumptions)</h1>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Symbol</th>
+        <th scope="col">Date</th>
+        <th scope="col">Free Cash Flow</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form method="POST">
+        @for (var i = 0; i < Model.CashFlowDto.Count(); i++)
+        {
+            <tr>
+                <td>@Model.CashFlowDto.ToList()[i].Symbol</td>
+                <td>@Model.CashFlowDto.ToList()[i].Date</td>
+                <td>@Model.CashFlowDto.ToList()[i].FreeCashFlow?.ToString("#,##0.###")</td>
+            </tr>
+        }
+        <tr>
+            <th scope="col">Total</th>
+            <th></th>
+            <th></th>
+            <th>@Model.CashFlowDto.Sum(x => x.FreeCashFlow)?.ToString("#,##0.###")</th>
+        </tr>
+    </form>
+    </tbody>
+</table>
 <div class="text-center">
     <h1 class="display-4">@Model.IndividualStockEarningsView.ToList()[0].Symbol Subscription Activity</h1>
 </div>

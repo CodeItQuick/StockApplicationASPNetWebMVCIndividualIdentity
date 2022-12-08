@@ -128,12 +128,14 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         {
             // DB/Application
             var stockInfoDatums = _individualStockService.RetrieveIndividualStocks(ticker);
+            var retrieveIndividualStocks = _cashFlowStatementService.RetrieveIndividualStocks(ticker);
             var stockSubscriptions = _subscriptionsService.Retrieve();
             // Display/Adapter
             var model = new IndividualStockResponseModel<IndividualStockDto>()
             {
                 IndividualStockEarningsView = stockInfoDatums,
-                StockSubscriptions = stockSubscriptions.Where(x => x.Description != null && x.Description.Contains(ticker))
+                StockSubscriptions = stockSubscriptions.Where(x => x.Description != null && x.Description.Contains(ticker)),
+                CashFlowDto = retrieveIndividualStocks.ToList()
             };
             return View(model);
         }

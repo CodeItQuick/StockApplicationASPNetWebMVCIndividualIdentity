@@ -25,4 +25,9 @@ public class CashFlowStatementService
             throw;
         }
     }
+
+    public IEnumerable<CashFlowStatementDto> RetrieveIndividualStocks(string ticker)
+    {
+        return _unitOfWork.CashFlowStatementRepository.GetAll().Where(x => x.Symbol.Equals(ticker));
+    }
 }

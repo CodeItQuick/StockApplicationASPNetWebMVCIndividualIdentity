@@ -38,16 +38,26 @@ public class CustomerRetrievalService<TController> // TODO: in the future do thi
         {
             Query = $"email:'{userIdentity.Email}'"
         });
-        customerId = searchResult.First().Id;
 
-        if (customerId == null)
+        // For Existing Customers
+        if (searchResult.Any())
         {
-            return customerId;
+            customerId = searchResult.First().Id;
+            if (customerId != null)
+            {
+                var tempUser = _userManager.FindByIdAsync(userIdentity.Id).Result;
+                tempUser.StripeCustomerId = customerId;
+                var identityResult = _userManager.UpdateAsync(tempUser).Result;
+                return customerId;
+            }
         };
-        var tempUser = _userManager.FindByIdAsync(userIdentity.Id).Result;
-        tempUser.StripeCustomerId = customerId;
-        var identityResult = _userManager.UpdateAsync(tempUser).Result;
+        
+        // Create Customer
+        var customer = customerService.Create(new CustomerCreateOptions()
+        {
+            Email = userIdentity.Email
+        });
 
-        return customerId;
+        return customer.Id;
     }
 }

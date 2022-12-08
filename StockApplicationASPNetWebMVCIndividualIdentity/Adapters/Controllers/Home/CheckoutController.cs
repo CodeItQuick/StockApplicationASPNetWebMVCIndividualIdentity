@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -72,59 +73,20 @@ public class CheckoutController : Controller
     [HttpPost]
     public IActionResult CreateCheckoutReq(string subscriptionType)
     {
+
         var domain = "https://localhost:7006";
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
 
-        var subscriptionsAttached = new List<SessionLineItemOptions>();
-        var subscriptionDescription = "unknown";
-
-        if (subscriptionType.Equals("Gold"))
+        var options = new InvoiceItemCreateOptions()
         {
-            subscriptionsAttached.Add(
-                new SessionLineItemOptions
-                {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
-                    Quantity = 1,
-                });
-        }
-        else if (subscriptionType.Equals("Silver"))
-        {
-            subscriptionsAttached.Add(
-                new SessionLineItemOptions
-                {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    // Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
-                    // Quantity = 2,
-                    PriceData = new SessionLineItemPriceDataOptions()
-                    {
-                        Product = "prod_MSJuHWVPzcmaaf",
-                        Currency = "USD",
-                        Recurring = new SessionLineItemPriceDataRecurringOptions()
-                        {
-                            Interval = "month"
-                        },
-                        TaxBehavior = "inclusive",
-                        UnitAmount = 1200L
-                    },
-                    Quantity = 2
-                });
-        }
-
-        var options = new SessionCreateOptions
-        {
-            AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
-            LineItems = subscriptionsAttached,
-            Mode = "subscription",
-            SuccessUrl = domain + "/success",
-            CancelUrl = domain + "/cancel",
-            Customer = customerId
+            Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
+            Customer = customerId,
+            Description = subscriptionType
         };
-        var service = new SessionService();
-        Session session = service.Create(options);
+        var service = new InvoiceItemService();
+        var invoiceItem = service.Create(options);
 
-        Response.Headers.Add("Location", session.Url);
-        return new StatusCodeResult(303);
+        return Redirect("/Shortlist");
     }
 
     [Route("/cancel-subscription")]
@@ -140,67 +102,123 @@ public class CheckoutController : Controller
         return Redirect("/manage-subscriptions");
     }
 
+    [HttpGet]
+    public IActionResult UpdateShippingAddress()
+    {
+        var customerService = new CustomerService();
+        var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
+
+        var customer = customerService.Get(customerId).Address;
+        return View(customer);
+    }
+    [HttpPost]
+    public IActionResult PerformUpdateShippingAddress(
+        string line1, 
+        string city, 
+        string state, 
+        string country)
+    {
+        var customerService = new CustomerService();
+        var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
+
+        customerService.Update(customerId, new CustomerUpdateOptions()
+        {
+            Address = new AddressOptions()
+            {
+                City = city,
+                Line1 = line1,
+                Country = country,
+                State = state
+            }
+        });
+        
+        return Redirect("/checkout/UpdateShippingAddress");
+    }
+
     public IActionResult CreateCheckoutIndividualStockReq(string subscriptionType)
     {
         var domain = "https://localhost:7006";
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-
-        var subscriptionsAttached = new List<SessionLineItemOptions>();
-
-        if (subscriptionType.Contains("Gold"))
+        //
+        // var subscriptionsAttached = new List<SessionLineItemOptions>();
+        //
+        // if (subscriptionType.Contains("Gold"))
+        // {
+        //     subscriptionsAttached.Add(
+        //         new SessionLineItemOptions
+        //         {
+        //             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        //             Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
+        //             Quantity = 1,
+        //         });
+        // }
+        // else if (subscriptionType.Contains("Silver"))
+        // {
+        //     subscriptionsAttached.Add(
+        //         new SessionLineItemOptions
+        //         {
+        //             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        //             Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
+        //             Quantity = 1,
+        //             // TaxRates =
+        //             // Currency = 
+        //             // Specify the PriceData instead of above
+        //             // PriceData = new SessionLineItemPriceDataOptions()
+        //             // {
+        //             //     Product = "prod_MSJuHWVPzcmaaf",
+        //             //     Currency = "USD",
+        //             //     Recurring = new SessionLineItemPriceDataRecurringOptions()
+        //             //     {
+        //             //         Interval = "month"
+        //             //     },
+        //             //     TaxBehavior = "inclusive",
+        //             //     UnitAmount = 1200L
+        //             // },
+        //             // Quantity = 2
+        //         });
+        // }
+        //
+        // var options = new SessionCreateOptions
+        // {
+        //     AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
+        //     LineItems = subscriptionsAttached,
+        //     Mode = "subscription",
+        //     SuccessUrl = domain + "/success",
+        //     CancelUrl = domain + "/cancel",
+        //     Customer = customerId,
+        //     SubscriptionData = new()
+        //     {
+        //         Description = subscriptionType
+        //     }
+        // };
+        // var service = new SessionService();
+        // Session session = service.Create(options);
+        //
+        // Response.Headers.Add("Location", session.Url);
+        
+        var options = new SubscriptionCreateOptions()
         {
-            subscriptionsAttached.Add(
-                new SessionLineItemOptions
-                {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
-                    Quantity = 1,
-                });
-        }
-        else if (subscriptionType.Contains("Silver"))
-        {
-            subscriptionsAttached.Add(
-                new SessionLineItemOptions
-                {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    Price = "price_1LjPGMHVaJrn1f0GsKEBN6g6",
-                    Quantity = 1,
-                    // TaxRates =
-                    // Currency = 
-                    // Specify the PriceData instead of above
-                    // PriceData = new SessionLineItemPriceDataOptions()
-                    // {
-                    //     Product = "prod_MSJuHWVPzcmaaf",
-                    //     Currency = "USD",
-                    //     Recurring = new SessionLineItemPriceDataRecurringOptions()
-                    //     {
-                    //         Interval = "month"
-                    //     },
-                    //     TaxBehavior = "inclusive",
-                    //     UnitAmount = 1200L
-                    // },
-                    // Quantity = 2
-                });
-        }
-
-        var options = new SessionCreateOptions
-        {
-            AutomaticTax = new SessionAutomaticTaxOptions() { Enabled = true },
-            LineItems = subscriptionsAttached,
-            Mode = "subscription",
-            SuccessUrl = domain + "/success",
-            CancelUrl = domain + "/cancel",
             Customer = customerId,
-            SubscriptionData = new()
+            Items = new List<SubscriptionItemOptions>
             {
-                Description = subscriptionType
-            }
+                new() { Price = subscriptionType.Contains("Gold") ? "price_1LjkmDHVaJrn1f0G9Cu2gJyJ" : "price_1LjkmDHVaJrn1f0G9Cu2gJyJ", },
+            },
+            Description = subscriptionType,
+            BillingCycleAnchor = DateTime.Now.AddDays(30 - DateTime.Now.Day),
+            PaymentSettings = new SubscriptionPaymentSettingsOptions
+            {
+                PaymentMethodTypes = new List<string>
+                {
+                    "card",
+                },
+            },
+            CollectionMethod = "send_invoice",
+            DaysUntilDue = 30 - DateTime.Now.Day
         };
-        var service = new SessionService();
-        Session session = service.Create(options);
-
-        Response.Headers.Add("Location", session.Url);
-        return new StatusCodeResult(303);
+        var service = new SubscriptionService();
+        var subscription = service.Create(options);
+        
+        return Redirect("/Shortlist");
     }
     // This is your Stripe CLI webhook secret for testing your endpoint locally.
 

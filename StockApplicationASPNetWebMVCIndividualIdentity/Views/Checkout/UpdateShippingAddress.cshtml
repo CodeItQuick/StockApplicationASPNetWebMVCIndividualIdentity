@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Stripe.Address
+
+<h2>Shipping Address</h2>
+<p>Please update your shipping address for purchasing</p>
+<form method="POST">
+    Street
+    <input type="text" name="line1" value="@Model.Line1"/>
+    City
+    <input type="text" name="city" value="@Model.City"/>
+    State/Province
+    <input type="text" name="state" value="@Model.State"/>
+    <label for="country">Country</label>
+    <select name="country" id="country" value="@Model.Country">
+        <option value="CAN">Canada</option>
+        <option value="USA">USA</option>
+    </select>
+    <input
+        type="submit"
+        asp-controller="Checkout"
+        asp-action="PerformUpdateShippingAddress"
+        class="btn btn-success"
+        value="Update Shipping Address"/>
+</form>
