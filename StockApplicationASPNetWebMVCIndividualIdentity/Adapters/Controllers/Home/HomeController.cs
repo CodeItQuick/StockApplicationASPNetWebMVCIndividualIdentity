@@ -91,9 +91,24 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         public IActionResult Shortlist(
             StockInfoRequest? stockInfoRequest)
         {
+            
+            if (User.Identity == null)
+            {
+                throw new NullReferenceException(nameof(User.Identity));
+            }
+
+            var username = User.Identity.Name;
             // DB/Application
-            var stockInfoDatums = _shortlistStockInfoDataService.ShortlistedStocks(
-                stockInfoRequest?.pageNumber ?? 0);
+            List<StocksAdapter> stockInfoDatums;
+            if (username != null)
+            {
+                stockInfoDatums = _shortlistStockInfoDataService.ShortlistedStocks(
+                    stockInfoRequest?.pageNumber ?? 0, username);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
             
             // Stripe check subscriptions
             
@@ -245,12 +260,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             }
 
             var findFirstValue = User.Identity.Name;
-            _shortlistService.AddToShortlist(new ShortlistDto()
+            if (findFirstValue != null)
             {
-                Ticker = ticker,
-                StockInfoDataId = stockId,
-                UserId = findFirstValue
-            });
+                _shortlistService.AddToShortlist(new ShortlistDto()
+                {
+                    Ticker = ticker,
+                    StockInfoDataId = stockId,
+                    UserId = findFirstValue
+                });
+            }
             //FIXME: Should display shortlist
             return Redirect("/?pageNumber=0");
         }
@@ -259,8 +277,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         [HttpPost]
         public IActionResult DeleteShortlist(string ticker)
         {
-            string currentUser = User.Identity.Name;
-            _shortlistService.DeleteFromShortlist(ticker, currentUser);
+            var currentUser = User.Identity?.Name;
+            if (currentUser != null)
+            {
+                _shortlistService.DeleteFromShortlist(ticker, currentUser);
+            }
             return Redirect("/Shortlist");
         }
 

@@ -22,7 +22,7 @@ public class ShortlistStockInfoDataServiceTests
         var service = new ShortlistStockInfoDataService(unitOfWork.Object);
         
         var allStocks = service
-            .ShortlistedStocks(1);
+            .ShortlistedStocks(1, "mock_user_one");
         
         Assert.Equal(new List<StocksAdapter>(), allStocks.ToList());
         unitOfWork.Verify(r => 
@@ -46,17 +46,20 @@ public class ShortlistStockInfoDataServiceTests
                 new()
                 {
                     Id = 1,
-                    Ticker = "MSFT"
+                    Ticker = "MSFT",
+                    UserId = "mock_user_one"
                 },
                 new()
                 {
                     Id = 2,
-                    Ticker = "AAPL"
+                    Ticker = "AAPL",
+                    UserId = "mock_user_one"
                 },
                 new()
                 {
                     Id = 3,
-                    Ticker = "COKE"
+                    Ticker = "COKE",
+                    UserId = "mock_user_one"
                 },
             });
         unitOfWork.Setup(r =>
@@ -86,7 +89,7 @@ public class ShortlistStockInfoDataServiceTests
         var service = new ShortlistStockInfoDataService(unitOfWork.Object);
         
         var allStocks = service
-            .ShortlistedStocks(0);
+            .ShortlistedStocks(0, "mock_user_one");
         
         Assert.Equal(3, allStocks.ToList().Count);
         Assert.Equal(0.12m, allStocks.ToList().First().stockAttribute?["PeRatio"]);

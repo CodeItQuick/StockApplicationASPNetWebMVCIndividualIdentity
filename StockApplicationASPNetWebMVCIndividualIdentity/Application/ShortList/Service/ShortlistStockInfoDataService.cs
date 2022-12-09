@@ -12,11 +12,12 @@ public class ShortlistStockInfoDataService
         _unitOfWork = unitOfWork;
     }
     
-    public List<StocksAdapter> ShortlistedStocks(int pageNumber)
+    public List<StocksAdapter> ShortlistedStocks(int pageNumber, string username)
     {
         var stockInfo = _unitOfWork
             .ShortlistStockInfoDataViewRepository
             .Get(null, null, "")
+            .Where(x => x.UserId != null && x.UserId.Equals(username))
             .Skip(pageNumber * 20).Take(20).ToList();
         var allStocks = _unitOfWork
             .StockRepository
