@@ -84,7 +84,7 @@ public class UpdateAddressResponse : PageModel
             "WI",
             "WY"
         },
-        ["EN"] = new List<string>()
+        ["GB"] = new List<string>()
         {
             "GB-CAM",
             "GB-CMA",

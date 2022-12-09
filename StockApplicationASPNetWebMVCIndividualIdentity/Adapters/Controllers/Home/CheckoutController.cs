@@ -111,8 +111,8 @@ public class CheckoutController : Controller
         var customerAddress = customerService.Get(customerId);
         return View(new UpdateAddressResponse()
         {
-            Address = customerAddress.Address,
-            Name = customerAddress.Shipping.Name
+            Address = customerAddress?.Address ?? new Address(),
+            Name = customerAddress?.Shipping?.Name ?? ""
         });
     }
     [HttpPost]
@@ -168,7 +168,29 @@ public class CheckoutController : Controller
 
         if (subscriptionType.Contains("Gold"))
         {
-            findPrice = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ";
+            if (String.IsNullOrEmpty(customer.Currency))
+            {
+                if (customer.Address is { Country: "CA" })
+                {
+                    findPrice = "price_1LzldCHVaJrn1f0GQx9Aiqmw";
+                } else if (customer.Address is { Country: "US" })
+                {
+                    findPrice = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ";
+                } else if (customer.Address is { Country: "GB" })
+                {
+                    findPrice = "price_1MD7ZhHVaJrn1f0Gz0DxnWdL";
+                }
+            }
+            else if (customer.Currency.Equals("cad"))
+            {
+                findPrice = "price_1LzldCHVaJrn1f0GQx9Aiqmw";
+            } else if (customer.Currency.Equals("usd"))
+            {
+                findPrice = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ";
+            }  else if (customer.Currency.Equals("eur"))
+            {
+                findPrice = "price_1MD7ZhHVaJrn1f0Gz0DxnWdL";
+            } 
         }
         else
         {
@@ -193,6 +215,10 @@ public class CheckoutController : Controller
             SubscriptionData = new()
             {
                 Description = subscriptionType
+            },
+            CustomerUpdate = new SessionCustomerUpdateOptions()
+            {
+                Shipping = "auto"
             }
         };
         var service = new SessionService();
