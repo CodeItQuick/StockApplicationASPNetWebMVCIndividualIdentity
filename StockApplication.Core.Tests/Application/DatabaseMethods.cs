@@ -24,21 +24,22 @@ internal class DatabaseMethods
     private IEnumerable<IndividualStockDto> _individualStockDto;
     private IEnumerable<InvoicesDto> _invoicesDtos;
     private IEnumerable<SubscriptionsDto> _subscriptionsDto;
-    private DbContextMock<StockContext> TestDbContext { get; set; }
+    public DbContextMock<StockContext> TestDbContext { get; set; }
+    public Fixture Fixture { get; set; }
 
     public DatabaseMethods()
     {
-        var fixture = new Fixture();
-        _stockInfoDatumDtoTable = fixture.Create<IEnumerable<StockInfoDatumDTO>>();
-        _shortlistDto = fixture.Create<IEnumerable<ShortlistDto>>();
-        _shortlistStockInfoDataView = fixture.Create<IEnumerable<ShortlistStockInfoDataView>>();
-        _incomeStatementDto = fixture.Create<IEnumerable<IncomeStatementDto>>();
-        _KeyMetricsDto = fixture.Create<IEnumerable<KeyMetricsDto>>();
-        _ratiosDtos = fixture.Create<IEnumerable<RatiosDto>>();
-        _cashFlowStatementDtos = fixture.Create<IEnumerable<CashFlowStatementDto>>();
-        _individualStockDto = fixture.Create<IEnumerable<IndividualStockDto>>();
-        _invoicesDtos = fixture.Create<IEnumerable<InvoicesDto>>();
-        _subscriptionsDto = fixture.Create<IEnumerable<SubscriptionsDto>>();
+        Fixture = new Fixture();
+        _stockInfoDatumDtoTable = Fixture.Create<IEnumerable<StockInfoDatumDTO>>();
+        _shortlistDto = Fixture.Create<IEnumerable<ShortlistDto>>();
+        _shortlistStockInfoDataView = Fixture.Create<IEnumerable<ShortlistStockInfoDataView>>();
+        _incomeStatementDto = Fixture.Create<IEnumerable<IncomeStatementDto>>();
+        _KeyMetricsDto = Fixture.Create<IEnumerable<KeyMetricsDto>>();
+        _ratiosDtos = Fixture.Create<IEnumerable<RatiosDto>>();
+        _cashFlowStatementDtos = Fixture.Create<IEnumerable<CashFlowStatementDto>>();
+        _individualStockDto = Fixture.Create<IEnumerable<IndividualStockDto>>();
+        _invoicesDtos = Fixture.Create<IEnumerable<InvoicesDto>>();
+        _subscriptionsDto = Fixture.Create<IEnumerable<SubscriptionsDto>>();
         
         TestDbContext = new DbContextMock<StockContext>();
         TestDbContext
@@ -61,6 +62,7 @@ internal class DatabaseMethods
             .CreateDbSetMock(x => x.Set<InvoicesDto>(), _invoicesDtos);
         TestDbContext
             .CreateDbSetMock(x => x.Set<SubscriptionsDto>(), _subscriptionsDto);
+        
     }
 
     public UnitOfWork CreateTestUnitOfWork()

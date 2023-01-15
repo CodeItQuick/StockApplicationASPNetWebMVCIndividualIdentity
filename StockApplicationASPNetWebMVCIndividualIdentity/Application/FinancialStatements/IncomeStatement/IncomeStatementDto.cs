@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 using Newtonsoft.Json;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 
 [Table("IncomeStatement")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class IncomeStatementDto
+public class IncomeStatementDto : IEntityId
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]

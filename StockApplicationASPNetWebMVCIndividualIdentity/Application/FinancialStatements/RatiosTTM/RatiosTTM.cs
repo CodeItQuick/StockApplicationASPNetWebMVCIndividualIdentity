@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 
 [Table("Ratios")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class RatiosDto
+public class RatiosDto : IEntityId
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]

@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 
 [Table("KeyMetrics")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class KeyMetricsDto
+public class KeyMetricsDto  : IEntityId
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]

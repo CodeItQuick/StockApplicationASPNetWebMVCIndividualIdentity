@@ -3,7 +3,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-public interface IShortListRepository
+public interface IShortListRepository : IRepository<ShortlistDto>
 {
 
     public void Add(ShortlistDto entity);
