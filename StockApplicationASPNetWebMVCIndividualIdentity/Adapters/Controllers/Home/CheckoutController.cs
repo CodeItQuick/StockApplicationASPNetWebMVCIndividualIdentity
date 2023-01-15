@@ -109,7 +109,7 @@ public class CheckoutController : Controller
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
 
         var customerAddress = customerService.Get(customerId);
-        return View(new UpdateAddressResponse()
+        return View(new UpdateShippingAddressModel()
         {
             Address = customerAddress?.Address ?? new Address(),
             Name = customerAddress?.Shipping?.Name ?? ""

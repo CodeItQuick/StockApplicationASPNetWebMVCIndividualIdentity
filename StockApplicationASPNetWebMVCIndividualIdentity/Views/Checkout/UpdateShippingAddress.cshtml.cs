@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using Stripe;
 
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+namespace StockApplicationASPNetWebMVCIndividualIdentity.Views.Checkout;
 
-public class UpdateAddressResponse
+public class UpdateShippingAddressModel : PageModel
 {
+    [Parameter]
     public Address Address { get; set; } = new();
 
     public Dictionary<string, List<string>> States { get; } = new()
@@ -116,4 +119,5 @@ public class UpdateAddressResponse
     };
 
     public string Name { get; set; }
+
 }

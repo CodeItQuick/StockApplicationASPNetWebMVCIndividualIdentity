@@ -15,7 +15,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StockContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddControllersWithViews();
+// builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 
 var app = builder.Build();
 
@@ -42,7 +44,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+// app.MapRazorPages();
+app.MapBlazorHub();
 
 app.Run();
 

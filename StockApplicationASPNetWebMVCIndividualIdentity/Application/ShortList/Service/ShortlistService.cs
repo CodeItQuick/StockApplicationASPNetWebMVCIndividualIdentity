@@ -8,7 +8,7 @@ public class ShortlistService
 {
     private readonly IUnitOfWork _unitOfWork;
     
-    public ShortlistService(IUnitOfWork unitOfWork)
+    public  ShortlistService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

@@ -1,10 +1,13 @@
+
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Components.Web
 @using Stripe
-@model StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home.UpdateAddressResponse
+@model StockApplicationASPNetWebMVCIndividualIdentity.Views.Checkout.UpdateShippingAddressModel
+
 
 <h2>Shipping Address</h2>
 <p>Please update your shipping address for purchasing</p>
-<form method="POST">
+<form method="POST" OnSubmit="OnSubmit">
     Name
     <input type="text" name="name" value="@Model.Name" />
     Street
@@ -13,17 +16,28 @@
     <input type="text" name="city" value="@Model.Address.City"/>
     Postal Code
     <input type="text" name="postalcode" value="@Model.Address.PostalCode"/>
-    <label for="country">Country</label>
+    <label for="country">Country: @Model.Address.Country</label>
     <select
         name="country"
-        id="country" 
-    >
-        <option value="CA">Canada</option>
-        <option value="US">USA</option>
-        <option value="GB">England</option>
+        asp-for="@Model.Address.Country"
+        >
+        @foreach (var Item in Model.States.Keys)
+        {
+            <option id="Item" selected value="@Item" >@Item</option>
+        }
     </select>
     <label for="state">State</label>
-    <input type="text" name="state" value="@Model.Address.State"/>
+    <select
+        name="state"
+        id="state" 
+        asp-for="@Model.Address.State"
+    >
+        @foreach (var Item in Model.States["CA"])
+        {
+            <option id="Item" selected value="@Item">@Item</option>
+        }
+    </select>
+        
     <input
         type="submit"
         asp-controller="Checkout"
@@ -31,3 +45,11 @@
         class="btn btn-success"
         value="Update Shipping Address"/>
 </form>
+
+@functions {
+    private Address _address { get; set; }
+    private void UpdateAddress()
+    {
+        _address.Country = "PA";
+    }
+}

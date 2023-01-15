@@ -5,7 +5,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 public class Repository<TEntity>: IRepository<TEntity> where TEntity : class  
 {  
-    protected DbSet<TEntity> Entities;  
+    public  DbSet<TEntity> Entities;  
     private readonly DbContext _dbContext;  
   
     /// <summary>  
@@ -143,11 +143,7 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     /// </summary>  
     /// <param name="entityToDelete"></param>  
     public virtual void RemoveEntity(TEntity entityToDelete)  
-    {  
-        if (_dbContext.Entry(entityToDelete).State == EntityState.Detached)  
-        {  
-            Entities.Attach(entityToDelete);  
-        }  
+    {
         Entities.Remove(entityToDelete);  
           
     }  
@@ -156,10 +152,9 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     /// Update the Entity  
     /// </summary>  
     /// <param name="entityToUpdate"></param>  
-    public virtual void UpdateEntity(TEntity entityToUpdate)  
-    {  
-        Entities.Attach(entityToUpdate);  
-        _dbContext.Entry(entityToUpdate).State = EntityState.Modified;
+    public virtual void UpdateEntity(TEntity entityToUpdate)
+    {
+        Entities.Update(entityToUpdate);
     }
 
     public virtual IQueryable<TEntity> Query(Expression<Func<IQueryable<TEntity>>> sqlQuery)

@@ -1,6 +1,16 @@
 using System.Linq.Expressions;
+using AutoFixture;
+using AutoFixture.AutoMoq;
+using AutoFixture.Xunit2;
+using EntityFrameworkCoreMock;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -10,61 +20,35 @@ namespace StockApplication.Core.Tests.Application;
 
 public class ShortlistServiceTests
 {
-    [Fact]
-    public void CanAddToShortlistRepository()
+    [Theory, AutoData]
+    public void CanAddToShortlistRepositoryUsingDbContextMock(ShortlistDto entry)
     {
-        var repository = new Mock<IUnitOfWork>();
-        ShortlistDto shortListDTO = new ShortlistDto()
-        {
-            Ticker = "new ticker"
-        };
-        repository.Setup(r => 
-                r.ShortListRepository.Add(shortListDTO));
-        repository.Setup(r => r.SaveChanges());
-        var service = new ShortlistService(repository.Object);
+        var databaseMethods = new DatabaseMethods();
+        var unitOfWork = databaseMethods.CreateTestUnitOfWork();
+        var service = new ShortlistService(unitOfWork);
 
-        service.AddToShortlist(shortListDTO);
-
-        repository.Verify(r => 
-            r.ShortListRepository.Add(shortListDTO));
-        repository.Verify(r => 
-            r.SaveChanges());
-        repository.VerifyNoOtherCalls();
+        service.AddToShortlist(entry);
         
+        var shortlistDto = unitOfWork.ShortListRepository.Get(entry.Id);
+        Assert.NotNull(shortlistDto);
+
     }
 
     [Fact]
-    public void CanDeleteFromShortlistRepository()
+    public void CanDeleteFirstEntryFromShortlistRepository()
     {
-        var repository = new Mock<IUnitOfWork>();
-        var shortlistStock = new List<ShortlistDto>()
-        {
-            new ()
-            {
-                Id = 1,
-                StockInfoDataId = 1,
-                Ticker = "AAPL"
-            }
-        };
+        var databaseMethods = new DatabaseMethods();
+        var unitOfWork = databaseMethods.CreateTestUnitOfWork();
+        var service = new ShortlistService(unitOfWork);
+        var shortlistDtos = unitOfWork.ShortListRepository.Find(dto => true).First();
+        Assert.NotNull(shortlistDtos);
 
-    repository.Setup(r => 
-            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()))
-            .Returns(shortlistStock);
-        repository.Setup(r => 
-            r.ShortListRepository
-                .Remove(shortlistStock.Single()));
-        repository.Setup(r => r.SaveChanges());
-        var service = new ShortlistService(repository.Object);
-
-        service.DeleteFromShortlist("AAPL", "");
-
-        repository.Verify(r => 
-            r.ShortListRepository.Find(It.IsAny<Expression<Func<ShortlistDto, bool>>>()), Times.Once);
-        repository.Verify(r => 
-            r.ShortListRepository.Remove(shortlistStock.Single()), Times.Once);
-        repository.Verify(r => 
-            r.SaveChanges(), Times.Once);
-        repository.VerifyNoOtherCalls();
+        service.DeleteFromShortlist(shortlistDtos.Ticker, shortlistDtos.UserId);
+        
+        var deleted = unitOfWork.ShortListRepository.Find(dto => 
+            shortlistDtos.Ticker == dto.Ticker &&
+            shortlistDtos.UserId == dto.UserId).Count();
+        Assert.Equal(0, deleted);
         
     }
 }

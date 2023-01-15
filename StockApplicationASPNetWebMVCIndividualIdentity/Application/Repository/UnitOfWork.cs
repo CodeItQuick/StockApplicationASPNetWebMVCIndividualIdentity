@@ -15,6 +15,10 @@ public class UnitOfWork : IUnitOfWork
     {  
         Context = new StockContext();  
     }  
+    public UnitOfWork(StockContext stockContext)  
+    {  
+        Context = stockContext;
+    }  
   
     public bool SaveChanges()  
     {  

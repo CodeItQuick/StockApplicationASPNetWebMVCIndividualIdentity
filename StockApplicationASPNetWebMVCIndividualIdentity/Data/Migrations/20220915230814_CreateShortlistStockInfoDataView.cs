@@ -22,7 +22,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP ");
+            migrationBuilder.Sql("DROP VIEW dbo.ShortlistStockInfoDataView;");
         }
     }
 }
