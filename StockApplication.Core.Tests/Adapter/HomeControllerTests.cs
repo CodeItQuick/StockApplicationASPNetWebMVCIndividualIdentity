@@ -1,8 +1,10 @@
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplication.Core.Tests.Adapter;
 
+[Area("Home")]
 public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
 {
     private readonly HttpClient _client;
@@ -15,7 +17,7 @@ public class HomeControllerTests : IClassFixture<TestingWebAppFactory<Program>>
     [Fact]
     public async Task WhenAGameIsCreatedThenItReturns200()
     {
-        var response = await _client.GetAsync($"/Home/");
+        var response = await _client.GetAsync($"/Home/Index");
         
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
