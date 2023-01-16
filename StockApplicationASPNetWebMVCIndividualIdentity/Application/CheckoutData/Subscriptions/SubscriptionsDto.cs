@@ -7,11 +7,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutDat
 
 [Table("Invoices")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class SubscriptionsDto : IEntityId
+public class SubscriptionsDto : DatabaseTable
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public int Id { get; set; }
+    public override long Id { get; set; }
     [JsonProperty(PropertyName = "SubscriptionId")]
     public string? SubscriptionId { get; set; }
     [JsonProperty(PropertyName = "CreatedDate")]

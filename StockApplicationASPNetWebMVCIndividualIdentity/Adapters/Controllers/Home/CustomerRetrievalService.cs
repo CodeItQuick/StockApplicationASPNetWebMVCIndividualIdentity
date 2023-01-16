@@ -26,19 +26,19 @@ public class CustomerRetrievalService<TController> // TODO: in the future do thi
     {
         var userIdentity = _userManager.GetUserAsync(user).Result;
         var customerId = userIdentity.StripeCustomerId;
-
-        // Chain of responsibility would make sense here, keep calling "handlers" until something can handle the
-        // request
-        if (customerId != null && customerId?.Length > 0)
-        {
-            return customerId;
-        };
+        //
+        // // Chain of responsibility would make sense here, keep calling "handlers" until something can handle the
+        // // request
+        // if (customerId != null && customerId?.Length > 0)
+        // {
+        //     return customerId;
+        // };
         var customerService = new CustomerService();
         var searchResult = customerService.Search(new CustomerSearchOptions()
         {
             Query = $"email:'{userIdentity.Email}'"
         });
-
+    
         // For Existing Customers
         if (searchResult.Any())
         {
@@ -57,7 +57,7 @@ public class CustomerRetrievalService<TController> // TODO: in the future do thi
         {
             Email = userIdentity.Email
         });
-
+    
         return customer.Id;
     }
 }

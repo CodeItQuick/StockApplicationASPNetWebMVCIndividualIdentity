@@ -7,15 +7,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialSt
 
 [Table("CashFlowStatement")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class CashFlowStatementDto  : IEntityId
+public class CashFlowStatementDto  : DatabaseTable
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public int Id { get; set; }
+    public override long Id { get; set; }
     [JsonProperty(PropertyName = "Date")]
     public DateTimeOffset Date { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
-    public string Symbol { get; set; }
+    public override string Symbol { get; set; }
     [JsonProperty(PropertyName = "ReportedCurrency")]
     public string ReportedCurrency { get; set; }
     [JsonProperty(PropertyName = "Cik")]

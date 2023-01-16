@@ -17,11 +17,15 @@
     <PackageReference Include="EntityFrameworkCoreMock.Moq" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Stripe" Version="1.12.0" />
     <PackageReference Include="Stripe.net" Version="40.9.0" />
@@ -29,7 +33,9 @@
 
   <ItemGroup>
     <Folder Include="Adapters\Controllers" />
+    <Folder Include="Areas\Home\Views" />
     <Folder Include="obj" />
+    <Folder Include="Pages" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,10 +47,43 @@
     <_ContentIncludedByDefault Remove="Adapters\Views\Shared\_ValidationScriptsPartial.cshtml" />
     <_ContentIncludedByDefault Remove="Adapters\Views\_ViewImports.cshtml" />
     <_ContentIncludedByDefault Remove="Adapters\Views\_ViewStart.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\CancelCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\CreateCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\InvoiceTransactions.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\ManageSubscriptions.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\SuccessCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\UpdateShippingAddress.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\UpdateShippingAddressRazor.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Checkout\Counter.razor" />
+    <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\IndividualStock.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Settings.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Shortlist.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\CancelCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\CreateCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\InvoiceTransactions.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\ManageSubscriptions.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\SuccessCheckout.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\UpdateShippingAddress.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\UpdateShippingAddressRazor.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Checkout\Counter.razor" />
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="Views\Checkout\CancelCheckout.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\Counter.razor" />
+    <AdditionalFiles Include="Views\Checkout\CreateCheckout.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\Index.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\InvoiceTransactions.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\ManageSubscriptions.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\SuccessCheckout.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\UpdateShippingAddress.cshtml" />
+    <AdditionalFiles Include="Views\Checkout\UpdateShippingAddressRazor.cshtml" />
     <AdditionalFiles Include="Views\Home\Index.cshtml" />
+    <AdditionalFiles Include="Views\Home\IndividualStock.cshtml" />
     <AdditionalFiles Include="Views\Home\Privacy.cshtml" />
     <AdditionalFiles Include="Views\Shared\Error.cshtml" />
     <AdditionalFiles Include="Views\Shared\_Layout.cshtml" />

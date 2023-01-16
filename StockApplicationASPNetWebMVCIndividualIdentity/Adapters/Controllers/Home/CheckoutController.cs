@@ -15,6 +15,7 @@ using Stripe.Checkout;
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Checkout;
 
 [Authorize]
+[Area("Checkout")]
 public class CheckoutController : Controller
 {
     private readonly ILogger<CheckoutController> _logger;
@@ -68,15 +69,15 @@ public class CheckoutController : Controller
 
         return View(subscriptions);
     }
-
+    
     [Route("/create-checkout-session")]
     [HttpPost]
     public IActionResult CreateCheckoutReq(string subscriptionType)
     {
-
+    
         var domain = "https://localhost:7006";
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-
+    
         var options = new InvoiceItemCreateOptions()
         {
             Price = "price_1LjkmDHVaJrn1f0G9Cu2gJyJ",
@@ -85,10 +86,11 @@ public class CheckoutController : Controller
         };
         var service = new InvoiceItemService();
         var invoiceItem = service.Create(options);
-
+    
         return Redirect("/Shortlist");
     }
 
+    //TODO: Fix identity stuff
     [Route("/cancel-subscription")]
     [HttpPost]
     public IActionResult CancelSubscription([FromForm] CancelRequest req)
@@ -98,16 +100,16 @@ public class CheckoutController : Controller
         var customerId = userIdentity.StripeCustomerId;
         var service = new SubscriptionService();
         var subscription = service.Cancel(req.subscriptionid);
-
+    
         return Redirect("/manage-subscriptions");
     }
-
+    
     [HttpGet]
     public IActionResult UpdateShippingAddress()
     {
         var customerService = new CustomerService();
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-
+    
         var customerAddress = customerService.Get(customerId);
         return View(new UpdateShippingAddressModel()
         {
@@ -126,7 +128,7 @@ public class CheckoutController : Controller
     {
         var customerService = new CustomerService();
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-
+    
         customerService.Update(customerId, new CustomerUpdateOptions()
         {
             Address = new AddressOptions()
@@ -155,17 +157,17 @@ public class CheckoutController : Controller
         
         return Redirect("/checkout/UpdateShippingAddress");
     }
-
+    
     public IActionResult CreateCheckoutIndividualStockReq(string subscriptionType)
     {
         var domain = "https://localhost:7006";
         var customerId = _customerRetrievalService.HandleRetrieveCustomerId(User);
-
+    
         var customerService = new CustomerService();
         var customer = customerService.Get(customerId);
-
+    
         string findPrice = "";
-
+    
         if (subscriptionType.Contains("Gold"))
         {
             if (String.IsNullOrEmpty(customer.Currency))
@@ -228,7 +230,6 @@ public class CheckoutController : Controller
         
         return new StatusCodeResult(303);
     }
-    // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
     [AllowAnonymous]
     [Route("/webhook")]

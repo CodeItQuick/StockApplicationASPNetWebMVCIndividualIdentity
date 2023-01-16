@@ -8,15 +8,15 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeState
 
 [Table("IncomeStatement")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class IncomeStatementDto : IEntityId
+public class IncomeStatementDto : DatabaseTable
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public long Id { get; set; }
+    public override long Id { get; set; }
     [JsonProperty(PropertyName = "Date")]
     public DateTimeOffset Date { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
-    public string Symbol { get; set; }
+    public override string Symbol { get; set; }
     [JsonProperty(PropertyName = "ReportedCurrency")]
     public string ReportedCurrency { get; set; }
     [JsonProperty(PropertyName = "Cik")]

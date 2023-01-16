@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using StockApplicationASPNetWebMVCIndividualIdentity.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
-using StockApplicationASPNetWebMVCIndividualIdentity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +11,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StockContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-// builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -44,8 +38,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-// app.MapRazorPages();
-app.MapBlazorHub();
+app.MapRazorPages();
 
 app.Run();
 

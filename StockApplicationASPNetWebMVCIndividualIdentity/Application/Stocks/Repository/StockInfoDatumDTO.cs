@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
 {
     [Table("StockInfoData")]
-    public class StockInfoDatumDTO
+    public class StockInfoDatumDTO : DatabaseTable
     {
         [Key]
-        public long Id { get; set; }
-        public string? Ticker { get; set; }
+        public override long Id { get; set; }
+        public override string? Ticker { get; set; }
         public decimal? YoySuccess { get; set; }
         public string? Date { get; set; }
         public decimal? PbRatio { get; set; }

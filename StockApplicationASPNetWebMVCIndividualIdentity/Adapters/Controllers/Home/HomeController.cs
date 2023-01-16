@@ -34,26 +34,32 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly CashFlowStatementService _cashFlowStatementService;
         private readonly IndividualStockService _individualStockService;
         private readonly SubscriptionsService _subscriptionsService;
+        private SubscriptionService _service;
 
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager, 
-            IConfiguration config)
+            IUnitOfWork unitOfWorkParam,
+            IConfiguration? config,
+            SubscriptionService? subscriptionService)
         {
             _logger = logger;
             _userManager = userManager;
             _config = config;
-            _subscriptionsService = new SubscriptionsService(new UnitOfWork());
-            _stockIndexService = new StockIndexService(new UnitOfWork());
-            _shortlistStockInfoDataService = new ShortlistStockInfoDataService(new UnitOfWork());
-            _shortlistService = new ShortlistService(new UnitOfWork());
-            _incomeStatementService = new IncomeStatementService(new UnitOfWork());
-            _keyMetricsService = new KeyMetricsService(new UnitOfWork());
-            _ratiosTtmService = new RatiosTtmService(new UnitOfWork());
-            _cashFlowStatementService = new CashFlowStatementService(new UnitOfWork());
-            _individualStockService = new IndividualStockService(new UnitOfWork());
+            var unitOfWork = unitOfWorkParam ?? new UnitOfWork();
+            _subscriptionsService = new SubscriptionsService(unitOfWork);
+            _stockIndexService = new StockIndexService(unitOfWork);
+            _shortlistStockInfoDataService = new ShortlistStockInfoDataService(unitOfWork);
+            _shortlistService = new ShortlistService(unitOfWork);
+            _incomeStatementService = new IncomeStatementService(unitOfWork);
+            _keyMetricsService = new KeyMetricsService(unitOfWork);
+            _ratiosTtmService = new RatiosTtmService(unitOfWork);
+            _cashFlowStatementService = new CashFlowStatementService(unitOfWork);
+            _individualStockService = new IndividualStockService(unitOfWork);
             
-            StripeConfiguration.ApiKey = config["StripeAPIKey"];
+            StripeConfiguration.ApiKey = config != null ? config["StripeAPIKey"] : "";
+            
+            _service = subscriptionService ?? new SubscriptionService();
         }
 
         public IActionResult Index(
@@ -91,7 +97,6 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         public IActionResult Shortlist(
             StockInfoRequest? stockInfoRequest)
         {
-            
             if (User.Identity == null)
             {
                 throw new NullReferenceException(nameof(User.Identity));
@@ -112,11 +117,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             
             // Stripe check subscriptions
             
-            var service = new SubscriptionService();
-            StripeList<Subscription> subscriptions = service.List(new SubscriptionListOptions());
+            StripeList<Subscription> subscriptions = _service.List(new SubscriptionListOptions());
             stockInfoDatums.ForEach(stock =>
             {
-                var subscriptionRecord = subscriptions.FirstOrDefault(subscription => subscriptions != null &&
+                var subscriptionRecord = subscriptions.FirstOrDefault(subscription => subscription != null &&
                     subscription.Description != null && subscription.Description.Contains(stock.Ticker));
                 string? subscriptionType = null;
                 subscriptionRecord?.Items.Data[0].Plan.Metadata

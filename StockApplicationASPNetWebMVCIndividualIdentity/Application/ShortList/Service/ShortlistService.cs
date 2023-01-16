@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
