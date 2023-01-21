@@ -4,9 +4,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class ShortlistService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly UnitOfWork _unitOfWork;
     
-    public  ShortlistService(IUnitOfWork unitOfWork)
+    public  ShortlistService(UnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

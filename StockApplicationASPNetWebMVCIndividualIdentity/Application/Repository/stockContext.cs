@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
@@ -13,7 +15,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
 {
-    public class StockContext : IdentityDbContext
+    public class StockContext : IdentityDbContext, IStockContext
     {
         private string? _connectionString;
 
@@ -21,6 +23,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         {
             _connectionString = "data source=localhost,1433; User Id=sa; password=Sqlserver0!; Database=stock;Integrated Security=false;";
         }
+
+        public virtual DbSet<KeyMetricsDto>? KeyMetrics { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -208,5 +212,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
             });
 
         }
+    }
+
+    public interface IStockContext
+    {
+        DbSet<T> Set<T>() where T : class;
+        EntityEntry<T> Entry<T>(T entity) where T : class;
+        int SaveChanges();
     }
 }

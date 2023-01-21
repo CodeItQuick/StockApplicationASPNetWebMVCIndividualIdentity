@@ -56,6 +56,12 @@ public interface IRepository<TEntity> where TEntity : class
         void AddRange(IEnumerable<TEntity> entities);  
   
         /// <summary>  
+        /// Adds the range.  
+        /// </summary>  
+        /// <param name="entities">The entities.</param>  
+        Task AddRangeAsync(IEnumerable<TEntity> entities);  
+  
+        /// <summary>  
         /// Removes the specified entity.  
         /// </summary>  
         /// <param name="entity">The entity.</param>  

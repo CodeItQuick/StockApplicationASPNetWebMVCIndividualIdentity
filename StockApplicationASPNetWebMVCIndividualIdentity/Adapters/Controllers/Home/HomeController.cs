@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
@@ -29,19 +27,21 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly ShortlistService _shortlistService;
         private static readonly HttpClient client = new HttpClient();
         private readonly IncomeStatementService _incomeStatementService;
-        private readonly KeyMetricsService _keyMetricsService;
+        private readonly IKeyMetricsService _keyMetricsService;
         private readonly RatiosTtmService _ratiosTtmService;
         private readonly CashFlowStatementService _cashFlowStatementService;
         private readonly IndividualStockService _individualStockService;
         private readonly SubscriptionsService _subscriptionsService;
         private SubscriptionService _service;
+        private IKeyMetricsService IKeyMetricsService;
 
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager, 
-            IUnitOfWork unitOfWorkParam,
+            UnitOfWork? unitOfWorkParam,
             IConfiguration? config,
-            SubscriptionService? subscriptionService)
+            SubscriptionService? subscriptionService,
+            IKeyMetricsService keyMetricsService)
         {
             _logger = logger;
             _userManager = userManager;
@@ -52,7 +52,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService(unitOfWork);
             _shortlistService = new ShortlistService(unitOfWork);
             _incomeStatementService = new IncomeStatementService(unitOfWork);
-            _keyMetricsService = new KeyMetricsService(unitOfWork);
+            _keyMetricsService = keyMetricsService;
             _ratiosTtmService = new RatiosTtmService(unitOfWork);
             _cashFlowStatementService = new CashFlowStatementService(unitOfWork);
             _individualStockService = new IndividualStockService(unitOfWork);

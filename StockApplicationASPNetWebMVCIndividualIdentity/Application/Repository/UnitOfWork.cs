@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
@@ -20,7 +21,7 @@ public class UnitOfWork : IUnitOfWork
         Context = stockContext;
     }  
   
-    public bool SaveChanges()  
+    public virtual bool SaveChanges()  
     {  
         bool returnValue = true;
         using var dbContextTransaction = Context.Database.BeginTransaction();
@@ -43,12 +44,12 @@ public class UnitOfWork : IUnitOfWork
   
     private StockDataRepository? _stockDataRepository;  
     
-    public IStockDataRepository StockRepository => _stockDataRepository 
-        ??= new StockDataRepository(Context);
+    public IStockDataRepository StockRepository => _stockDataRepository ??= new StockDataRepository(Context) 
+       ;
 
     private ShortListRepository? _shortListRepository;
-    public IShortListRepository ShortListRepository => _shortListRepository 
-        ??= new ShortListRepository(Context);
+    public IShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context)
+       ;
 
     private ShortlistStockInfoDataViewRepository? _shortlistStockInfoDataViewRepository;
     public IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository => 
@@ -56,9 +57,9 @@ public class UnitOfWork : IUnitOfWork
 
     private IncomeStatementRepository? _incomeStatementRepository;
     public IIncomeStatementRepository IncomeStatementRepository => 
-        _incomeStatementRepository ??= new IncomeStatementRepository(Context);
-    private KeyMetricsRepository? _keyMetricsRepository;
-    public IKeyMetricsRepository KeyMetricsRepository => 
+        _incomeStatementRepository ??= new IncomeStatementRepository(Context); 
+    public KeyMetricsRepository? _keyMetricsRepository;
+    public virtual IKeyMetricsRepository  KeyMetricsRepository => 
         _keyMetricsRepository ??= new KeyMetricsRepository(Context);
     private RatiosTtmRepository? _ratiosTtmRepository;
     public IRatiosTtmRepository RatiosTtmRepository => 
@@ -68,13 +69,13 @@ public class UnitOfWork : IUnitOfWork
         _cashFlowStatementRepository ??= new CashFlowStatementRepository(Context);
     private IndividualStockRepository? _individualStockRepository;
     public IIndividualStockRepository IndividualStockRepository => 
-        _individualStockRepository ??= new IndividualStockRepository(Context);
+        _individualStockRepository ?? new IndividualStockRepository(Context);
     private InvoicesRepository? _invoicePaymentSucceededRepository;
     public IInvoicesRepository InvoicesRepository => 
-        _invoicePaymentSucceededRepository ??= new InvoicesRepository(Context);
+        _invoicePaymentSucceededRepository ?? new InvoicesRepository(Context);
     private SubscriptionsRepository? _subscriptionsRepository;
     public ISubscriptionsRepository SubscriptionsRepository => 
-        _subscriptionsRepository ??= new SubscriptionsRepository(Context);
+        _subscriptionsRepository ?? new SubscriptionsRepository(Context);
 
     #endregion
 

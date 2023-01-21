@@ -2,25 +2,30 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 
-public class KeyMetricsService
+public class KeyMetricsService : IKeyMetricsService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKeyMetricsRepository _repository;
+    private readonly UnitOfWork _unitOfWork;
 
-    public KeyMetricsService(IUnitOfWork unitOfWork)
+    public KeyMetricsService(IKeyMetricsRepository repository)
     {
-        _unitOfWork = unitOfWork;
+        _repository = repository;
     }
 
     public void AddToKeyMetrics(List<KeyMetricsDto> keyMetricsDtos)
     {   
         try
         {
-            _unitOfWork.KeyMetricsRepository.AddRange(keyMetricsDtos);
-            _unitOfWork.SaveChanges();
+            _repository.AddRange(keyMetricsDtos);
         }
         catch (Exception ex)
         {
             throw;
         }
     }
+}
+
+public interface IKeyMetricsService
+{
+    void AddToKeyMetrics(List<KeyMetricsDto> keyMetricsDtos);
 }

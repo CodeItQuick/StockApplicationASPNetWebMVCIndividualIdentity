@@ -1,3 +1,4 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StockContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IKeyMetricsService, KeyMetricsService>();
+builder.Services.AddTransient<IKeyMetricsRepository, KeyMetricsRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

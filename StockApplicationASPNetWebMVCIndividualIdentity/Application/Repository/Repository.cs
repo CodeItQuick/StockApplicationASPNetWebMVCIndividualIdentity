@@ -4,9 +4,9 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-public class Repository<TEntity>: IRepository<TEntity> where TEntity : class  
-{  
-    public  DbSet<TEntity> Entities;  
+public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
+{
+    public DbSet<TEntity> Entities { get; set; } 
     private readonly DbContext _dbContext;  
   
     /// <summary>  
@@ -21,8 +21,13 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     {  
         _dbContext = dbContext;  
         Entities = _dbContext.Set<TEntity>();  
-    }  
-  
+    }
+
+    protected Repository()
+    {
+        // for tests
+    }
+
     public virtual IEnumerable<TEntity> Get(  
         Expression<Func<TEntity, bool>> filter,  
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,  
@@ -118,6 +123,15 @@ public class Repository<TEntity>: IRepository<TEntity> where TEntity : class
     public void AddRange(IEnumerable<TEntity> entities)  
     {  
         Entities.AddRange(entities);  
+    }  
+    /// <summary>  
+    /// Adds the range.  
+    /// </summary>  
+    /// <param name="entities">The entities.</param>  
+    public Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        Entities.AddRangeAsync(entities);
+        return Task.CompletedTask;
     }  
   
     /// <summary>  
