@@ -8,6 +8,7 @@ public class IndividualStockRepository : IIndividualStockRepository
 {
     private readonly StockContext _context;
 
+
     public IndividualStockRepository(StockContext context)
     {
         _context = context;

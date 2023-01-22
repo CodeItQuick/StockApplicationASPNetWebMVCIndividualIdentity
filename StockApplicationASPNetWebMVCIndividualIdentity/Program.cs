@@ -1,3 +1,6 @@
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 using Stripe;
@@ -17,6 +20,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IKeyMetricsService, KeyMetricsService>();
 builder.Services.AddTransient<IKeyMetricsRepository, KeyMetricsRepository>();
+builder.Services.AddTransient<IIndividualStockRepository, IndividualStockRepository>();
+builder.Services.AddTransient<ISubscriptionsRepository, SubscriptionsRepository>();
+builder.Services.AddTransient<ICashFlowStatementRepository, CashFlowStatementRepository>();
 builder.Services.AddTransient<SubscriptionService>();
 builder.Services.AddControllersWithViews();
 

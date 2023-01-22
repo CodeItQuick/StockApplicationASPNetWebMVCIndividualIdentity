@@ -41,9 +41,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             IConfiguration? config,
             IKeyMetricsService keyMetricsService,
             SubscriptionService _subscriptionService,
-            IndividualStockRepository individualStockRepository, 
-            SubscriptionsRepository subscriptionsRepository, 
-            CashFlowStatementRepository cashFlowStatementRepository)
+            IIndividualStockRepository individualStockRepository, 
+            ISubscriptionsRepository subscriptionsRepository, 
+            ICashFlowStatementRepository cashFlowStatementRepository)
         {
             _logger = logger;
             _userManager = userManager;
