@@ -35,31 +35,33 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private SubscriptionService _service;
         private IKeyMetricsService IKeyMetricsService;
 
-        public HomeController(
-            ILogger<HomeController> logger,
-            UserManager<ApplicationUser> userManager, 
-            UnitOfWork? unitOfWorkParam,
+        public HomeController(ILogger<HomeController> logger,
+            UserManager<ApplicationUser> userManager,
+            IUnitOfWork? unitOfWorkParam,
             IConfiguration? config,
-            SubscriptionService? subscriptionService,
-            IKeyMetricsService keyMetricsService)
+            IKeyMetricsService keyMetricsService,
+            SubscriptionService _subscriptionService,
+            IndividualStockRepository individualStockRepository, 
+            SubscriptionsRepository subscriptionsRepository, 
+            CashFlowStatementRepository cashFlowStatementRepository)
         {
             _logger = logger;
             _userManager = userManager;
             _config = config;
             var unitOfWork = unitOfWorkParam ?? new UnitOfWork();
-            _subscriptionsService = new SubscriptionsService(unitOfWork);
+            _subscriptionsService = new SubscriptionsService(subscriptionsRepository);
             _stockIndexService = new StockIndexService(unitOfWork);
             _shortlistStockInfoDataService = new ShortlistStockInfoDataService(unitOfWork);
             _shortlistService = new ShortlistService(unitOfWork);
             _incomeStatementService = new IncomeStatementService(unitOfWork);
             _keyMetricsService = keyMetricsService;
             _ratiosTtmService = new RatiosTtmService(unitOfWork);
-            _cashFlowStatementService = new CashFlowStatementService(unitOfWork);
-            _individualStockService = new IndividualStockService(unitOfWork);
+            _cashFlowStatementService = new CashFlowStatementService(cashFlowStatementRepository);
+            _individualStockService = new IndividualStockService(individualStockRepository);
             
             StripeConfiguration.ApiKey = config != null ? config["StripeAPIKey"] : "";
             
-            _service = subscriptionService ?? new SubscriptionService();
+            _service = _subscriptionService;
         }
 
         public IActionResult Index(
@@ -156,7 +158,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 StockSubscriptions = stockSubscriptions.Where(x => x.Description != null && x.Description.Contains(ticker)),
                 CashFlowDto = retrieveIndividualStocks.ToList()
             };
-            return View(model);
+            return Ok(model);
         }
 
         [Route("/Settings")]

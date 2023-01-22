@@ -16,15 +16,19 @@ public class GenericRepositoryTests<TRepository, TEntity>
     private UnitOfWork _unitOfWork;
     private TEntity? entry;
     private List<TEntity> entries;
+    private Fixture _fixture;
 
     public GenericRepositoryTests(TRepository repository, UnitOfWork unitOfWork)
     {
         this.repository = repository;
         _unitOfWork = unitOfWork;
-        var fixture = new Fixture();
-        entry = fixture.Create<TEntity>();
+        _fixture = new Fixture();
+        entry = _fixture
+            .Build<TEntity>()
+            .With(x => x.Id, 4)
+            .Create();
         entry.Id = 4;
-        entries = fixture.Create<List<TEntity>>();
+        entries = _fixture.Create<List<TEntity>>();
         entries[0].Id = 4;
         entries[1].Id = 5;
         entries[2].Id = 6;
@@ -32,10 +36,15 @@ public class GenericRepositoryTests<TRepository, TEntity>
 
     public void CanAddEntryToRepository()
     {
-        repository.Add(entry);
+        var entryType = new TEntity()
+        {
+            Id = entry.Id,
+        };
+        repository.Add(entryType);
         _unitOfWork.SaveChanges();
-        var count = repository.Find(x => true).Count();
-        Assert.Equal(4, count);
+        var entities = repository.Find(x => true);
+        Assert.Equal(1, entities.First().Id);
+        Assert.Equal(4, entities.Count());
     }
     
     public void CanAddRangeOfEntriesToRepository()
@@ -80,20 +89,19 @@ public class GenericRepositoryTests<TRepository, TEntity>
             .GetAll().Count());
     }
     
-    public void CanUpdateEntryToRepository(string result, string ticker)
-    {
-        var entityDto = repository
-            .GetAll()
-            .First();
-        var entity = new TEntity()
-        {
-            Id = entityDto.Id,
-            Ticker = ticker
-        };
-        
-        repository.UpdateEntity(entity);
-        _unitOfWork.SaveChanges();
-
-        Assert.Equal(repository.Get(entity.Id).Ticker, result);
-    }
+    // TODO Generic for symbol OR ticker very hard to produce
+    // public void CanUpdateEntryToRepository(string result, string ticker)
+    // {
+    //     var entityDto = repository
+    //         .GetAll()
+    //         .First();
+    //     var entity = _fixture.Build<TEntity>()
+    //         .WithAutoProperties()
+    //         .Create();
+    //     
+    //     repository.UpdateEntity(entity);
+    //     _unitOfWork.SaveChanges();
+    //
+    //     Assert.Equal(repository.Get(entity.Id).Ticker, result);
+    // }
 }

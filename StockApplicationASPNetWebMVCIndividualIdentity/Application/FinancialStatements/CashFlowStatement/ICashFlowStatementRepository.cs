@@ -3,6 +3,8 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 
-public interface ICashFlowStatementRepository : IRepository<CashFlowStatementDto>
+public interface ICashFlowStatementRepository
 {
+    void AddRange(List<CashFlowStatementDto> cashFlowStatement);
+    IEnumerable<CashFlowStatementDto>? GetAll();
 }

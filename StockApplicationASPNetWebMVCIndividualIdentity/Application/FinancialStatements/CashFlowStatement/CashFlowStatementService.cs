@@ -6,19 +6,20 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialSt
 
 public class CashFlowStatementService
 {
+    private readonly ICashFlowStatementRepository _cashFlowStatementRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CashFlowStatementService(IUnitOfWork unitOfWork)
+    public CashFlowStatementService(ICashFlowStatementRepository cashFlowStatementRepository)
     {
-        _unitOfWork = unitOfWork;
+        _cashFlowStatementRepository = cashFlowStatementRepository;
     }
 
     public void AddToCashFlowStatement(List<CashFlowStatementDto> cashFlowStatement)
     {   
         try
         {
-            _unitOfWork.CashFlowStatementRepository.AddRange(cashFlowStatement);
-            _unitOfWork.SaveChanges();
+            _cashFlowStatementRepository.AddRange(cashFlowStatement);
+            
         }
         catch (Exception ex)
         {
@@ -28,6 +29,6 @@ public class CashFlowStatementService
 
     public IEnumerable<CashFlowStatementDto> RetrieveIndividualStocks(string ticker)
     {
-        return _unitOfWork.CashFlowStatementRepository.GetAll().Where(x => x.Symbol.Equals(ticker));
+        return _cashFlowStatementRepository.GetAll()?.Where(x => x.Symbol.Equals(ticker));
     }
 }

@@ -7,11 +7,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialSt
 
 [Table("KeyMetrics")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class KeyMetricsDto 
+public class KeyMetricsDto : DatabaseTable
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public long Id { get; set; }
+    public override long Id { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
     public string Symbol { get; set; }
     [JsonProperty(PropertyName = "Date")]

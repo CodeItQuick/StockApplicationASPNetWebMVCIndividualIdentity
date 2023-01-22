@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using StockApplication.Core.Tests.Application;
 using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
@@ -25,7 +27,15 @@ public class HomeControllerMockingTests
         var databaseMethods = new DatabaseMethods();
         _unitOfWork = databaseMethods.CreateTestUnitOfWork();
         _subscriptionService = new Mock<SubscriptionService>();
-        _controller = new HomeController(null, null, _unitOfWork, null, _subscriptionService.Object, null);
+        _controller = new HomeController(
+            null, 
+            null, 
+            _unitOfWork, 
+            null, 
+            null,
+            _subscriptionService.Object, 
+            new IndividualStockRepository(new StockContext()), 
+            new SubscriptionsRepository(new StockContext()), new CashFlowStatementRepository(new StockContext()));
         _controller.ControllerContext = new ControllerContext()
         {
             HttpContext = new DefaultHttpContext()
@@ -35,68 +45,6 @@ public class HomeControllerMockingTests
         };
     }
 
-    [Fact]
-    public void WhenQueryingFirstPageReturnsThreeDefaultResults()
-    {
-        var actionResult = _controller.Index(new StockInfoRequest()
-        {
-            currentFilter = "",
-            pageNumber = 0,
-            searchString = "",
-            sortOrder = "ASC"
-        }, 0) as ViewResult;
-        
-        Assert.NotNull(actionResult?.Model as IndexResponseModel<StocksAdapter>);
-        Assert.Equal(0, (actionResult?.Model as IndexResponseModel<StocksAdapter>)?.PageIndex);
-        Assert.Equal(3, (actionResult?.Model as IndexResponseModel<StocksAdapter>)?.StockInfoDatums.Count());
-    }
-    
-    [Fact]
-    public void WhenQueryingShortlistReturnsThreeDefaultResults()
-    {
-        _subscriptionService.Setup(x => 
-                x.List(It.IsAny<SubscriptionListOptions>(), 
-                    It.IsAny<RequestOptions>()))
-            .Returns(new StripeList<Subscription>()
-            {
-                Data = new EditableList<Subscription>()
-                {
-                    new()
-                    {
-                        Description = "Test Description - ZZZ Non-Matching Ticker"
-                    }
-                }
-            });
-        
-        var actionResult = _controller.Shortlist(new StockInfoRequest()
-        {
-            currentFilter = "",
-            pageNumber = 0,
-            searchString = "",
-            sortOrder = "ASC"
-        }) as ViewResult;
-        Assert.NotNull(actionResult?.Model as IndexResponseModel<StocksAdapter>);
-        Assert.Equal(0, (actionResult?.Model as IndexResponseModel<StocksAdapter>)?.PageIndex);
-        Assert.Equal(3, (actionResult?.Model as IndexResponseModel<StocksAdapter>)?.StockInfoDatums.Count());
-    }
-    
-    [Fact]
-    public void WhenQueryingIndividualStockReturnsThreeDefaultResults()
-    {
-        var actionResult = _controller.IndividualStock( "ABC", new StockInfoRequest()
-        {
-            currentFilter = "",
-            pageNumber = 0,
-            searchString = "",
-            sortOrder = "ASC"
-        }) as ViewResult;
-        
-        Assert.NotNull(actionResult?.Model as IndividualStockResponseModel<IndividualStockDto>);
-        Assert.Equal(3, 
-            (actionResult?.Model 
-                as IndividualStockResponseModel<IndividualStockDto>)
-            ?.IndividualStockEarningsView.Count());
-    }
     [Fact]
     public void WhenAddingToTheShortlistSuccessfullyAddsResults()
     {

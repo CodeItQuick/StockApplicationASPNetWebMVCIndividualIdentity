@@ -36,7 +36,7 @@ internal class DatabaseMethods
         _shortlistDto = BuildIdTableData(new List<ShortlistDto>());
         _shortlistStockInfoDataView = BuildIdTableData(new List<ShortlistStockInfoDataView>());
         _incomeStatementDto = BuildIdTableData(new List<IncomeStatementDto>());
-        // _KeyMetricsDto = BuildIdTableData(new List<KeyMetricsDto>());
+        _KeyMetricsDto = BuildIdTableData(new List<KeyMetricsDto>());
         _ratiosDtos = BuildIdTableData(new List<RatiosDto>());
         _cashFlowStatementDtos = BuildIdTableData(new List<CashFlowStatementDto>());
         _individualStockDto = BuildIdTableData(new List<IndividualStockDto>());
@@ -67,15 +67,12 @@ internal class DatabaseMethods
         
     }
 
-    private List<TEntity> BuildIdTableData<TEntity>(List<TEntity> list) where TEntity : DatabaseTable 
+    private List<TEntity> BuildIdTableData<TEntity>(List<TEntity> list) where TEntity : DatabaseTable, new() 
     {
         TEntity TableData(long id) =>
             Fixture.Build<TEntity>()
+                .With(x => x.Id, id++)
                 .WithAutoProperties()
-                .With(x => x.Id, id)
-                .With(x => x.Ticker, "ABC")
-                .With(x => x.Symbol, "ABC")
-                .With(x => x.UserId, "test_user_1")
                 .Create();
 
         list.AddRange(new[] { TableData(1L), TableData(2L), TableData(3L) });

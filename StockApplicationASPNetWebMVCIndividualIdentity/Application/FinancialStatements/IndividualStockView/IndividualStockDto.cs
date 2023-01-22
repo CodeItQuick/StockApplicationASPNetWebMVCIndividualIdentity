@@ -7,13 +7,13 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialSt
 
 [Table("IndividualStock")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class IndividualStockDto  : DatabaseTable
+public class IndividualStockDto : DatabaseTable
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public override long Id { get; set; }
+    public int Id { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
-    public override string Symbol { get; set; }
+    public string Symbol { get; set; }
     [JsonProperty(PropertyName = "MarketCap")]
     public decimal? MarketCap { get; set; }
     [JsonProperty(PropertyName = "Date")]

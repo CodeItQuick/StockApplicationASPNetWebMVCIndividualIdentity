@@ -16,7 +16,7 @@ public class IncomeStatementDto : DatabaseTable
     [JsonProperty(PropertyName = "Date")]
     public DateTimeOffset Date { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
-    public override string Symbol { get; set; }
+    public string Symbol { get; set; }
     [JsonProperty(PropertyName = "ReportedCurrency")]
     public string ReportedCurrency { get; set; }
     [JsonProperty(PropertyName = "Cik")]

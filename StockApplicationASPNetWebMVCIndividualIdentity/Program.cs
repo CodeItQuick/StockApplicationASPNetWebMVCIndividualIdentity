@@ -1,10 +1,13 @@
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+StripeConfiguration.ApiKey = builder.Configuration["StripeAPIKey"];
 builder.Services.AddDbContext<StockContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -14,6 +17,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IKeyMetricsService, KeyMetricsService>();
 builder.Services.AddTransient<IKeyMetricsRepository, KeyMetricsRepository>();
+builder.Services.AddTransient<SubscriptionService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

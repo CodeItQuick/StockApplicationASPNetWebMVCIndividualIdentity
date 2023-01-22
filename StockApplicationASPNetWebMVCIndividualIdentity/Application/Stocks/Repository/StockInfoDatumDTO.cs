@@ -9,7 +9,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
     {
         [Key]
         public override long Id { get; set; }
-        public override string? Ticker { get; set; }
+        public string? Ticker { get; set; }
         public decimal? YoySuccess { get; set; }
         public string? Date { get; set; }
         public decimal? PbRatio { get; set; }

@@ -8,18 +8,18 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class IndividualStockService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IIndividualStockRepository _individualStockRepository;
     
-    public IndividualStockService(IUnitOfWork unitOfWork)
+    public IndividualStockService(IIndividualStockRepository individualStockRepository)
     {
-        _unitOfWork = unitOfWork;
+        _individualStockRepository = individualStockRepository;
     }
     
     public IEnumerable<IndividualStockDto> RetrieveIndividualStocks(string individualStockDto)
     {
         try
         {
-            var individualStockDtos = _unitOfWork.IndividualStockRepository
+            var individualStockDtos = _individualStockRepository
                 .GetAll()
                 .Where(x => x.Symbol.Equals(individualStockDto));
             return individualStockDtos;

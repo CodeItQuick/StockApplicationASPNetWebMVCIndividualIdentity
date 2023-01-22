@@ -25,6 +25,9 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository
         }
 
         public virtual DbSet<KeyMetricsDto>? KeyMetrics { get; set; }
+        public virtual DbSet<IndividualStockDto>? IndividualStocks { get; set; }
+        public virtual DbSet<SubscriptionsDto>? Subscriptions { get; set; }
+        public virtual DbSet<CashFlowStatementDto>? CashFlowStatement { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

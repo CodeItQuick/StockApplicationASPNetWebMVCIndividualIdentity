@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Adapters\Controllers" />
-    <Folder Include="Areas\Home\Views" />
     <Folder Include="obj" />
     <Folder Include="Pages" />
   </ItemGroup>

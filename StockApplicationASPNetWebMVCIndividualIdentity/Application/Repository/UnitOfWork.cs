@@ -30,8 +30,9 @@ public class UnitOfWork : IUnitOfWork
             Context.SaveChanges();  
             dbContextTransaction.Commit();  
         }  
-        catch (Exception)  
+        catch (Exception ex)  
         {  
+            Console.WriteLine(ex.Message);
             //Log Exception Handling message                      
             returnValue = false;  
             dbContextTransaction.Rollback();  

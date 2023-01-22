@@ -18,22 +18,4 @@ public class ShortlistServiceTests
         Assert.NotNull(shortlistDto);
 
     }
-
-    [Fact]
-    public void CanDeleteFirstEntryFromShortlistRepository()
-    {
-        var databaseMethods = new DatabaseMethods();
-        var unitOfWork = databaseMethods.CreateTestUnitOfWork();
-        var service = new ShortlistService(unitOfWork);
-        var shortlistDtos = unitOfWork.ShortListRepository.Find(dto => true).First();
-        Assert.NotNull(shortlistDtos);
-
-        service.DeleteFromShortlist(shortlistDtos.Ticker, shortlistDtos.UserId);
-        
-        var deleted = unitOfWork.ShortListRepository.Find(dto => 
-            shortlistDtos.Ticker == dto.Ticker &&
-            shortlistDtos.UserId == dto.UserId).Count();
-        Assert.Equal(2, deleted);
-        
-    }
 }

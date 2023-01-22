@@ -13,7 +13,7 @@ public class RatiosDto : DatabaseTable
     [JsonProperty(PropertyName = "Id")]
     public override long Id { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
-    public override string Symbol { get; set; }
+    public string Symbol { get; set; }
     [JsonProperty(PropertyName = "Date")]
     public DateTimeOffset Date { get; set; }
     [JsonProperty(PropertyName = "Period")]

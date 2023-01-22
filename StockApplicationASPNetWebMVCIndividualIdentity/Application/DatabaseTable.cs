@@ -1,9 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application;
 
-public class DatabaseTable
+public abstract class DatabaseTable
 {
-    public virtual long Id { get; set; }
-    public virtual string? Ticker { get; set; }
-    public virtual string? Symbol { get; set; }
-    public virtual string? UserId { get; set; }
+    private long _id = 1;
+
+    [Key]
+    public virtual long Id
+    {
+        get => _id;
+        set
+        {
+            _id = value;
+            _id = Id;
+        }
+    }
+
 }

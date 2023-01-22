@@ -5,20 +5,19 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutDat
 
 public class SubscriptionsService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISubscriptionsRepository _subscriptionsRepository;
 
-    public SubscriptionsService(IUnitOfWork unitOfWork)
+    public SubscriptionsService(ISubscriptionsRepository subscriptionsRepository)
     {
-        _unitOfWork = unitOfWork;
+        _subscriptionsRepository = subscriptionsRepository;
     }
 
     public bool AddToInvoicePaymentSucceeded(SubscriptionsDto subscriptionDto)
     {   
         try
         {
-            _unitOfWork.SubscriptionsRepository.Add(subscriptionDto);
-            var saveChanges = _unitOfWork.SaveChanges();
-            return saveChanges;
+            _subscriptionsRepository.Add(subscriptionDto);
+            return true;
         }
         catch (Exception ex)
         {
@@ -30,7 +29,7 @@ public class SubscriptionsService
     {
         try
         {
-            var subscriptionsDtos = _unitOfWork.SubscriptionsRepository.Get(null,null);
+            var subscriptionsDtos = _subscriptionsRepository.Get(null,null);
             return subscriptionsDtos;
         }
         catch (Exception ex)
