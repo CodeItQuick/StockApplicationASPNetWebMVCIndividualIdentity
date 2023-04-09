@@ -1,3 +1,5 @@
+using System.Collections;
+using MathNet.Numerics.LinearRegression;
 using StockApplication.Core.Tests.Domain;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
@@ -8,6 +10,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
 
         private readonly Dictionary<string, StockAttributeDecimal> _allStockAttributes =
             new();
+
+        private List<long> _previousPerformance;
 
         public Stock(string stockTicker)
         {
@@ -56,6 +60,55 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Domain
             _allStockAttributes.ToList().ForEach(r => 
                 stockDictionary.Add(r.Key, r.Value.AttributeValue ?? Decimal.Zero));
             return stockDictionary;
+        }
+
+        public void IntrinsicValue(List<long> yearsCashFlow)
+        {
+            _previousPerformance = yearsCashFlow;
+        }
+
+        public List<long> Cashflow()
+        {
+            return _previousPerformance;
+        }
+
+        public long StraightLineStockValueForYear(int numProjectedYears)
+        {
+            // Calculate known Years
+            var straightLineStockValueForYear = _previousPerformance
+                .Skip(numProjectedYears)
+                .Aggregate(0L, (acc, curr) => acc + curr);
+            
+            //Calculate Projected Years
+            var averageFreeCashFlow = Int64.Parse(_previousPerformance.Average(x => x).ToString());
+            straightLineStockValueForYear += averageFreeCashFlow * numProjectedYears;
+            
+            return straightLineStockValueForYear;
+        }
+
+        public double RegressionStockValueForYear(int numProjectedYears)
+        {   
+            var regressionYValues = _previousPerformance
+                .Select(stock => Convert.ToDouble(stock))
+                .Reverse()
+                .ToArray();
+            var yearXValues = new[]
+            {
+                1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0
+            };
+            if (yearXValues.Length != regressionYValues.Length)
+            {
+                return 0;
+            }
+            (double intercept, double slope) = SimpleRegression.Fit(yearXValues, regressionYValues);
+            var areaUnderLine = yearXValues.Aggregate((acc, year) => acc + intercept + (year + numProjectedYears) * slope);
+            return areaUnderLine;
+            
+        }
+
+        public decimal CashFlows(int idx)
+        {
+            return Convert.ToDecimal(_previousPerformance[idx]);
         }
     }
 }

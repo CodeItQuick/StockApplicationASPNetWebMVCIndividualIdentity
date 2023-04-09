@@ -22,6 +22,7 @@ public class StocksAdapterConverter
             stockAdapterData.Ticker = stock.Ticker();
             stockAdapterData.Id = r.Id;
             stockAdapterData.stockAttribute = stock.Attributes();
+            stockAdapterData.stockAttribute["MarketCap"] = r.MarketCap ?? decimal.Zero;
             return stockAdapterData;
         });
         return stocksList;

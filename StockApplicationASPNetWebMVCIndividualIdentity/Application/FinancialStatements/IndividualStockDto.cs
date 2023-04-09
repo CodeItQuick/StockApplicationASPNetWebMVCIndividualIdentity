@@ -7,7 +7,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialSt
 
 [Table("IndividualStock")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class IndividualStockDto : DatabaseTable
+public class IndividualStockDto
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]

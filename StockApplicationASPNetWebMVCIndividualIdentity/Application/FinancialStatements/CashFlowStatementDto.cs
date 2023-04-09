@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 
 [Table("CashFlowStatement")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class CashFlowStatementDto : DatabaseTable
+public class CashFlowStatementDto
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
@@ -93,4 +94,5 @@ public class CashFlowStatementDto : DatabaseTable
     [JsonProperty(PropertyName = "FinalLink")]
     public string FinalLink { get; set; }
 
+    public virtual StockInfoDatumDTO? StockInfoDatumDTO { get; set; }
 }

@@ -3,11 +3,6 @@ using StockApplication.Core.Tests.Application;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
-public interface IShortlistStockInfoDataViewRepository
+public interface IShortlistStockInfoDataViewRepository : IRepository<ShortlistStockInfoDataView>
 {
-    IEnumerable<ShortlistStockInfoDataView> Get(  
-        Expression<Func<ShortlistStockInfoDataView, bool>> filter,  
-        Func<IQueryable<ShortlistStockInfoDataView>, 
-            IOrderedQueryable<ShortlistStockInfoDataView>> orderBy,  
-        string? includeProperties = "");
 }

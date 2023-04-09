@@ -12,11 +12,6 @@ public interface IUnitOfWork : IDisposable
     IShortListRepository ShortListRepository { get; }
     IStockDataRepository StockRepository { get; }
     IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository { get; }
-    IIncomeStatementRepository IncomeStatementRepository { get; }
-    IKeyMetricsRepository KeyMetricsRepository { get; }
-    IRatiosTtmRepository RatiosTtmRepository { get; }
-    ICashFlowStatementRepository CashFlowStatementRepository { get; }
-    IIndividualStockRepository IndividualStockRepository { get; }
     IInvoicesRepository InvoicesRepository { get; }
     ISubscriptionsRepository SubscriptionsRepository { get; }
 }

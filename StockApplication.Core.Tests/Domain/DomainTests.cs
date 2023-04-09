@@ -1,3 +1,4 @@
+using MathNet.Numerics;
 using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplication.Core.Tests.Domain;
@@ -107,5 +108,60 @@ public class AcceptanceTests
             new decimal(0.5));
         
         Assert.Equal(stock.Attributes().Count, 5);
+    }
+
+    [Fact]
+    public void StockCanCalculateSimpleIntrinsicValueForYearZeroFromPreviousFreeCashFlow()
+    {
+        var stock = new Stock("UNP");
+
+        stock.IntrinsicValue(new List<long>()
+        {
+            100L, // year 0
+            100L, // year 1
+            100L // year 2, current year
+        });
+        
+        // total stock value (year 0, for 3 year period)
+        Assert.Equal(stock.StraightLineStockValueForYear(0), 300L); 
+    }
+    [Fact]
+    public void StockCanCalculateSimpleIntrinsicValueForYearOneFromPreviousFreeCashFlowAndSimpleProjection()
+    {
+        var stock = new Stock("UNP");
+
+        stock.IntrinsicValue(new List<long>()
+        {
+            100L, // year 0
+            80L, // year 1
+            120L // year 2, current year
+        });
+        
+        // total stock value (year 0, for 3 year period)
+        Assert.Equal(stock.StraightLineStockValueForYear(2), 320L); 
+    }
+    [Fact]
+    public void StockCanCalculateRegressionIntrinsicValueForYearOneFromPreviousFreeCashFlowAndSimpleProjection()
+    {
+        var stock = new Stock("UNP");
+
+        stock.IntrinsicValue(new List<long>()
+        {
+            111443000000, 
+            92953000000, 
+            73365000000,
+            58896000000,
+            64121000000,
+            50803000000,
+            52276000000,
+            69778000000,
+            49900000000,
+            44590000000,
+        });
+        
+        // total stock value (year 0, for 3 year period)
+        Assert.Equal(
+            1668237981819, 
+            stock.RegressionStockValueForYear(20).Round(0)); 
     }
 }

@@ -5,7 +5,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
 public class IndividualStockResponseModel<TEntity>
 {
-    public IEnumerable<TEntity> IndividualStockEarningsView { get; set; }
+    public IEnumerable<TEntity>? IndividualStockEarningsView { get; set; }
     public IEnumerable<SubscriptionsDto> StockSubscriptions { get; set; }
     public List<CashFlowStatementDto> CashFlowDto { get; set; }
 }

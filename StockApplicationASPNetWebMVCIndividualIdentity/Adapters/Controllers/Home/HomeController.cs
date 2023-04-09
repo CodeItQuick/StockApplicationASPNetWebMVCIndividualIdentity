@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,7 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatem
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Stocks.Repository;
 using Stripe;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home
@@ -21,47 +24,29 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
+        private static readonly HttpClient client = new HttpClient();
         private readonly IConfiguration _config;
         private readonly StockIndexService _stockIndexService;
-        private readonly ShortlistStockInfoDataService _shortlistStockInfoDataService;
-        private readonly ShortlistService _shortlistService;
-        private static readonly HttpClient client = new HttpClient();
-        private readonly IncomeStatementService _incomeStatementService;
-        private readonly IKeyMetricsService _keyMetricsService;
-        private readonly RatiosTtmService _ratiosTtmService;
-        private readonly CashFlowStatementService _cashFlowStatementService;
-        private readonly IndividualStockService _individualStockService;
+        private readonly ShortListStockService _shortListStockService;
         private readonly SubscriptionsService _subscriptionsService;
-        private SubscriptionService _service;
-        private IKeyMetricsService IKeyMetricsService;
+        private SubscriptionService _subscriptionRepository;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
-            IUnitOfWork? unitOfWorkParam,
             IConfiguration? config,
-            IKeyMetricsService keyMetricsService,
-            SubscriptionService _subscriptionService,
-            IIndividualStockRepository individualStockRepository, 
-            ISubscriptionsRepository subscriptionsRepository, 
-            ICashFlowStatementRepository cashFlowStatementRepository)
+            SubscriptionService subscriptionRepository,
+            ISubscriptionsRepository subscriptionsRepository)
         {
             _logger = logger;
             _userManager = userManager;
             _config = config;
-            var unitOfWork = unitOfWorkParam ?? new UnitOfWork();
             _subscriptionsService = new SubscriptionsService(subscriptionsRepository);
-            _stockIndexService = new StockIndexService(unitOfWork);
-            _shortlistStockInfoDataService = new ShortlistStockInfoDataService(unitOfWork);
-            _shortlistService = new ShortlistService(unitOfWork);
-            _incomeStatementService = new IncomeStatementService(unitOfWork);
-            _keyMetricsService = keyMetricsService;
-            _ratiosTtmService = new RatiosTtmService(unitOfWork);
-            _cashFlowStatementService = new CashFlowStatementService(cashFlowStatementRepository);
-            _individualStockService = new IndividualStockService(individualStockRepository);
+            _stockIndexService = new StockIndexService(new StockIndexRepository(new StockContext()));
+            _shortListStockService = new ShortListStockService(new StockContext());
             
-            StripeConfiguration.ApiKey = config != null ? config["StripeAPIKey"] : "";
+            StripeConfiguration.ApiKey = config?["StripeAPIKey"];
             
-            _service = _subscriptionService;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public IActionResult Index(
@@ -76,7 +61,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var model = new IndexResponseModel<StocksAdapter>()
             {
                 HasPreviousPage = stockInfoRequest.pageNumber >= 1,
-                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < numPages, // FIXME: pretending there are 10 pages for now
+                HasNextPage = (stockInfoRequest.pageNumber ?? 0) < numPages,
                 StockInfoDatums = stockInfoDatums,
                 PageIndex = stockInfoRequest.pageNumber ?? 0,
                 NumPages = numPages
@@ -109,7 +94,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             List<StocksAdapter> stockInfoDatums;
             if (username != null)
             {
-                stockInfoDatums = _shortlistStockInfoDataService.ShortlistedStocks(
+                stockInfoDatums = _shortListStockService.ShortlistedStocks(
                     stockInfoRequest?.pageNumber ?? 0, username);
             }
             else
@@ -119,23 +104,16 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             
             // Stripe check subscriptions
             
-            StripeList<Subscription> subscriptions = _service.List(new SubscriptionListOptions());
-            stockInfoDatums.ForEach(stock =>
-            {
-                var subscriptionRecord = subscriptions.FirstOrDefault(subscription => subscription != null &&
-                    subscription.Description != null && subscription.Description.Contains(stock.Ticker));
-                string? subscriptionType = null;
-                subscriptionRecord?.Items.Data[0].Plan.Metadata
-                    .TryGetValue("SubscriptionName", out subscriptionType);
-                stock.SubscriptionType = subscriptionType ?? "None";
-            });
+            StripeList<Subscription> subscriptions = _subscriptionRepository.List(new SubscriptionListOptions());
             
+            var stockInfoView = StockInfoView.Of(stockInfoDatums, subscriptions);
+
             // Display/Adapter
             var model = new IndexResponseModel<StocksAdapter>
             {
                 HasPreviousPage = stockInfoRequest?.pageNumber >= 1,
                 HasNextPage = (stockInfoRequest?.pageNumber ?? 0) < stockInfoDatums.Count / 10,
-                StockInfoDatums = stockInfoDatums,
+                StockInfoDatums = stockInfoView.StockInfoDatums,
                 PageIndex = stockInfoRequest?.pageNumber ?? 0
             };
             return View(model);
@@ -148,8 +126,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             StockInfoRequest? stockInfoRequest)
         {
             // DB/Application
-            var stockInfoDatums = _individualStockService.RetrieveIndividualStocks(ticker);
-            var retrieveIndividualStocks = _cashFlowStatementService.RetrieveIndividualStocks(ticker);
+            var stockInfoDatums = _shortListStockService.RetrieveIndividualStock(ticker);
+            var retrieveIndividualStocks = _shortListStockService.RetrieveCashFlowStatements(ticker);
             var stockSubscriptions = _subscriptionsService.Retrieve();
             // Display/Adapter
             var model = new IndividualStockResponseModel<IndividualStockDto>()
@@ -158,7 +136,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 StockSubscriptions = stockSubscriptions.Where(x => x.Description != null && x.Description.Contains(ticker)),
                 CashFlowDto = retrieveIndividualStocks.ToList()
             };
-            return Ok(model);
+            return View(model);
         }
 
         [Route("/Settings")]
@@ -185,7 +163,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             if (jsonResponse != null)
             {
-                    _incomeStatementService.AddToIncomeStatements(jsonResponse);
+                    _shortListStockService.AddToIncomeStatements(jsonResponse);
             }
 
             return RedirectToAction("Shortlist");
@@ -208,7 +186,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             if (jsonResponse != null)
             {
-                _keyMetricsService.AddToKeyMetrics(jsonResponse);
+                _shortListStockService.AddToKeyMetrics(jsonResponse);
             }
 
             return RedirectToAction("Shortlist");
@@ -229,7 +207,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var jsonResponse = JsonConvert.DeserializeObject<List<RatiosDto>>(responseString);
             if (jsonResponse == null) return RedirectToAction("Index");
             jsonResponse?.ForEach(ratios => ratios.Symbol = ticker);
-            _ratiosTtmService.AddToRatiosTtm(jsonResponse);
+            _shortListStockService.AddToRatiosTtm(jsonResponse);
 
             return RedirectToAction("Shortlist");
         }
@@ -250,15 +228,41 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             if (jsonResponse != null)
             {
-                _cashFlowStatementService.AddToCashFlowStatement(jsonResponse);
+                _shortListStockService.AddToCashFlowStatement(jsonResponse);
             }
 
             return RedirectToAction("Shortlist");
         }
+        [Route("/Settings/RetrieveCashFlowStatementIndex/{ticker}")]
+        [HttpPost]
+        public IActionResult RetrieveCashFlowStatementDataIndex(string ticker, int index)
+        {
+
+            var response = client
+                .GetAsync(
+                    $"https://financialmodelingprep.com/api/v3/cash-flow-statement/{ticker}?limit=10&apikey={_config["FMP:ApiKey"]}")
+                .Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            
+            var jsonResponse = JsonConvert.DeserializeObject<List<CashFlowStatementDto>>(responseString);
+
+            if (jsonResponse == null) return RedirectToAction("Index", new { pageNumber = index });
+            try
+            {
+                _shortListStockService.AddToCashFlowStatement(jsonResponse);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return RedirectToAction("Index", new { pageNumber = index });
+        }
 
         [Route("/Shortlist/Add/{ticker}/{stockId:long}")]
         [HttpPost]
-        public IActionResult AddShortlist(string ticker, long stockId)
+        public IActionResult AddShortlist(string ticker, long stockId, int index)
         {
             if (User.Identity == null)
             {
@@ -268,7 +272,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var findFirstValue = User.Identity.Name;
             if (findFirstValue != null)
             {
-                _shortlistService.AddToShortlist(new ShortlistDto()
+                _shortListStockService.AddToShortlist(new ShortlistDto()
                 {
                     Ticker = ticker,
                     StockInfoDataId = stockId,
@@ -276,7 +280,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 });
             }
             //FIXME: Should display shortlist
-            return Redirect("/?pageNumber=0");
+            return RedirectToAction("Index", new { pageNumber = index });
         }
 
         [Route("/Shortlist/Remove/{ticker}")]
@@ -286,7 +290,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             var currentUser = User.Identity?.Name;
             if (currentUser != null)
             {
-                _shortlistService.DeleteFromShortlist(ticker, currentUser);
+                _shortListStockService.DeleteFromShortlist(ticker, currentUser);
             }
             return Redirect("/Shortlist");
         }
@@ -302,4 +306,5 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
 }

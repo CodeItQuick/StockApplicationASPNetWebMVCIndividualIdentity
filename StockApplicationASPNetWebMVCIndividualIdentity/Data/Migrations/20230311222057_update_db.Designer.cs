@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
@@ -11,9 +12,10 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
 {
     [DbContext(typeof(StockContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230311222057_update_db")]
+    partial class update_db
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,12 +175,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -215,12 +215,10 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -520,19 +518,11 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     b.Property<decimal?>("StockBasedCompensation")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("StockInfoDatumDTOId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Symbol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("StockInfoDatumDTOId");
 
                     b.ToTable("CashFlowStatement", (string)null);
                 });
@@ -1095,86 +1085,108 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<decimal?>("BvS")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("BvS");
 
                     b.Property<decimal?>("BvS1")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("BvS1");
 
                     b.Property<decimal?>("BvS2")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("BvS2");
 
                     b.Property<decimal?>("BvS3")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("BvS3");
 
                     b.Property<decimal?>("BvS4")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("BvS4");
 
                     b.Property<decimal?>("CashFlowToSales")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("CashFlowToSales");
 
                     b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("date");
 
                     b.Property<decimal?>("DivYield")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DivYield");
 
                     b.Property<decimal?>("DivYield1")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DivYield1");
 
                     b.Property<decimal?>("DivYield2")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DivYield2");
 
                     b.Property<decimal?>("DivYield3")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DivYield3");
 
                     b.Property<decimal?>("DivYield4")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DivYield4");
 
                     b.Property<decimal?>("Eps")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Eps");
 
                     b.Property<decimal?>("MarketCap")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("long")
+                        .HasColumnName("MarketCap");
 
                     b.Property<decimal?>("OneDay")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("OneDay");
 
                     b.Property<decimal?>("PbRatio")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PbRatio");
 
                     b.Property<decimal?>("PeRatio")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PeRatio");
 
                     b.Property<decimal?>("Roe")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,16)")
+                        .HasColumnName("Roe");
 
                     b.Property<decimal?>("Roe1")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Roe1");
 
                     b.Property<decimal?>("Roe2")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Roe2");
 
                     b.Property<decimal?>("Roe3")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Roe3");
 
                     b.Property<decimal?>("Roe4")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Roe4");
 
                     b.Property<decimal?>("SixMonths")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("SixMonths");
 
                     b.Property<string>("Ticker")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ticker");
 
                     b.Property<decimal?>("YoySuccess")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("YoySuccess");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("StockInfoData", (string)null);
+                    b.ToTable("StockInfoData");
                 });
 
             modelBuilder.Entity("StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository.ApplicationUser", b =>
@@ -1237,18 +1249,6 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement.CashFlowStatementDto", b =>
-                {
-                    b.HasOne("StockApplicationASPNetWebMVCIndividualIdentity.Application.Models.StockInfoDatumDTO", null)
-                        .WithMany("CashFlowStatements")
-                        .HasForeignKey("StockInfoDatumDTOId");
-                });
-
-            modelBuilder.Entity("StockApplicationASPNetWebMVCIndividualIdentity.Application.Models.StockInfoDatumDTO", b =>
-                {
-                    b.Navigation("CashFlowStatements");
                 });
 #pragma warning restore 612, 618
         }

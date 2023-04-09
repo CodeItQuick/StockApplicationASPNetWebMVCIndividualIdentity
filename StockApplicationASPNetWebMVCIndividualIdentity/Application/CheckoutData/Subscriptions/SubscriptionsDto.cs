@@ -5,13 +5,13 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 
-[Table("Invoices")]
+[Table("Subscriptions")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class SubscriptionsDto : DatabaseTable
+public class SubscriptionsDto
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public override long Id { get; set; }
+    public long Id { get; set; }
     [JsonProperty(PropertyName = "SubscriptionId")]
     public string? SubscriptionId { get; set; }
     [JsonProperty(PropertyName = "CreatedDate")]

@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
@@ -49,28 +48,11 @@ public class UnitOfWork : IUnitOfWork
        ;
 
     private ShortListRepository? _shortListRepository;
-    public IShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context)
-       ;
+    public IShortListRepository ShortListRepository => _shortListRepository ??= new ShortListRepository(Context);
 
     private ShortlistStockInfoDataViewRepository? _shortlistStockInfoDataViewRepository;
     public IShortlistStockInfoDataViewRepository ShortlistStockInfoDataViewRepository => 
         _shortlistStockInfoDataViewRepository ??= new ShortlistStockInfoDataViewRepository(Context);
-
-    private IncomeStatementRepository? _incomeStatementRepository;
-    public IIncomeStatementRepository IncomeStatementRepository => 
-        _incomeStatementRepository ??= new IncomeStatementRepository(Context); 
-    public KeyMetricsRepository? _keyMetricsRepository;
-    public virtual IKeyMetricsRepository  KeyMetricsRepository => 
-        _keyMetricsRepository ??= new KeyMetricsRepository(Context);
-    private RatiosTtmRepository? _ratiosTtmRepository;
-    public IRatiosTtmRepository RatiosTtmRepository => 
-        _ratiosTtmRepository ??= new RatiosTtmRepository(Context);
-    private CashFlowStatementRepository? _cashFlowStatementRepository;
-    public ICashFlowStatementRepository CashFlowStatementRepository => 
-        _cashFlowStatementRepository ??= new CashFlowStatementRepository(Context);
-    private IndividualStockRepository? _individualStockRepository;
-    public IIndividualStockRepository IndividualStockRepository => 
-        _individualStockRepository ?? new IndividualStockRepository(Context);
     private InvoicesRepository? _invoicePaymentSucceededRepository;
     public IInvoicesRepository InvoicesRepository => 
         _invoicePaymentSucceededRepository ?? new InvoicesRepository(Context);

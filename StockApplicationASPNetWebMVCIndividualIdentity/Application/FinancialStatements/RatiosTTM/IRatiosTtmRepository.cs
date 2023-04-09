@@ -1,8 +1,0 @@
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
-
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
-
-public interface IRatiosTtmRepository : IRepository<RatiosDto>
-{
-}

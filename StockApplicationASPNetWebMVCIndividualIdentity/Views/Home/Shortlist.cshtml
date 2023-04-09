@@ -9,7 +9,7 @@
     <tr>
         <th scope="col">Symbol</th>
         <th scope="col">Value Metrics</th>
-        <th scope="col">Growth Metrics</th>
+        <th scope="col">Cashflow History</th>
         <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -64,13 +64,22 @@
                 Pb Ratio: @item.stockAttribute?["PbRatio"]<br/>
                 Pe Ratio: @item.stockAttribute?["PeRatio"] <br/>
                 Eps: @item.stockAttribute?["Eps"] <br/>
-                Avg. DivYield: @item.stockAttribute?["DivYield"]
+                Avg. DivYield: @item.stockAttribute?["DivYield"] <br/>
+                MarketCap: @item.stockAttribute?["MarketCap"].ToString("#,##0") <br/>
+                IntrinsicValue: @item.stockAttribute?["IntrinsicValue"].ToString("#,##0") <br/>
+                PredictedMarketCap: @item.stockAttribute?["PredictedIntrinsicValue"].ToString("#,##0")
             </td>
             <td>
-                Sales Growth: <br/>
-                Earnings Growth: <br/>
-                Free Cash Flow Growth: <br/>
-                Net Profit Margin:
+                Cashflow Year 1: @(item.stockAttribute.ContainsKey("Cashflow0") ? item.stockAttribute?["Cashflow0"].ToString("#,##0") : "")<br/>
+                Cashflow Year 2: @(item.stockAttribute.ContainsKey("Cashflow1") ? item.stockAttribute?["Cashflow1"].ToString("#,##0") : "")<br/>
+                Cashflow Year 3: @(item.stockAttribute.ContainsKey("Cashflow2") ? item.stockAttribute?["Cashflow2"].ToString("#,##0") : "")<br/>
+                Cashflow Year 4: @(item.stockAttribute.ContainsKey("Cashflow3") ? item.stockAttribute?["Cashflow3"].ToString("#,##0") : "")<br/>
+                Cashflow Year 5: @(item.stockAttribute.ContainsKey("Cashflow4") ? item.stockAttribute?["Cashflow4"].ToString("#,##0") : "")<br/>
+                Cashflow Year 6: @(item.stockAttribute.ContainsKey("Cashflow5") ? item.stockAttribute?["Cashflow5"].ToString("#,##0") : "")<br/>
+                Cashflow Year 7: @(item.stockAttribute.ContainsKey("Cashflow6") ? item.stockAttribute?["Cashflow6"].ToString("#,##0") : "")<br/>
+                Cashflow Year 8: @(item.stockAttribute.ContainsKey("Cashflow7") ? item.stockAttribute?["Cashflow7"].ToString("#,##0") : "")<br/>
+                Cashflow Year 9: @(item.stockAttribute.ContainsKey("Cashflow8") ? item.stockAttribute?["Cashflow8"].ToString("#,##0") : "")<br/>
+                Cashflow Year 10: @(item.stockAttribute.ContainsKey("Cashflow9") ? item.stockAttribute?["Cashflow9"].ToString("#,##0") : "")<br/>
             </td>
             <td>
                 <form method="post">

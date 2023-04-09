@@ -1,51 +1,37 @@
-using StockApplication.Core.Tests.Application;
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
+using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class ShortListAdapterConverter
 {
     
-    public static List<StocksAdapter> Convert(
-        List<ShortlistStockInfoDataView> stockInfo, 
-        List<StockInfoDatumDTO> stockInfoDatumDtos)
+    public static List<StocksAdapter> Of(List<Stock> stocks)
     {
         List<StocksAdapter> shortlistStocks = new List<StocksAdapter>();
-        foreach (var shortListDto in stockInfo)
+        foreach (var stock in stocks)
         {
-            if (shortListDto.Ticker == null)
-            {
-                continue;
-            };
-            if (stockInfoDatumDtos.Count(r => 
-                    r.Ticker != null && r.Ticker.Equals(shortListDto.Ticker)) != 1)
-            {
-                StocksAdapter justTickerStocksAdapter = new()
-                {
-                    Ticker = shortListDto.Ticker ?? "",
-                    Id = shortListDto.Id
-                };
-                shortlistStocks.Add(justTickerStocksAdapter);
-                continue;
-            };
             StocksAdapter stockAdapter = new()
             {
                 stockAttribute = new(),
-                Ticker = shortListDto.Ticker ?? "",
-                Id = shortListDto.Id
+                Ticker = stock.Ticker(),
+                Id = Convert.ToInt64(stock.Attributes()["Id"])
             };
-            stockAdapter.stockAttribute["PbRatio"] = stockInfoDatumDtos.Single(r => 
-                    r.Ticker != null && r.Ticker.Equals(shortListDto.Ticker))
-                .PbRatio ?? 0.0m;
-            stockAdapter.stockAttribute["PeRatio"] = stockInfoDatumDtos.Single(r => 
-                    r.Ticker != null && r.Ticker.Equals(shortListDto.Ticker))
-                .PeRatio ?? 0.0m;
-            stockAdapter.stockAttribute["Eps"] = stockInfoDatumDtos.Single(r => 
-                    r.Ticker != null && r.Ticker.Equals(shortListDto.Ticker))
-                .Eps ?? 0.0m;
-            stockAdapter.stockAttribute["DivYield"] = stockInfoDatumDtos.Single(r => 
-                    r.Ticker != null && r.Ticker.Equals(shortListDto.Ticker))
-                .DivYield ?? 0.0m;
+            stockAdapter.stockAttribute["PbRatio"] = stock.Attributes()["PbRatio"];
+            stockAdapter.stockAttribute["PeRatio"] = stock.Attributes()["PeRatio"];
+            stockAdapter.stockAttribute["Eps"] = stock.Attributes()["Eps"];
+            stockAdapter.stockAttribute["DivYield"] = stock.Attributes()["DivYield"];
+            stockAdapter.stockAttribute["MarketCap"] = stock.Attributes()["MarketCap"];
+            stockAdapter.stockAttribute["IntrinsicValue"] = 
+                Convert.ToDecimal(stock?.StraightLineStockValueForYear(0));
+            stockAdapter.stockAttribute["PredictedIntrinsicValue"] = 
+                Convert.ToDecimal(stock?.RegressionStockValueForYear(20));
+            Enumerable.Range(0, stock?.Cashflow().Count ?? 0)
+                .ToList()
+                .ForEach(idx =>
+                {
+                    stockAdapter.stockAttribute?.Add($"Cashflow{idx}", stock.CashFlows(idx));
+                    
+                });
             shortlistStocks.Add(stockAdapter);
         }
 

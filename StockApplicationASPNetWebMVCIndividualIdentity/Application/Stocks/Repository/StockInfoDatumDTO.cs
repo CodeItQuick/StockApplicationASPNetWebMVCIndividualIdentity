@@ -1,14 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
 {
     [Table("StockInfoData")]
-    public class StockInfoDatumDTO : DatabaseTable
+    public class StockInfoDatumDTO
     {
         [Key]
-        public override long Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
         public string? Ticker { get; set; }
         public decimal? YoySuccess { get; set; }
         public string? Date { get; set; }
@@ -34,5 +36,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Models
         public decimal? DivYield2 { get; set; }
         public decimal? DivYield3 { get; set; }
         public decimal? DivYield4 { get; set; }
+        
+        public virtual IEnumerable<CashFlowStatementDto> CashFlowStatements { get; set; }
     }
 }

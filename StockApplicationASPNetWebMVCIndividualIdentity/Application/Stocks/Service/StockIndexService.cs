@@ -1,38 +1,66 @@
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Stocks.Repository;
+using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 public class StockIndexService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly StockIndexRepository _stockIndexRepository;
 
-    public StockIndexService(IUnitOfWork unitOfWork)
+    public StockIndexService(StockIndexRepository stockIndexRepository)
     {
-        _unitOfWork = unitOfWork;
+        _stockIndexRepository = stockIndexRepository;
     }
 
     public List<StocksAdapter> DisplayAllStocks(int pageNumber)
     {
         // Get Data
         using var unitOfWork = new UnitOfWork();
-        var stockInfo = _unitOfWork.StockRepository
-            .Get(null, null)
-            .OrderBy(x => x.Ticker)
-            .Skip(pageNumber * 20).Take(20);
+        var stockInfo = _stockIndexRepository.RetrieveStockInfo(pageNumber);
+        
+        var cashFlow = new Dictionary<string, List<long>?>();
+        var predictedMarketCap = new Dictionary<string, long>();
+        foreach(var stock in stockInfo) {
+            var currentStock = new Stock(stock.Ticker);
+            var yearsCashFlow = stock.CashFlowStatements
+                .Where(stock => stock.Symbol.Equals(stock.Symbol, StringComparison.InvariantCultureIgnoreCase))
+                .Select(stock => Convert.ToInt64(stock.FreeCashFlow)).ToList();
 
-        var stocksList = StocksAdapterConverter.ConvertFrom(stockInfo);
+            if (!yearsCashFlow.Any())
+            {
+                continue;
+            }
+            currentStock
+                .IntrinsicValue(
+                    yearsCashFlow);
+            predictedMarketCap[stock.Ticker] = Convert.ToInt64(currentStock.RegressionStockValueForYear(20));
 
+            cashFlow[stock.Ticker] = yearsCashFlow;
+        }
+        var stocksList = StocksAdapterConverter.ConvertFrom(stockInfo).ToList();
+        
+        stocksList.ForEach(stock =>
+        {
+            predictedMarketCap.TryGetValue(stock.Ticker, out var predictedValue);
+            stock.stockAttribute?.Add("PredictedIntrinsicValue", Convert.ToDecimal(predictedValue));
+            cashFlow.TryGetValue(stock.Ticker, out var stockCashFlow);
+            Enumerable.Range(0, stockCashFlow?.Count ?? 0)
+                .ToList()
+                .ForEach(idx =>
+                {
+                    stock.stockAttribute?.Add($"Cashflow{idx}", stockCashFlow[idx]);
+                    
+                });
+        });
         return stocksList.ToList();
     }
 
     public int DisplayAllStocksCount()
     {
         // Get Data
-        using var unitOfWork = new UnitOfWork();
-        var numPages = _unitOfWork.StockRepository
-            .Get(null, null)
-            .Count();
-        return numPages / 19; // FIXME: there's 19 per page for some reason
+        var numPages = _stockIndexRepository.RetrieveCountStockInfo();
+        return Int32.Parse(Math.Ceiling(Double.Parse(numPages.ToString()) / 20).ToString()); // FIXME: there's 19 per page for some reason
     }
 
     public PageItems DisplayAllStocksToPage(string letter)
@@ -40,8 +68,8 @@ public class StockIndexService
         // Get Data
         using var unitOfWork = new UnitOfWork();
 
-        var stockInfo = _unitOfWork.StockRepository
-            .Get(null, null);
+        var stockInfo = _stockIndexRepository
+            .RetrieveAll();
         var pageId = stockInfo
             .OrderBy(x => x.Ticker)
             .ToList()

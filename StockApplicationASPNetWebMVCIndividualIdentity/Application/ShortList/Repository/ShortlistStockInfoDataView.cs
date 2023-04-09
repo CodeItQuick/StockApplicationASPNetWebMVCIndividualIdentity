@@ -6,10 +6,10 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application;
 namespace StockApplication.Core.Tests.Application;
 
 [Table("ShortlistStockInfoDataView")]
-public class ShortlistStockInfoDataView : DatabaseTable
+public class ShortlistStockInfoDataView
 {
     [Key]
-    public override long Id { get; set; }
+    public long Id { get; set; }
     public long TickerId { get; set; }
     public string? Ticker { get; set; }
     public string? UserId { get; set; }

@@ -78,30 +78,47 @@
         <th scope="col">Eps</th>
         <th scope="col">Roe Average</th>
         <th scope="col">Div Yield</th>
+        <th scope="col">Predicted Market Cap</th>
+        <th scope="col">Market Cap</th>
     </tr>
     </thead>
     <tbody>
-    <form method="POST">
 
-        @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
-        {
-            <tr>
-                <th scope="row">@item.Ticker</th>
-                <td>@item.stockAttribute?["PbRatio"]</td>
-                <td>@item.stockAttribute?["PeRatio"]</td>
-                <td>@item.stockAttribute?["Eps"]</td>
-                <td>@item.stockAttribute?["AvgRoe"]</td>
-                <td>@item.stockAttribute?["DivYield"]</td>
-                <td>
+    @foreach (var item in Model.StockInfoDatums.GetRange(0, 19))
+    {
+        <tr>
+            <th scope="row">@item.Ticker</th>
+            <td>@item.stockAttribute?["PbRatio"]</td>
+            <td>@item.stockAttribute?["PeRatio"]</td>
+            <td>@item.stockAttribute?["Eps"]</td>
+            <td>@item.stockAttribute?["AvgRoe"]</td>
+            <td>@item.stockAttribute?["DivYield"]</td>
+            <td>@(item.stockAttribute != null && item.stockAttribute.ContainsKey("PredictedIntrinsicValue") ? item.stockAttribute?["PredictedIntrinsicValue"].ToString("#,##0") : "")</td>
+            <td>@item.stockAttribute?["MarketCap"].ToString("#,##0")</td>
+            <td>
+                <form method="POST">
                     <input type="submit"
                            asp-action="AddShortlist"
                            asp-controller="Home"
                            asp-route-ticker="@item.Ticker"
                            asp-route-stockid="@item.Id"
+                           asp-route-index="@Model.PageIndex"
                            value="Add To Shortlist"/>
-                </td>
-            </tr>
-        }
-    </form>
+                </form>
+            </td>
+            <td>
+                <form method="post">
+                    <input
+                        type="submit"
+                        asp-controller="Home"
+                        asp-action="RetrieveCashFlowStatementDataIndex"
+                        asp-route-ticker="@item.Ticker"
+                        asp-route-index="@Model.PageIndex"
+                        class="btn btn-success"
+                        value="Retrieve Cash Flow Statements"/>
+                </form>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

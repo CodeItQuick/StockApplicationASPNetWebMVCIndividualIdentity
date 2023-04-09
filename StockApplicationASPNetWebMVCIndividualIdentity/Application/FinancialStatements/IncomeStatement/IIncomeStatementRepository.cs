@@ -1,7 +1,0 @@
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.IncomeStatements;
-
-namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
-
-public interface IIncomeStatementRepository : IRepository<IncomeStatementDto>
-{
-}

@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
@@ -17,12 +18,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StockContext>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IKeyMetricsService, KeyMetricsService>();
-builder.Services.AddTransient<IKeyMetricsRepository, KeyMetricsRepository>();
-builder.Services.AddTransient<IIndividualStockRepository, IndividualStockRepository>();
 builder.Services.AddTransient<ISubscriptionsRepository, SubscriptionsRepository>();
-builder.Services.AddTransient<ICashFlowStatementRepository, CashFlowStatementRepository>();
+builder.Services.AddTransient<IShortlistStockInfoDataViewRepository, ShortlistStockInfoDataViewRepository>();
+builder.Services.AddTransient<IStockDataRepository, StockDataRepository>();
 builder.Services.AddTransient<SubscriptionService>();
 builder.Services.AddControllersWithViews();
 

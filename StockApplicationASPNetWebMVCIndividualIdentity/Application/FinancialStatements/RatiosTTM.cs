@@ -5,13 +5,13 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
 
-[Table("Ratios")]
+[Table("RatiosTTM")]
 [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-public class RatiosDto : DatabaseTable
+public class RatiosDto
 {
     [Key]
     [JsonProperty(PropertyName = "Id")]
-    public override long Id { get; set; }
+    public long Id { get; set; }
     [JsonProperty(PropertyName = "Symbol")]
     public string Symbol { get; set; }
     [JsonProperty(PropertyName = "Date")]

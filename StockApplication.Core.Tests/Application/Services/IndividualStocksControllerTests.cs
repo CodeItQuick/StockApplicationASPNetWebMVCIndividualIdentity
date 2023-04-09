@@ -1,22 +1,35 @@
-using AutoFixture.Xunit2;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Home;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
-using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.RatiosTTM;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.Models;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplication.Core.Tests.Application;
 
-public class CashFlowStatementServiceTests
+public class IndividualStocksControllerTests
 {
     private Mock<DbSet<IndividualStockDto>> _mockSet;
     private Mock<StockContext> _context;
 
-    public CashFlowStatementServiceTests()
+    public IndividualStocksControllerTests()
     {
         // Data
+        var individualStockDtos = new List<IndividualStockDto>
+        {
+            new() { Id = 1, Symbol = "ABC", Date = DateTimeOffset.Now, },
+            new() { Id = 2, Symbol = "ABC", Date = DateTimeOffset.Now, },
+            new() { Id = 3, Symbol = "ABC", Date = DateTimeOffset.Now, }
+        };
+        var subscriptionsDtos = new List<SubscriptionsDto>
+        {
+            new() { Id = 1, Description = "ABC"},
+            new() { Id = 2, Description = "ABC" },
+            new() { Id = 3, Description = "ABC" },
+        };
         var cashFlowStatementDtos = new List<CashFlowStatementDto>
         {
             new() { Id = 1, Symbol = "ABC" },
@@ -25,10 +38,14 @@ public class CashFlowStatementServiceTests
         };
 
         //Setup DbSetMock
+        var individualStocksDbSet = SetupDbSet(new Mock<DbSet<IndividualStockDto>>(), individualStockDtos);
+        var subscriptionsDbSet = SetupDbSet(new Mock<DbSet<SubscriptionsDto>>(), subscriptionsDtos);
         var cashFlowStatementDbSet = SetupDbSet(new Mock<DbSet<CashFlowStatementDto>>(), cashFlowStatementDtos);
 
         //Setup Context
         _context = new Mock<StockContext>();
+        _context.Setup(x => x.IndividualStocks).Returns(individualStocksDbSet.Object);
+        _context.Setup(x => x.Subscriptions).Returns(subscriptionsDbSet.Object);
         _context.Setup(x => x.CashFlowStatement).Returns(cashFlowStatementDbSet.Object);
     }
 
@@ -50,27 +67,21 @@ public class CashFlowStatementServiceTests
             .Callback<IEnumerable<TEntity>>((s) => individualStockDtos.AddRange(s));
         return mockset;
     }
-    [Theory, AutoData]
-    public void CanAddRangeToCashFlowStatementRepositoryUsingDbContextMock(CashFlowStatementDto entry)
+
+    [Fact]
+    public void HomeControllerWhenIndividualStocksCalledReturnsResponse()
     {
-        var service = new CashFlowStatementService(new CashFlowStatementRepository(_context.Object));
-        entry.Id = 4;
+        var service = new HomeController(
+            null, 
+            null, 
+            null, 
+            null, 
+            new SubscriptionsRepository(_context.Object));
+        var individualStock = service.IndividualStock("ABC", new StockInfoRequest()) as ViewResult;
 
-        service.AddToCashFlowStatement(new List<CashFlowStatementDto>() { entry });
-
-        Assert.Equal(4, _context.Object.CashFlowStatement?.Count());
-
+        Assert.Equal(3,
+            (individualStock?.Model as IndividualStockResponseModel<IndividualStockDto>)
+            .StockSubscriptions
+            .Count());
     }
-    [Theory, AutoData]
-    public void CanRetrieveCashFlowStatementRepositoryUsingDbContextMock(CashFlowStatementDto entry)
-    {
-        var service = new CashFlowStatementService(new CashFlowStatementRepository(_context.Object));
-        entry.Id = 4;
-
-        var cashFlowStatementDtos = service.RetrieveIndividualStocks("ABC");
-
-        Assert.Equal(3, cashFlowStatementDtos?.Count());
-
-    }
-
 }
