@@ -7,9 +7,14 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
-public class ShortListStockService
+public class ShortListStockService : IShortListStockService
 {
     private readonly ShortListRepository _shortListRepository;
+
+    public ShortListStockService()
+    {
+        _shortListRepository = new ShortListRepository(new StockContext());
+    }
 
     public ShortListStockService(IStockContext stockContext)
     {
@@ -61,4 +66,18 @@ public class ShortListStockService
     {
         return _shortListRepository.RetrieveCashFlowStatements(ticker);
     }
+}
+
+public interface IShortListStockService
+{
+    public List<StocksAdapter> ShortlistedStocks(int pageNumber, string username);
+    public void AddToShortlist(ShortlistDto shortListDto);
+    public void DeleteFromShortlist(string ticker, string currentUser);
+    public void AddToIncomeStatements(List<IncomeStatementDto> incomeStatementDtos);
+    public void AddToKeyMetrics(List<KeyMetricsDto> keyMetricsDtos);
+    public void AddToRatiosTtm(List<RatiosDto> ratios);
+    public void AddToCashFlowStatement(List<CashFlowStatementDto> cashFlowStatements);
+    public IEnumerable<IndividualStockDto>? RetrieveIndividualStock(string ticker);
+    public IEnumerable<CashFlowStatementDto> RetrieveCashFlowStatements(string ticker);
+
 }

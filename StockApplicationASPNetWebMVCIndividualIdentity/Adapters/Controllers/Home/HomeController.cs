@@ -26,30 +26,31 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         private readonly UserManager<ApplicationUser> _userManager;
         private static readonly HttpClient client = new HttpClient();
         private readonly IConfiguration _config;
-        private readonly StockIndexService _stockIndexService;
-        private readonly ShortListStockService _shortListStockService;
-        private readonly SubscriptionsService _subscriptionsService;
-        private SubscriptionService _subscriptionRepository;
+        private readonly IExternalSubscriptionService _externalSubscriptionListService;
+        private readonly IStockIndexService _stockIndexService;
+        private readonly IShortListStockService _shortListStockService;
+        private readonly ISubscriptionService _subscriptionsService;
+        private SubscriptionService _subscriptionService;
 
         public HomeController(ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
             IConfiguration? config,
-            SubscriptionService subscriptionRepository,
-            ISubscriptionsRepository subscriptionsRepository)
+            IExternalSubscriptionService externalSubscriptionListService,
+            IStockIndexService stockIndexService, 
+            IShortListStockService shortListStockService,
+            ISubscriptionService subscriptionService)
         {
             _logger = logger;
             _userManager = userManager;
             _config = config;
-            _subscriptionsService = new SubscriptionsService(subscriptionsRepository);
-            _stockIndexService = new StockIndexService(new StockIndexRepository(new StockContext()));
-            _shortListStockService = new ShortListStockService(new StockContext());
+            _externalSubscriptionListService = externalSubscriptionListService;
+            _subscriptionsService = subscriptionService;
+            _stockIndexService = stockIndexService;
+            _shortListStockService = shortListStockService;
             
-            StripeConfiguration.ApiKey = config?["StripeAPIKey"];
-            
-            _subscriptionRepository = subscriptionRepository;
         }
 
-        public IActionResult Index(
+        public ActionResult Index(
             StockInfoRequest stockInfoRequest,
             int? pageNumber)
         {
@@ -104,7 +105,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             
             // Stripe check subscriptions
             
-            StripeList<Subscription> subscriptions = _subscriptionRepository.List(new SubscriptionListOptions());
+            StripeList<Subscription> subscriptions = _externalSubscriptionListService.Retrieve();
             
             var stockInfoView = StockInfoView.Of(stockInfoDatums, subscriptions);
 
@@ -147,6 +148,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return View();
         }
 
+        // TODO: Wrap with tests
         [Route("/Settings/RetrieveIncomeStatement/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveIncomeStatementData(string ticker)
@@ -170,6 +172,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         }
 
 
+        // TODO: Wrap with tests
         [Route("/Settings/RetrieveKeyMetricData/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveKeyMetricData(string ticker)
@@ -192,6 +195,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return RedirectToAction("Shortlist");
         }
 
+        // TODO: Wrap with tests
         [Route("/Settings/RetrieveRatiosTtm/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveRatiosTtmData(string ticker)
@@ -212,6 +216,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
             return RedirectToAction("Shortlist");
         }
 
+        // TODO: Wrap with tests
         [Route("/Settings/RetrieveCashFlowStatement/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveCashFlowStatementData(string ticker)
@@ -233,6 +238,8 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 
             return RedirectToAction("Shortlist");
         }
+        
+        // TODO: Wrap with tests
         [Route("/Settings/RetrieveCashFlowStatementIndex/{ticker}")]
         [HttpPost]
         public IActionResult RetrieveCashFlowStatementDataIndex(string ticker, int index)
@@ -280,7 +287,7 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
                 });
             }
             //FIXME: Should display shortlist
-            return RedirectToAction("Index", new { pageNumber = index });
+            return Redirect($"Index/?pageNumber={index}");
         }
 
         [Route("/Shortlist/Remove/{ticker}")]
@@ -307,4 +314,28 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
         }
     }
 
+}
+
+public class ExternalSubscriptionService : IExternalSubscriptionService
+{
+    private readonly SubscriptionService _subscriptionService;
+
+    public ExternalSubscriptionService(
+        IConfiguration? config)
+    {
+        StripeConfiguration.ApiKey = config?["StripeAPIKey"];
+            
+        _subscriptionService = new SubscriptionService();
+    }
+
+    public StripeList<Subscription> Retrieve()
+    {
+        return _subscriptionService.List(new SubscriptionListOptions());
+    }
+}
+
+
+public interface IExternalSubscriptionService
+{
+    public StripeList<Subscription> Retrieve();
 }

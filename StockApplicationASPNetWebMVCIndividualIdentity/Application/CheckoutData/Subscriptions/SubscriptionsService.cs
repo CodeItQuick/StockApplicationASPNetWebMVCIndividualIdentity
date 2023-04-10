@@ -3,13 +3,13 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Application.Repository;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
 
-public class SubscriptionsService
+public class SubscriptionsService : ISubscriptionService
 {
     private readonly ISubscriptionsRepository _subscriptionsRepository;
 
-    public SubscriptionsService(ISubscriptionsRepository subscriptionsRepository)
+    public SubscriptionsService(StockContext context)
     {
-        _subscriptionsRepository = subscriptionsRepository;
+        _subscriptionsRepository = new SubscriptionsRepository(context);
     }
 
     public bool AddToInvoicePaymentSucceeded(SubscriptionsDto subscriptionDto)
@@ -37,4 +37,11 @@ public class SubscriptionsService
             throw new Exception(ex.Message);
         }
     }
+}
+
+public interface ISubscriptionService
+{
+
+    public IEnumerable<SubscriptionsDto> Retrieve();
+    public bool AddToInvoicePaymentSucceeded(SubscriptionsDto subscriptionDto);
 }

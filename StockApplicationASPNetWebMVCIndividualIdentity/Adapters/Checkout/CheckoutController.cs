@@ -24,10 +24,10 @@ public class CheckoutController : Controller
     private readonly SubscriptionsService _subscriptions;
     const string endpointSecret = "whsec_9886e456919af0c3ad92ba5d093d585d1d9ebf6e7d4140d62690afc7939d7828";
 
-    public CheckoutController(
-        ILogger<CheckoutController> logger,
+    public CheckoutController(ILogger<CheckoutController> logger,
         IConfiguration configuration,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager, 
+        StockContext subscriptionsService)
     {
         _logger = logger;
         _userManager = userManager;
@@ -35,7 +35,7 @@ public class CheckoutController : Controller
         _customerRetrievalService =
             new CustomerRetrievalService<CheckoutController>(logger, userManager, configuration);
         _invoices = new InvoicesService(new UnitOfWork());
-        _subscriptions = new SubscriptionsService(new SubscriptionsRepository(new StockContext()));
+        _subscriptions = new SubscriptionsService(subscriptionsService);
     }
 
     [Route("/create-checkout")]

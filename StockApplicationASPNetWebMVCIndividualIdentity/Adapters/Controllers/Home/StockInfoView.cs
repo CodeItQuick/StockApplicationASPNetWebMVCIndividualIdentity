@@ -6,11 +6,12 @@ namespace StockApplicationASPNetWebMVCIndividualIdentity.Adapters.Controllers.Ho
 public class StockInfoView
 {
     public List<StocksAdapter> StockInfoDatums { get; set; }
-    public static StockInfoView Of(List<StocksAdapter> stockInfoDatums, StripeList<Subscription> subscriptions)
+    public static StockInfoView Of(List<StocksAdapter> stockInfoDatums, StripeList<Subscription>? subscriptions)
     {
         var stockInfoView = new StockInfoView();
         stockInfoDatums.ForEach(stock =>
         {
+            if (subscriptions == null) return;
             var subscriptionRecord = subscriptions.FirstOrDefault(subscription => 
                 subscription is { Description: { } } && 
                 subscription.Description.Contains(stock.Ticker));

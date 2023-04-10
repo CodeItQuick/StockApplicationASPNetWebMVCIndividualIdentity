@@ -1,5 +1,6 @@
 using System.Security.Principal;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.CheckoutData.InvoicePaymentSucceeded;
+using StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.CashFlowStatement;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.IndividualStockView;
 using StockApplicationASPNetWebMVCIndividualIdentity.Application.FinancialStatements.KeyMetrics;
@@ -21,10 +22,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IStockIndexService, StockIndexService>();
 builder.Services.AddTransient<ISubscriptionsRepository, SubscriptionsRepository>();
 builder.Services.AddTransient<IShortlistStockInfoDataViewRepository, ShortlistStockInfoDataViewRepository>();
 builder.Services.AddTransient<IStockDataRepository, StockDataRepository>();
-builder.Services.AddTransient<SubscriptionService>();
+builder.Services.AddTransient<IExternalSubscriptionService, ExternalSubscriptionService>();
+builder.Services.AddTransient<IShortListStockService, ShortListStockService>();
+builder.Services.AddTransient<ISubscriptionService, SubscriptionsService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

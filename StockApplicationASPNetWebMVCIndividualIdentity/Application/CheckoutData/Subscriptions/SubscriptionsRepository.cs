@@ -19,6 +19,6 @@ public class SubscriptionsRepository : ISubscriptionsRepository
 
     public IEnumerable<SubscriptionsDto> Get(int? id, int? userId)
     {
-        return _context.Subscriptions.Where(x => true);
+        return _context.Subscriptions?.ToList();
     }
 }

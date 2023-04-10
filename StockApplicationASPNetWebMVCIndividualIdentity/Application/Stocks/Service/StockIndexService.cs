@@ -4,9 +4,14 @@ using StockApplicationASPNetWebMVCIndividualIdentity.Domain;
 
 namespace StockApplicationASPNetWebMVCIndividualIdentity.Application.DBService;
 
-public class StockIndexService
+public class StockIndexService : IStockIndexService
 {
     private readonly StockIndexRepository _stockIndexRepository;
+
+    public StockIndexService()
+    {
+        _stockIndexRepository = new StockIndexRepository(new StockContext());
+    }
 
     public StockIndexService(StockIndexRepository stockIndexRepository)
     {
@@ -89,6 +94,13 @@ public class StockIndexService
         
         return pageItems;
     }
+}
+
+public interface IStockIndexService
+{
+    public List<StocksAdapter> DisplayAllStocks(int pageNumber);
+    public int DisplayAllStocksCount();
+    public PageItems DisplayAllStocksToPage(string letter);
 }
 
 public class PageItems
